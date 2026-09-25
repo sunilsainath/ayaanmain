@@ -5,6 +5,7 @@ import { audit, addMonths } from "@/lib/identifiers";
 
 // Token-based applicant correction — no login (applicants have no portal access).
 // GET ?token= → limited application fields. POST {token, fields...} → update + resubmit (status → pending).
+export const dynamic = "force-dynamic";
 
 function publicView(a: any) {
   return {
