@@ -41,7 +41,7 @@ export default function CoursesPage() {
   // Live fees from Admin → Fee Config (no hard-coding). Maps course slug to FeeConfig course key.
   // Lookup order per course + mode: selected duration → Base ("") → none ("Fee on request").
   const feeKeyFor = (slug: string): string | null => {
-    const map: Record<string, string> = { si: "SI", constable: "Constable", groups: "Groups", "ssc-gd": "SSC GD", army: "Army", upsc: "UPSC" };
+    const map: Record<string, string> = { "si-pc": "SI PC", si: "SI PC", constable: "SI PC", groups: "Groups", "ssc-gd": "SSC GD", army: "Army", upsc: "UPSC" };
     return map[slug] || null;
   };
   const liveFeesFor = (slug: string) => {
@@ -111,14 +111,14 @@ export default function CoursesPage() {
         <div className="container-soft py-10 relative">
           <h1 className="font-display font-bold text-3xl">Courses for Every Uniform</h1>
           <p className="text-white/70 mt-2 max-w-2xl">
-            SI • Constable • Groups 1/2/3/4 • SSC GD • Defence • UPSC • Online. Offline • Residential • Online. Telugu & English.
+            SI PC • Groups 1/2/3/4 • SSC GD • Army/Navy/Airforce • UPSC • Online. Offline • Residential • Online. Telugu & English.
           </p>
           <div className="mt-4 flex gap-2">
             <div className="relative">
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Search SI, Constable, UPSC…"
+                placeholder="Search SI PC, Army, UPSC…"
                 className="w-[280px] pl-9 pr-3 py-2.5 rounded-full bg-white text-navy-900 text-sm placeholder:text-slate-400 focus:outline-none"
               />
               <span className="absolute left-3 top-2.5 text-slate-400">⌕</span>
@@ -311,7 +311,7 @@ export default function CoursesPage() {
           </div>
           <div className="lg:col-span-4 rounded-xl bg-slate-50 border border-slate-200 p-4">
             <div className="text-sm font-semibold text-navy-900">Need help choosing?</div>
-            <div className="text-sm text-slate-600 mt-1">Tell us your qualification & target year — we&apos;ll recommend SI vs Constable vs Groups vs UPSC.</div>
+            <div className="text-sm text-slate-600 mt-1">Tell us your qualification & target year — we&apos;ll recommend the right track for you vs Groups vs UPSC.</div>
             <Link href="/contact" className="mt-3 inline-flex btn-primary !py-2.5">Get Recommendation →</Link>
           </div>
         </div>

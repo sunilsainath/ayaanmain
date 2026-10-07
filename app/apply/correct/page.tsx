@@ -12,7 +12,7 @@ function CorrectForm() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ name: "", fatherName: "", phone: "", address: "", reference: "", aadharCardNumber: "", branch: "", course: "", courseType: "", mode: "", batchId: "" });
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
-  const [courseOptions, setCourseOptions] = useState<string[]>(["SI", "Constable", "Groups", "SSC GD", "Defence", "Army", "UPSC"]);
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
 
   useEffect(() => {
     if (!token) { setErr("Missing correction link token."); return; }

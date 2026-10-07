@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     const exists = await prisma.course.findFirst({ where: { OR: [{ slug: c.toLowerCase() }, { title: c }, { slug: c }, { title: { equals: c, mode: "insensitive" } }] } });
     // Allow legacy short codes like "SI" that map to courseDetails title parentheses; fallback check against fee configs short codes
     if (!exists) {
-      const legacyCourses = ["SI", "Constable", "Groups", "SSC GD", "Defence", "Army", "UPSC", "Online"];
+      const legacyCourses = ["SI PC", "SI", "Constable", "Groups", "SSC GD", "Army", "Defence", "UPSC", "Online"];
       if (!legacyCourses.includes(c) && !legacyCourses.map((x) => x.toLowerCase()).includes(c.toLowerCase())) {
         return NextResponse.json({ error: `Invalid course: ${c}` }, { status: 400 });
       }

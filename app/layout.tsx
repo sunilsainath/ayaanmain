@@ -9,7 +9,7 @@ import MetaMaskGuard from "@/components/MetaMaskGuard";
 export const metadata: Metadata = {
   title: "Ayaan Institute — Police Academy & Competitive Exams | Telangana",
   description:
-    "Ayaan Group of Competitive Institutions. India's first residential campus for uniform jobs. SI, Constable, Army, SSC GD & Group exams. Offline, Residential & Online coaching by Mohd. Anwar Sir.",
+    "Ayaan Group of Competitive Institutions. India's first residential campus for uniform jobs. SI PC, Army, SSC GD & Group exams. Offline, Residential & Online coaching by Mohd. Anwar Sir.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

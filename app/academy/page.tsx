@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ASPIRANT_GALLERY } from "@/lib/aspirantImages";
 
 export default function AcademyPage(){
   return (
@@ -65,11 +66,49 @@ export default function AcademyPage(){
             <div className="card p-6 mt-4">
               <div className="font-semibold text-navy-900">Courses at Academy</div>
               <div className="mt-3 grid gap-2">
-                {["SI Coaching →","Constable Coaching →","Army Coaching →"].map(x=> <Link key={x} href="/courses" className="px-4 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-sm font-medium">{x}</Link>)}
+                {["SI PC — SI + Constable →","Army / Navy / Airforce →","Groups 1-4 →","SSC GD →","UPSC →"].map(x=> <Link key={x} href="/courses" className="px-4 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-sm font-medium">{x}</Link>)}
               </div>
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="container-soft mt-10">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <h2 className="font-display font-bold text-xl text-navy-900">Inside Aspirant Corner</h2>
+            <p className="mt-1 text-sm text-slate-600 max-w-2xl">The track, the gym, the library and the hostel — what a normal day actually looks like here, by course.</p>
+          </div>
+          <span className="text-[11px] text-slate-400">Photos: Unsplash (free for commercial use)</span>
+        </div>
+
+        {(["SI PC", "Army / Navy / Airforce", "All courses"] as const).map((course) => {
+          const shots = ASPIRANT_GALLERY.filter((g) => g.course === course);
+          if (shots.length === 0) return null;
+          return (
+            <div key={course} className="mt-6">
+              <div className="text-xs font-bold tracking-widest text-slate-500">{course}</div>
+              <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {shots.map((g) => (
+                  <figure key={g.title} className="card overflow-hidden group">
+                    <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                      <img
+                        src={g.src}
+                        alt={g.title}
+                        loading="lazy"
+                        className="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                    <figcaption className="p-4">
+                      <div className="font-semibold text-navy-900 text-sm">{g.title}</div>
+                      <div className="mt-1 text-xs text-slate-600 leading-relaxed">{g.caption}</div>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </section>
     </div>
   )

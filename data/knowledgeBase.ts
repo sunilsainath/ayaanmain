@@ -60,7 +60,7 @@ export const knowledgeBase: KBChunk[] = [
     id: "courses-list",
     category: "Courses",
     keywords: ["courses", "si", "constable", "groups", "group 1", "group 2", "ssc gd", "army", "navy", "airforce", "defence", "offline", "online", "कोर्स", "కోర్సులు"],
-    en: "Courses: SI, Constable, Groups 1/2/3/4, SSC GD, Army/Navy/Airforce. Modes: Residential (Bollikunta), Offline day-scholar (Warangal/Hyderabad with hostel option), Online (live + recorded). Study language: Telugu & English. Duration ~3 months + continuous tests.",
+    en: "Courses: SI PC (SI + Constable combined), Groups 1/2/3/4, SSC GD, Army/Navy/Airforce. Modes: Residential (Bollikunta), Offline day-scholar (Warangal/Hyderabad with hostel option), Online (live + recorded). Study language: Telugu & English. Duration ~3 months + continuous tests.",
     hi: "कोर्स: SI, कांस्टेबल, ग्रुप 1/2/3/4, SSC GD, आर्मी/नेवी/एयरफोर्स। मोड: रेजिडेंशियल, ऑफलाइन डे-स्कॉलर (वारंगल/हैदराबाद), ऑनलाइन (लाइव + रिकॉर्डेड)। माध्यम: तेलुगु & इंग्लिश अलग बैच, अवधि ~3 महीने।",
     te: "కోర్సులు: SI, కానిస్టేబుల్, గ్రూప్స్ 1/2/3/4, SSC GD, ఆర్మీ/నేవీ/ఎయిర్‌ఫోర్స్. మోడ్‌లు: రెసిడెన్షియల్, ఆఫ్‌లైన్ డే-స్కాలర్, ఆన్‌లైన్ (లైవ్ + రికార్డెడ్). మీడియం: తెలుగు & ఇంగ్లీష్ వేరు బ్యాచ్‌లు, వ్యవధి ~3 నెలలు.",
     source: "Courses → Offline",

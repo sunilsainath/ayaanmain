@@ -28,9 +28,9 @@ export default function Footer() {
             <div className="text-sm font-semibold text-white">Academy</div>
             <ul className="mt-4 grid gap-2.5 text-sm text-slate-400">
               <li><Link href="/academy" className="hover:text-white">Residential Campus</Link></li>
-              <li><Link href="/courses" className="hover:text-white">SI / Constable</Link></li>
+              <li><Link href="/courses" className="hover:text-white">SI PC</Link></li>
               <li><Link href="/courses" className="hover:text-white">Groups & SSC GD</Link></li>
-              <li><Link href="/courses" className="hover:text-white">Army / Defence</Link></li>
+              <li><Link href="/courses" className="hover:text-white">Army / Navy / Airforce</Link></li>
               <li><Link href="/tests" className="hover:text-white">Test Series</Link></li>
             </ul>
           </div>

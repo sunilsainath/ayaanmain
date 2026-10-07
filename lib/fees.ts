@@ -7,24 +7,34 @@
 // silently missed FeeConfig rows and fell through to a wrong hardcoded default
 // (e.g. army/Offline returned 15000 instead of 20000).
 export const FALLBACK_FEE: Record<string, Record<string, number>> = {
+  // SI and Constable merged into a single "SI PC" course, billed at the SI rate.
+  // SI / Constable keys are kept so historical students and admissions resolve
+  // to the fee they were originally charged.
+  "SI PC": { Residential: 35000, Offline: 25000, Online: 15000 },
   SI: { Residential: 35000, Offline: 25000, Online: 15000 },
   Constable: { Residential: 28000, Offline: 18000, Online: 10800 },
   Groups: { Residential: 32000, Offline: 22000, Online: 13200 },
   "SSC GD": { Residential: 25000, Offline: 15000, Online: 9000 },
-  Defence: { Residential: 30000, Offline: 20000, Online: 12000 },
   Army: { Residential: 30000, Offline: 20000, Online: 12000 },
   UPSC: { Residential: 75000, Offline: 45000, Online: 27000 },
 };
 
 const BASE_MAP: Record<string, number> = {
+  "SI PC": 25000,
   SI: 25000,
   Constable: 18000,
   Groups: 22000,
   "SSC GD": 15000,
-  Defence: 20000,
   Army: 20000,
   UPSC: 45000,
 };
+
+// Normalised index so lookups never miss on letter case or spacing.
+// Strips every non-alphanumeric so "SSC GD", "ssc gd" and "SSCG D" all collapse to "sscgd".
+const squash = (v: unknown) => nk(v).replace(/[^a-z0-9]/g, "");
+const BASE_BY_KEY: Record<string, number> = Object.fromEntries(
+  Object.entries(BASE_MAP).map(([k, v]) => [squash(k), v]),
+);
 
 // Normalization key used for every comparison
 export function nk(v: unknown): string {
@@ -98,22 +108,24 @@ export function fallbackFee(course: string, mode: string): number {
 // unknown name to the closest known course so a missing FeeConfig row can never
 // silently fall back to the flat ₹15,000 default.
 export function nearestCourse(course: string): number | null {
-  const c = nk(course).replace(/[^a-z0-9]/g, "");
+  const c = squash(course);
   if (!c) return null;
-  for (const k of Object.keys(BASE_MAP)) {
-    if (nk(k).replace(/[^a-z0-9]/g, "") === c) return BASE_MAP[k];
-  }
-  // one contains the other, or a shared leading word ("group 1" ~ "groups")
+  // Exact match on the squashed key first.
+  if (c in BASE_BY_KEY) return BASE_BY_KEY[c];
+  // One contains the other, or a shared leading word ("group 1" ~ "groups").
+  // Prefer the most specific (longest) key so "SI PC" wins over "SI".
   const words = c.split(/[0-9]/)[0];
   let best: { key: string; score: number } | null = null;
-  for (const k of Object.keys(BASE_MAP)) {
-    const key = nk(k).replace(/[^a-z0-9]/g, "");
+  for (const k of Object.keys(BASE_BY_KEY)) {
+    const key = k;
     let score = 0;
     if (key.includes(c) || c.includes(key)) score = 2;
     else if (words.length >= 4 && (key.startsWith(words.slice(0, 5)) || words.startsWith(key.slice(0, 5)))) score = 1;
-    if (score > 0 && (!best || score > best.score)) best = { key: k, score };
+    if (score > 0 && (!best || score > best.score || (score === best.score && key.length > best.key.length))) {
+      best = { key, score };
+    }
   }
-  return best ? BASE_MAP[best.key] : null;
+  return best ? BASE_BY_KEY[best.key] : null;
 }
 
 // FeeConfig rows for a course, matched leniently (exact → case-insensitive → nearest).
@@ -123,7 +135,7 @@ export function matchCourseRows<T extends FeeRow>(rows: T[], course: string): T[
   if (exact.length > 0) return exact;
   const base = nearestCourse(c);
   if (base !== null) {
-    const hit = rows.find((r) => BASE_MAP[nk(r.course)] === base);
+    const hit = rows.find((r) => BASE_BY_KEY[squash(r.course)] === base);
     if (hit) return rows.filter((r) => nk(r.course) === nk(hit.course));
   }
   return [];

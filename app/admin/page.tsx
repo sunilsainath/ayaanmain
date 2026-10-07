@@ -424,14 +424,14 @@ function RagTab() {
   );
 }
 
-const EMPTY_BATCH = { id: "", name: "", course: "SI", mode: "Residential", branch: "Warangal", slot: "", days: "", startDate: "2026-10-01", endDate: "", seats: 40, filled: 0, duration: "3 Months", durationMonths: 3, status: "open", isActive: true, note: "" };
+const EMPTY_BATCH = { id: "", name: "", course: "SI PC", mode: "Residential", branch: "Warangal", slot: "", days: "", startDate: "2026-10-01", endDate: "", seats: 40, filled: 0, duration: "3 Months", durationMonths: 3, status: "open", isActive: true, note: "" };
 
 function BatchesTab({ campus = "" }: { campus?: string }) {
   const [list, setList] = useState<any[]>([]);
   const [q, setQ] = useState("");
   const [form, setForm] = useState({ ...EMPTY_BATCH });
   const [editing, setEditing] = useState<string | null>(null);
-  const [courseOptions, setCourseOptions] = useState<string[]>(["SI", "Constable", "Groups", "SSC GD", "Defence", "Army", "UPSC"]);
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
 
   const load = () => fetch(`/api/admin/batches${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setList(d)).catch(() => {});
@@ -1211,7 +1211,7 @@ function PaymentsTab({ campus = "" }: { campus?: string }) {
   const [selectedStudent, setSelectedStudent] = useState<string>("");
   const [admissions, setAdmissions] = useState<any[]>([]);
   const [payAdmission, setPayAdmission] = useState<string>("");
-  const [newPay, setNewPay] = useState({ name: "", phone: "", email: "", course: "SI", mode: "Offline", amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: "", address: "", branch: "Warangal", courseType: "Regular" });
+  const [newPay, setNewPay] = useState({ name: "", phone: "", email: "", course: "SI PC", mode: "Offline", amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: "", address: "", branch: "Warangal", courseType: "Regular" });
   const load = () => fetch(`/api/admin/payments${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => setData(d)).catch(() => {});
   const loadStudents = () => fetch(`/api/admin/students${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setStudents(d)).catch(() => {});
   const loadAdmissions = () => fetch(`/api/admin/admissions${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin", cache: "no-store" }).then((r) => r.json()).then((d) => Array.isArray(d) && setAdmissions(d)).catch(() => {});
@@ -1269,7 +1269,7 @@ function PaymentsTab({ campus = "" }: { campus?: string }) {
     });
     const d = await r.json().catch(() => ({}));
     if (r.ok) {
-      setNewPay({ name: "", phone: "", email: "", course: "SI", mode: "Offline", amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: "", address: "", branch: campus || "Warangal", courseType: "Regular" });
+      setNewPay({ name: "", phone: "", email: "", course: "SI PC", mode: "Offline", amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: "", address: "", branch: campus || "Warangal", courseType: "Regular" });
       setSelectedStudent("");
       setPayAdmission("");
       setShowAdd(false);
@@ -1520,9 +1520,9 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
   const [q, setQ] = useState("");
   const [pw, setPw] = useState<Record<string, string>>({});
   const [showAdd, setShowAdd] = useState(false);
-  const [newStu, setNewStu] = useState({ name: "", fatherName: "", email: "", phone: "", address: "", branch: "Warangal", course: "SI", courseType: "Regular", mode: "Residential", password: "" });
+  const [newStu, setNewStu] = useState({ name: "", fatherName: "", email: "", phone: "", address: "", branch: "Warangal", course: "SI PC", courseType: "Regular", mode: "Residential", password: "" });
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
-  const [courseOptions, setCourseOptions] = useState<string[]>(["SI", "Constable", "Groups", "SSC GD", "Defence", "Army", "UPSC"]);
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
   const load = () => fetch(`/api/admin/students${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setList(d)).catch(() => {});
   useEffect(() => {
     load();
@@ -1549,7 +1549,7 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
     if (!newStu.name.trim() || !newStu.email.trim() || !newStu.phone.trim() || !newStu.password.trim()) return alert("Name, email, phone, password required");
     const r = await fetch("/api/admin/students", { credentials: "same-origin",  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "create", ...newStu }) });
     const data = await r.json();
-    if (r.ok) { setNewStu({ name: "", fatherName: "", email: "", phone: "", address: "", branch: "Warangal", course: "SI", courseType: "Regular", mode: "Residential", password: "" }); setShowAdd(false); load(); }
+    if (r.ok) { setNewStu({ name: "", fatherName: "", email: "", phone: "", address: "", branch: "Warangal", course: "SI PC", courseType: "Regular", mode: "Residential", password: "" }); setShowAdd(false); load(); }
     else alert(data.error || "Failed");
   };
   const filtered = list.filter((u) => !q || `${u.name} ${u.email} ${u.phone} ${u.course}`.toLowerCase().includes(q.toLowerCase()));
@@ -1988,8 +1988,8 @@ function LeadsTab({ campus = "" }: { campus?: string }) {
 function AlumniTab() {
   const [list, setList] = useState<any[]>([]);
   const [q, setQ] = useState("");
-  const [courseOptions, setCourseOptions] = useState<string[]>(["Constable", "SI", "Groups", "SSC GD", "Defence", "UPSC", "General"]);
-  const [form, setForm] = useState({ id: "", name: "", role: "", batch: "", course: "Constable", quote: "", video: "", image: "", featured: false });
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC", "General"]);
+  const [form, setForm] = useState({ id: "", name: "", role: "", batch: "", course: "SI PC", quote: "", video: "", image: "", featured: false });
   const [editing, setEditing] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadErr, setUploadErr] = useState("");
@@ -2032,7 +2032,7 @@ function AlumniTab() {
   const save = async () => {
     if (!form.name.trim() || !form.quote.trim()) return alert("Name and quote required");
     const r = await fetch("/api/admin/alumni", { credentials: "same-origin",  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
-    if (r.ok) { setForm({ id: "", name: "", role: "", batch: "", course: "Constable", quote: "", video: "", image: "", featured: false }); setEditing(null); setUploadErr(""); load(); }
+    if (r.ok) { setForm({ id: "", name: "", role: "", batch: "", course: "SI PC", quote: "", video: "", image: "", featured: false }); setEditing(null); setUploadErr(""); load(); }
     else alert("Failed");
   };
   const del = async (id: string) => {
@@ -2100,7 +2100,7 @@ function AlumniTab() {
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} /> Featured on home</label>
           <div className="flex gap-2">
             <button onClick={save} className="flex-1 btn-primary justify-center">{editing ? "Update" : "Add"} Alumni</button>
-            <button onClick={() => { setEditing(null); setForm({ id: "", name: "", role: "", batch: "", course: "Constable", quote: "", video: "", image: "", featured: false }); }} className="px-4 py-2.5 rounded-full border border-slate-200 text-sm">Clear</button>
+            <button onClick={() => { setEditing(null); setForm({ id: "", name: "", role: "", batch: "", course: "SI PC", quote: "", video: "", image: "", featured: false }); }} className="px-4 py-2.5 rounded-full border border-slate-200 text-sm">Clear</button>
           </div>
         </div>
       </div>
@@ -2301,7 +2301,7 @@ function FeeConfigTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [courses, setCourses] = useState<string[]>(["SI", "Constable", "Groups", "SSC GD", "Defence", "Army", "UPSC"]);
+  const [courses, setCourses] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
   const modes = ["Residential", "Offline", "Online"] as const;
 
   const load = async () => {
@@ -2872,7 +2872,7 @@ function MastersTab() {
           ))}
         </div>
         <div className="mt-4 grid gap-2 p-3 rounded-xl bg-slate-50 border">
-          <input value={cForm.slug} onChange={(e) => setCForm({ ...cForm, slug: e.target.value })} placeholder="Slug (e.g., si, constable, upsc)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={cForm.slug} onChange={(e) => setCForm({ ...cForm, slug: e.target.value })} placeholder="Slug (e.g., si-pc, groups, upsc)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
           <input value={cForm.title} onChange={(e) => setCForm({ ...cForm, title: e.target.value })} placeholder="Title (e.g., Sub-Inspector (SI))" className="px-3 py-2 rounded-xl border text-sm bg-white" />
           <input value={cForm.fee} onChange={(e) => setCForm({ ...cForm, fee: e.target.value })} placeholder="Fee (e.g., ₹35,000 Residential)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
           <input value={cForm.duration} onChange={(e) => setCForm({ ...cForm, duration: e.target.value })} placeholder="Duration (e.g., 3-4 Months)" className="px-3 py-2 rounded-xl border text-sm bg-white" />

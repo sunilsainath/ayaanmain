@@ -43,7 +43,7 @@ if (action === "create") {
       email: String(email).trim().toLowerCase(),
       password: String(password),
       email_confirm: true,
-      user_metadata: { name: String(name).trim(), phone: String(phone).trim(), course: String(course || "SI") },
+      user_metadata: { name: String(name).trim(), phone: String(phone).trim(), course: String(course || "SI PC") },
     });
     if (supaError) return NextResponse.json({ error: `Supabase error: ${supaError.message}` }, { status: 400 });
 
@@ -56,7 +56,7 @@ if (action === "create") {
         address: String(address || "").trim(),
         reference: String(reference || "").trim(),
         branch: String(branch || ""),
-        course: String(course || "SI"),
+        course: String(course || "SI PC"),
         courseType: String(courseType || "Regular"),
         mode: String(mode || "Residential"),
         supabaseId: supaData.user.id,

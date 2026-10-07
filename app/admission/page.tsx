@@ -14,7 +14,7 @@ export default function AdmissionPage() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     name: "", fatherName: "", phone: "", email: "", address: "", reference: "", aadharCardNumber: "",
-    branch: "Warangal", course: "SI", courseType: "Regular", mode: "Residential",
+    branch: "Warangal", course: "SI PC", courseType: "Regular", mode: "Residential",
     durationId: "", batchId: "", photo: "",
   });
   const [photoName, setPhotoName] = useState("");
@@ -31,7 +31,7 @@ export default function AdmissionPage() {
   const [feeConfigs, setFeeConfigs] = useState<{ course: string; mode: string; duration: string; branch: string; amount: number }[]>([]);
   
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
-  const [courseOptions, setCourseOptions] = useState<string[]>(["SI", "Constable", "Groups", "SSC GD", "Defence", "Army", "UPSC"]);
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; id?: string; applicationId?: string; correctionToken?: string; error?: string } | null>(null);
 
