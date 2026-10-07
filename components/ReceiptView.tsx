@@ -1,4 +1,6 @@
 "use client";
+import BrandLogo from "@/components/BrandLogo";
+import { BRAND } from "@/lib/brand";
 
 export type ReceiptData = {
   receiptNo: string;
@@ -14,8 +16,12 @@ export default function ReceiptView({ r }: { r: ReceiptData }) {
   return (
     <div className="bg-white text-slate-900 p-6 max-w-md w-full">
       <div className="text-center border-b-2 border-navy-900 pb-3">
-        <div className="font-display font-bold text-lg">AYAAN INSTITUTE</div>
-        <div className="text-[11px] tracking-widest text-slate-500">GROUP OF COMPETITIVE INSTITUTIONS</div>
+        <div className="flex justify-center mb-2">
+          <BrandLogo height={64} showWordmark={false} />
+        </div>
+        <div className="font-display font-bold text-lg">{BRAND.documentTitle.toUpperCase()}</div>
+        <div className="text-[11px] tracking-widest text-slate-500">{BRAND.strapline.toUpperCase()}</div>
+        <div className="text-[11px] italic text-slate-500 mt-0.5">{BRAND.tagline}</div>
         <div className="text-xs text-slate-500 mt-1">Fee Receipt</div>
       </div>
       <div className="mt-4 grid gap-1.5 text-sm">

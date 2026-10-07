@@ -1,4 +1,5 @@
 "use client";
+import BrandLogo from "@/components/BrandLogo";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,7 +31,7 @@ export default function LoginPage() {
     <div className="min-h-[70vh] bg-slate-50 grid place-items-center p-4">
       <div className="card p-8 w-full max-w-md">
         <div className="text-center">
-          <div className="w-12 h-12 rounded-2xl bg-navy-900 text-white grid place-items-center font-bold mx-auto">A</div>
+          <div className="w-14 h-14 rounded-2xl bg-white overflow-hidden grid place-items-center mx-auto shadow-sm"><BrandLogo height={52} showWordmark={false} /></div>
           <h1 className="mt-3 font-display font-bold text-xl text-navy-900">Student Login</h1>
           <p className="text-sm text-slate-500">Use email/phone + password created by admin after admission approval</p>
         </div>

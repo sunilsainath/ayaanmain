@@ -3,10 +3,31 @@ import { requireAdminSession } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/prisma";
 import { scopeFromAuth, resolveBranchFilter, canActOn, forbidBranch } from "@/lib/branch-scope";
 import { supabaseAdmin } from "@/lib/supabase";
+import { sendEmail, tplStaffCreated } from "@/lib/email";
+import { newStudentId } from "@/lib/identifiers";
 
 function stripSensitive(user: any) {
   const { passwordHash, supabaseId, ...safe } = user;
   return safe;
+}
+
+// Best-effort credential email. Never let a mail failure undo a created account.
+async function emailCredentials(opts: { to: string; name: string; password: string; course?: string; branch?: string; studentId?: string; createdBy?: string }) {
+  try {
+    const tpl = tplStaffCreated({
+      name: opts.name,
+      email: opts.to,
+      tempPassword: opts.password,
+      course: opts.course,
+      branch: opts.branch,
+      studentId: opts.studentId,
+      createdBy: opts.createdBy,
+    });
+    const res = await sendEmail({ to: opts.to, subject: tpl.subject, html: tpl.html });
+    return { emailSent: res.ok, emailError: res.ok ? null : res.error || "Email not sent" };
+  } catch (e: any) {
+    return { emailSent: false, emailError: e?.message || "Email failed" };
+  }
 }
 
 export async function GET(req: NextRequest) {
@@ -37,6 +58,11 @@ if (action === "create") {
     if (exists) return NextResponse.json({ error: "Email already exists" }, { status: 400 });
     // Campus guard: a campus admin may only create students at their own campuses
     if (!canActOn(scopeFromAuth(auth), branch)) return forbidBranch(branch);
+    // Students get a real student ID so the login email can show it
+    let assignedStudentId: string | null = null;
+    try {
+      assignedStudentId = await newStudentId();
+    } catch {}
 
     // Create Supabase Auth user first
     const { data: supaData, error: supaError } = await supabaseAdmin.auth.admin.createUser({
@@ -60,10 +86,20 @@ if (action === "create") {
         courseType: String(courseType || "Regular"),
         mode: String(mode || "Residential"),
         supabaseId: supaData.user.id,
+        studentId: assignedStudentId,
         isActive: true,
       },
     });
-    return NextResponse.json({ ok: true, user: stripSensitive(user) });
+    const mail = await emailCredentials({
+      to: user.email,
+      name: user.name,
+      password: String(password),
+      course: user.course,
+      branch: user.branch || undefined,
+      studentId: user.studentId || undefined,
+      createdBy: auth.session.username || auth.session.userId,
+    });
+    return NextResponse.json({ ok: true, ...mail, user: stripSensitive(user) });
   }
 
 if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
@@ -77,6 +113,7 @@ if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
   }
 
   let updated: any;
+  let mail: { emailSent: boolean; emailError: string | null } | null = null;
   if (action === "toggleActive") {
     updated = await prisma.user.update({ where: { id }, data: { isActive: active !== undefined ? !!active : !user.isActive } });
     // Optionally also ban/unban in Supabase
@@ -99,6 +136,16 @@ if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
       await prisma.user.update({ where: { id }, data: { supabaseId: data.user.id } });
     }
     updated = await prisma.user.findUnique({ where: { id } });
+    // The new password only exists in this request — mail it so the student is not locked out.
+    mail = await emailCredentials({
+      to: user.email,
+      name: user.name,
+      password: String(password),
+      course: user.course,
+      branch: user.branch || undefined,
+      studentId: user.studentId || undefined,
+      createdBy: auth.session.username || auth.session.userId,
+    });
   } else if (action === "update") {
     const newEmail = email ? String(email).toLowerCase() : undefined;
     // If email changing, update Supabase as well
@@ -130,5 +177,5 @@ if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
   } else {
     return NextResponse.json({ error: "unknown action" }, { status: 400 });
   }
-  return NextResponse.json({ ok: true, user: stripSensitive(updated) });
+  return NextResponse.json({ ok: true, ...(mail || {}), user: stripSensitive(updated) });
 }

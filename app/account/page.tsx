@@ -1,6 +1,8 @@
 "use client";
+import BrandLogo from "@/components/BrandLogo";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { LOGO_SVG_INLINE, BRAND } from "@/lib/brand";
 import { useRouter } from "next/navigation";
 import PaymentModal from "@/components/payment/PaymentModal";
 import RazorpayCheckout from "@/components/payment/RazorpayCheckout";
@@ -97,12 +99,13 @@ export default function AccountPage() {
     const fmt = (d: any) => { try { return new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }); } catch { return "—"; } };
     const status = String(uu.digitalIdStatus || "active").toUpperCase();
     const statusColor = status === "ACTIVE" ? "#059669" : "#dc2626";
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>Student ID — ${uu.studentId || uu.name}</title>
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>Student ID — ${uu.studentId || uu.name} — ${BRAND.documentTitle}</title>
     <style>
       *{box-sizing:border-box} body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;padding:24px;background:#f1f5f9;-webkit-print-color-adjust:exact;print-color-adjust:exact}
       .card{width:340px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e2e8f0}
       .top{background:#0f172a;color:#fff;padding:14px 16px;display:flex;gap:10px;align-items:center}
-      .logo{width:38px;height:38px;border-radius:10px;background:#fff;color:#0f172a;display:grid;place-items:center;font-weight:800}
+      .logo{width:42px;height:42px;border-radius:10px;background:#fff;display:grid;place-items:center;overflow:hidden}
+      .logo svg{height:38px;width:auto;display:block}
       .top h1{margin:0;font-size:14px;letter-spacing:0.06em}.top p{margin:2px 0 0;font-size:9px;letter-spacing:0.18em;opacity:0.6}
       .body{padding:16px;display:flex;gap:14px}
       .photo{width:96px;height:112px;border-radius:12px;object-fit:cover;border:1px solid #e2e8f0;background:#f8fafc}
@@ -118,7 +121,7 @@ export default function AccountPage() {
       @media print{ body{background:#fff;padding:0} .no-print{display:none} }
     </style></head><body>
       <div class="card">
-        <div class="top"><div class="logo">A</div><div style="flex:1"><h1>AYAAN INSTITUTE</h1><p>GROUP OF COMPETITIVE INSTITUTIONS</p></div><span class="badge">${status}</span></div>
+        <div class="top"><div class="logo">${LOGO_SVG_INLINE}</div><div style="flex:1"><h1>${BRAND.documentTitle.toUpperCase()}</h1><p>${BRAND.strapline.toUpperCase()} • ${BRAND.tagline}</p></div><span class="badge">${status}</span></div>
         <div class="body">
           ${aa.photo ? `<img src="${aa.photo}" class="photo" alt="photo"/>` : `<div class="nophoto">${String(uu.name || "?").trim().charAt(0).toUpperCase()}</div>`}
           <div style="flex:1;min-width:0">
@@ -248,7 +251,7 @@ export default function AccountPage() {
                 </div>
                 <div className="mt-2 rounded-2xl overflow-hidden border border-slate-200 bg-white">
                   <div className="bg-navy-900 text-white px-4 py-3 flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-white text-navy-900 grid place-items-center font-display font-bold">A</div>
+                    <div className="w-9 h-9 rounded-xl bg-white overflow-hidden grid place-items-center shrink-0"><BrandLogo height={34} showWordmark={false} /></div>
                     <div className="flex-1">
                       <div className="font-display font-bold text-sm tracking-wide">AYAAN INSTITUTE</div>
                       <div className="text-[10px] tracking-[0.18em] text-white/60">GROUP OF COMPETITIVE INSTITUTIONS • ESTD 2016</div>

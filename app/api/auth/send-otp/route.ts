@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase, supabaseAdmin } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
+import { authRedirect } from "@/lib/site";
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);
@@ -22,11 +23,15 @@ export async function POST(req: NextRequest) {
   }
   if (user.isActive === false) return NextResponse.json({ error: "Account deactivated — contact support" }, { status: 403 });
 
-  // Send OTP via Supabase Auth - use signInWithOtp (sends 6-digit code)
+  // Send OTP via Supabase Auth - use signInWithOtp (sends 6-digit code).
+// emailRedirectTo must point at the deployed domain; without it Supabase falls
+// back to its own Site URL, which is why reset links landed on localhost.
+  const redirectTo = authRedirect("/login");
   const { error } = await supabase.auth.signInWithOtp({
     email: cleanEmail,
     options: {
       shouldCreateUser: false,
+      emailRedirectTo: redirectTo,
     },
   });
 
@@ -35,6 +40,7 @@ export async function POST(req: NextRequest) {
     const { error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: "recovery",
       email: cleanEmail,
+      options: { redirectTo },
     });
     if (linkError) {
       return NextResponse.json({ error: `Failed to send OTP: ${error.message}` }, { status: 400 });

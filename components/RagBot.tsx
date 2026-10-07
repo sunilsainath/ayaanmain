@@ -1,4 +1,5 @@
 "use client";
+import BrandLogo from "@/components/BrandLogo";
 import { useEffect, useRef, useState } from "react";
 import { knowledgeBase as fallbackKB, retrieve, detectLang, uiStrings, type Lang, type KBChunk } from "@/data/knowledgeBase";
 
@@ -96,7 +97,7 @@ export default function RagBot() {
           <div className="bg-navy-900 text-white p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-white text-navy-900 grid place-items-center font-display font-bold">A</div>
+                <div className="w-9 h-9 rounded-xl bg-white overflow-hidden grid place-items-center shrink-0"><BrandLogo height={34} showWordmark={false} /></div>
                 <div>
                   <div className="font-semibold leading-none">{t.title}</div>
                   <div className="text-xs text-white/70">{t.subtitle}</div>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase, supabaseAdmin } from "@/lib/supabase";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
+import { authRedirect } from "@/lib/site";
 
 // Secured layer: only allow sunil@drep.in for now (as per request)
 const ALLOWED_ADMIN_EMAIL = "sunil@drep.in";
@@ -30,10 +31,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Admin not found" }, { status: 404 });
   }
 
-  // Send OTP via Supabase Auth
+  // Send OTP via Supabase Auth. The redirect must be the deployed domain —
+  // Supabase otherwise uses its own Site URL (which is why links pointed at localhost).
+  const redirectTo = authRedirect("/login");
   const { error } = await supabase.auth.signInWithOtp({
     email: cleanEmail,
-    options: { shouldCreateUser: false },
+    options: { shouldCreateUser: false, emailRedirectTo: redirectTo },
   });
 
   if (error) {
@@ -41,6 +44,7 @@ export async function POST(req: NextRequest) {
     const { error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: "recovery",
       email: cleanEmail,
+      options: { redirectTo },
     });
     if (linkError) {
       return NextResponse.json({ error: `Failed to send OTP: ${error.message}` }, { status: 400 });

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function Footer() {
   return (
@@ -7,7 +8,12 @@ export default function Footer() {
         <div className="grid lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] gap-10">
           <div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-white text-navy-900 grid place-items-center font-display font-bold">A</div>
+              <div
+                className="rounded-xl overflow-hidden flex items-center justify-center shrink-0"
+                style={{ width: 48, height: 48, background: "#fff" }}
+              >
+                <BrandLogo height={44} showWordmark={false} />
+              </div>
               <div>
                 <div className="font-display font-bold text-white leading-none">AYAAN INSTITUTE</div>
                 <div className="text-xs tracking-widest text-slate-400">ESTD. 2016 • TELANGANA</div>

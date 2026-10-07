@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { supabaseAdmin } from "@/lib/supabase";
 import { isEmail, sanitizeText } from "@/lib/validators";
 import { audit } from "@/lib/identifiers";
+import { sendEmail, tplAdminCreated } from "@/lib/email";
 
 const ALLOWED_ROLES = ["super_admin", "finance", "admissions"];
 const ALL_TABS = ["dashboard", "store", "orders", "alumni", "leads", "payments", "students", "finance", "dues", "expenses", "admissions", "rag", "batches", "masters", "banner", "fees", "admins", "carousel", "email", "activity", "complaints", "store-orders"];
@@ -126,7 +127,33 @@ export async function POST(req: NextRequest) {
       },
     });
     await audit("admin", admin.id, auth.session.username || auth.session.userId, "create", `${email} role:${role} campuses:${branchIds.join("|") || "ALL"}`);
-    return NextResponse.json({ ok: true, admin: { id: admin.id, username: admin.username, email: admin.email, role: admin.role, name: admin.name, permissions: admin.permissions, branchIds: admin.branchIds, isActive: admin.isActive, mustChangePassword: admin.mustChangePassword } });
+
+    // Email the temporary password. A failed send must not roll back the account -
+    // the admin exists and the super admin can still hand the password over.
+    let emailSent = false;
+    let emailError: string | null = null;
+    try {
+      const tpl = tplAdminCreated({
+        name,
+        email,
+        tempPassword: password,
+        role,
+        campuses: branchIds,
+        createdBy: auth.session.username || auth.session.userId,
+      });
+      const res = await sendEmail({ to: email, subject: tpl.subject, html: tpl.html });
+      emailSent = res.ok;
+      if (!res.ok) emailError = res.error || "Email not sent";
+    } catch (e: any) {
+      emailError = e?.message || "Email failed";
+    }
+
+    return NextResponse.json({
+      ok: true,
+      emailSent,
+      emailError,
+      admin: { id: admin.id, username: admin.username, email: admin.email, role: admin.role, name: admin.name, permissions: admin.permissions, branchIds: admin.branchIds, isActive: admin.isActive, mustChangePassword: admin.mustChangePassword },
+    });
   } catch (e: any) {
     // Rollback Supabase user if Prisma fails
     try { await supabaseAdmin.auth.admin.deleteUser(sbUser.user.id); } catch {}

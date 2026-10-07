@@ -1,9 +1,11 @@
 "use client";
+import BrandLogo from "@/components/BrandLogo";
 import { useEffect, useMemo, useState } from "react";
 import AuthForgotPassword from "@/components/AuthForgotPassword";
 import { DonutChart, GroupedBarChart, CHART_COLORS } from "@/components/Charts";
 import ReceiptView from "@/components/ReceiptView";
 import { FALLBACK_FEE as FEE_FALLBACK } from "@/lib/fees";
+import { LOGO_SVG_INLINE, BRAND } from "@/lib/brand";
 
 type Tab = "dashboard" | "rag" | "batches" | "banner" | "admissions" | "payments" | "students" | "finance" | "leads" | "alumni" | "store" | "fees" | "expenses" | "orders" | "dues" | "masters" | "admins" | "carousel" | "email" | "activity" | "complaints" | "store-orders";
 type Role = "super_admin" | "finance" | "admissions";
@@ -203,7 +205,7 @@ if (d.mustChangePassword) setMustChange(true);
       <>
         <div className="min-h-screen bg-slate-50 grid place-items-center p-4">
           <div className="card p-8 w-full max-w-md">
-            <div className="w-12 h-12 rounded-2xl bg-navy-900 text-white grid place-items-center font-bold">A</div>
+            <div className="w-12 h-12 rounded-2xl bg-white overflow-hidden grid place-items-center shrink-0"><BrandLogo height={46} showWordmark={false} /></div>
             <h1 className="mt-4 font-display font-bold text-xl text-navy-900">Ayaan Admin</h1>
             <p className="text-sm text-slate-500">Sign in — role-based access</p>
             <div className="mt-6 grid gap-3">
@@ -276,7 +278,7 @@ if (d.mustChangePassword) setMustChange(true);
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[64px] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-navy-900 text-white grid place-items-center font-bold">A</div>
+            <div className="w-9 h-9 rounded-xl bg-white overflow-hidden grid place-items-center shrink-0"><BrandLogo height={34} showWordmark={false} /></div>
             <div>
               <div className="font-display font-bold text-navy-900 leading-none">AYAAN ADMIN</div>
               <div className="text-xs text-slate-500 capitalize">{role.replace("_", " ")} • {authUser}</div>
@@ -647,6 +649,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
     const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>Admission Form — ${a.applicationId || a.id}</title>
     <style>
       *{box-sizing:border-box} body{font-family:Inter,system-ui,Arial,sans-serif; margin:0; padding:24px; color:#0f172a; -webkit-print-color-adjust:exact; print-color-adjust:exact}
+      .brandlogo{height:74px;width:auto;display:block}
       .header{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #0f172a;padding-bottom:12px;margin-bottom:16px}
       .header h1{margin:0;font-size:20px;letter-spacing:0.04em}.header h1 span{color:#0369a1} .sub{font-size:11px;color:#64748b;margin-top:2px}
       .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;background:#0f172a;color:#fff;letter-spacing:0.06em}
@@ -660,9 +663,15 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
       .sig{margin-top:28px;display:flex;justify-content:space-between;gap:24px} .sig div{flex:1;border-top:1px solid #0f172a;padding-top:6px;font-size:11px;text-align:center;color:#334155}
       @media print{ body{padding:12px} .no-print{display:none} }
     </style></head><body>
-      <div class="header">
-        <div><h1>AYAAN <span>INSTITUTE</span></h1><div class="sub">Ayaan Group of Competitive Institutions • Est. 2016 • Dilsukhnagar • Hanamkonda • Bollikunta (Residential) • +91 88866 67222</div></div>
-        <div style="text-align:right"><div class="badge">${a.applicationId || a.id}</div><div class="sub" style="margin-top:6px">Status: <b>${String(a.status || "").replace(/_/g," ")}</b> • ${fmtDate(a.createdAt)}</div></div>
+<div class="header">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="brandlogo">${LOGO_SVG_INLINE}</div>
+          <div>
+            <h1>${BRAND.documentTitle.toUpperCase()}</h1>
+            <div class="sub">${BRAND.tagline} • Est. 2016 • Dilsukhnagar • Hanamkonda • Bollikunta (Residential) • +91 88866 67222</div>
+          </div>
+        </div>
+        <div style="text-align:right"><div class="badge">${a.applicationId || a.id}</div><div class="sub" style="margin-top:6px">Status: <b>${String(a.status || "").replace(/_/g, " ")}</b> • ${fmtDate(a.createdAt)}</div></div>
       </div>
       <div class="grid">
         <div class="card"><h3>Applicant</h3>
@@ -3971,7 +3980,12 @@ function AdminsTab() {
     const r = await fetch("/api/admin/users", { method: "POST", headers: { "Content-Type": "application/json" }, credentials: "same-origin", body: JSON.stringify(form) });
     const d = await r.json().catch(() => ({}));
     if (r.ok) {
-      setMsg({ type: "ok", text: `Created ${d.admin.email} — must change password on first login` });
+      setMsg({
+        type: d.emailSent ? "ok" : "err",
+        text: d.emailSent
+          ? `Created ${d.admin.email} — login details emailed. They must change the password on first login.`
+          : `Created ${d.admin.email}, but the email did NOT send (${d.emailError || "SMTP unavailable"}). Share the temporary password manually — they must change it on first login.`,
+      });
       setShowCreate(false);
       setForm({ email: "", password: "", name: "", role: "admissions", permissions: [], branchIds: [], isActive: true });
       load();

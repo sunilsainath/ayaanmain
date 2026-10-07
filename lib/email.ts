@@ -1,5 +1,7 @@
 // Central SMTP email — env-driven, safe to call even when SMTP not configured (logs and returns ok:false)
 import nodemailer from "nodemailer";
+import { appOrigin, appUrl } from "@/lib/site";
+import { LOGO_SVG_INLINE, BRAND } from "@/lib/brand";
 
 type SendOpts = {
   to: string;
@@ -79,7 +81,9 @@ function wrapHtml(subject: string, body: string): string {
   <style>
     body{font-family:Inter,system-ui,Arial,sans-serif;background:#f8fafc;margin:0;padding:0;color:#0f172a}
     .wrap{max-width:640px;margin:0 auto;background:#ffffff;border:1px solid #e2e8f0}
-    .header{background:#0f172a;color:#fff;padding:18px 24px}
+    .header{background:#0f172a;color:#fff;padding:18px 24px;display:flex;align-items:center;gap:14px}
+    .header .logo{flex-shrink:0;background:#fff;border-radius:8px;padding:3px;line-height:0}
+    .header .logo svg{height:52px;width:auto;display:block}
     .header h1{margin:0;font-size:18px;letter-spacing:0.06em} .header h1 span{color:#38bdf8}
     .header p{margin:4px 0 0;font-size:11px;opacity:0.7}
     .body{padding:20px 24px;line-height:1.6;font-size:14px;color:#334155}
@@ -90,9 +94,9 @@ function wrapHtml(subject: string, body: string): string {
     .footer a{color:#0369a1}
     a{color:#0369a1}
   </style></head><body><div class="wrap">
-    <div class="header"><h1>AYAAN <span>INSTITUTE</span></h1><p>Group of Competitive Institutions • Warangal • Hanamkonda • Hyderabad • +91 88866 67222</p></div>
+    <div class="header"><div class="logo">${LOGO_SVG_INLINE}</div><div><h1>${esc(BRAND.documentTitle).toUpperCase()}</h1><p>${esc(BRAND.tagline)} • Warangal • Hanamkonda • Hyderabad • +91 88866 67222</p></div></div>
     <div class="body">${body}</div>
-    <div class="footer">Ayaan Institute • Don Bosco School, Opp. Vaagdevi College, Bollikunta, Warangal 506005 • <a href="https://ayaaninstitute.in">ayaaninstitute.in</a> • <a href="mailto:ayaaninstitute.wgl@gmail.com">ayaaninstitute.wgl@gmail.com</a><br/>You received this because you applied / study at Ayaan. Reply to this email for help.</div>
+    <div class="footer">${esc(BRAND.fullName)} • Don Bosco School, Opp. Vaagdevi College, Bollikunta, Warangal 506005 • <a href="${esc(appOrigin())}">${esc(appOrigin().replace(/^https?:\/\//, ""))}</a> • <a href="mailto:ayaaninstitute.wgl@gmail.com">ayaaninstitute.wgl@gmail.com</a><br/>You received this because you applied / study at Ayaan. Reply to this email for help.</div>
   </div></body></html>`;
 }
 
@@ -104,8 +108,8 @@ export function tplAdmissionSubmitted(a: any): { subject: string; html: string }
       <p>Thanks for applying to <b>${esc(a.course)}</b> at <b>${esc(a.branch)}</b>.</p>
       <div class="meta"><b>Application ID:</b> ${esc(a.applicationId)}<br/><b>Course:</b> ${esc(a.course)} • ${esc(a.courseType || "")} • • ${esc(a.mode || "")}<br/><b>Duration:</b> ${esc(a.durationName || "")} • <b>Batch:</b> ${esc(a.batchName || a.batchId || "To be assigned")}<br/><b>Total Fee:</b> ₹${Number(a.totalFee || 0).toLocaleString("en-IN")} • <b>Paid:</b> ₹${Number(a.payingNow || 0).toLocaleString("en-IN")} • <b>Balance:</b> ₹${Number(a.balanceDue || 0).toLocaleString("en-IN")}</div>
       <p>Current status: <b>Pending Review</b>. No login is created yet — you'll get an email with your Student ID and temporary password once admin approves.</p>
-      ${a.clarificationToken ? `<p>Keep this private correction link (if admin asks for changes):<br/><a href="${esc(process.env.NEXT_PUBLIC_SITE_URL || "https://ayaaninstitute.in")}/apply/correct?token=${esc(a.clarificationToken)}">Correct my application</a></p>` : ""}
-      <p><a class="cta" href="${esc(process.env.NEXT_PUBLIC_SITE_URL || "https://ayaaninstitute.in")}/login">Track Application</a></p>
+      ${a.clarificationToken ? `<p>Keep this private correction link (if admin asks for changes):<br/><a href="${esc(appOrigin())}/apply/correct?token=${esc(a.clarificationToken)}">Correct my application</a></p>` : ""}
+      <p><a class="cta" href="${esc(appOrigin())}/login">Track Application</a></p>
       <p style="font-size:12px;color:#64748b">Query? Reply or call +91 88866 67222.</p>`,
   };
 }
@@ -118,7 +122,7 @@ export function tplAdmissionApproved(a: any, creds: { studentId: string; email: 
       <div class="meta"><b>Student ID:</b> ${esc(creds.studentId)}<br/><b>Course:</b> ${esc(a.course)} • <b>Branch:</b> ${esc(a.branch)}<br/><b>Batch:</b> ${esc(a.batchName || a.batchId || "—")}<br/><b>Fee locked:</b> ₹${Number(a.finalFee ?? a.totalFee ?? 0).toLocaleString("en-IN")}</div>
       <p>Login with your email and temporary password (you must change it on first login):</p>
       <div class="meta"><b>Email:</b> ${esc(creds.email)}<br/><b>Temporary password:</b> <code>${esc(creds.tempPassword)}</code></div>
-      <p><a class="cta" href="${esc(process.env.NEXT_PUBLIC_SITE_URL || "https://ayaaninstitute.in")}/login">Login to your account</a></p>
+      <p><a class="cta" href="${esc(appOrigin())}/login">Login to your account</a></p>
       <p style="font-size:12px;color:#64748b">This password is auto-generated and valid for first login only. Change it immediately after login.</p>`,
   };
 }
@@ -131,7 +135,7 @@ export function tplAdmissionRejected(a: any, note?: string): { subject: string; 
 }
 
 export function tplClarification(a: any, note: string): { subject: string; html: string } {
-  const link = `${esc(process.env.NEXT_PUBLIC_SITE_URL || "https://ayaaninstitute.in")}/apply/correct?token=${esc(a.clarificationToken || "")}`;
+  const link = `${esc(appOrigin())}/apply/correct?token=${esc(a.clarificationToken || "")}`;
   return {
     subject: `Action needed — update your application ${a.applicationId}`,
     html: `<h2>Hi ${esc(a.name)}, please update your application</h2><p>Admin requested a correction:</p><div class="meta">${esc(note)}</div><p><a class="cta" href="${link}">Correct my application</a></p><p style="font-size:12px;color:#64748b">Link: ${link}</p>`,
@@ -144,7 +148,7 @@ export function tplPaymentAck(a: any, payment: any, status: "pending_verificatio
     subject: `Payment ${labels[status] || status} — ₹${Number(payment.amount).toLocaleString("en-IN")} • ${a.applicationId || a.course}`,
     html: `<h2>Hi ${esc(a.name)}</h2><p>Your payment of <b>₹${Number(payment.amount).toLocaleString("en-IN")}</b> via <b>${esc(payment.method)}</b> is <b>${esc(labels[status] || status)}</b>.</p>
       <div class="meta"><b>Application:</b> ${esc(a.applicationId || a.id)}<br/><b>Amount:</b> ₹${Number(payment.amount).toLocaleString("en-IN")}<br/><b>Method:</b> ${esc(payment.method)} ${payment.transactionId ? "• <b>Txn:</b> " + esc(payment.transactionId) : ""}<br/><b>Status:</b> ${esc(status)}${note ? "<br/><b>Note:</b> " + esc(note) : ""}</div>
-      ${status === "acknowledged" ? `<p>Your receipt has been generated. Check <a href="${esc(process.env.NEXT_PUBLIC_SITE_URL || "https://ayaaninstitute.in")}/account">My Account → Receipts</a>.</p>` : status === "rejected" ? `<p>Please contact support or repay with correct details.</p>` : ""}
+      ${status === "acknowledged" ? `<p>Your receipt has been generated. Check <a href="${esc(appOrigin())}/account">My Account → Receipts</a>.</p>` : status === "rejected" ? `<p>Please contact support or repay with correct details.</p>` : ""}
       <p style="font-size:12px;color:#64748b">Query? Reply or call +91 88866 67222.</p>`,
   };
 }
@@ -174,6 +178,31 @@ export function tplComplaintReply(x: { subject: string; reply: string; studentNa
 <p>Thank you for contacting us. Here is our reply to <b>${esc(x.subject)}</b>:</p>
 <div class="meta" style="white-space:pre-wrap">${esc(x.reply)}</div>
 <p>For anything further, reply from your Ayaan student portal.</p>`,
+  };
+}
+
+// ---- Credential handoff (admin & staff accounts created by a super admin) ----
+
+export function tplAdminCreated(x: { name: string; email: string; tempPassword: string; role: string; campuses: string[]; createdBy?: string }): { subject: string; html: string } {
+  const roleLabel: Record<string, string> = { super_admin: "Super Admin", finance: "Finance", admissions: "Admissions" };
+  return {
+    subject: `Your Ayaan admin account is ready - ${roleLabel[x.role] || x.role}`,
+    html: `<h2>Hi ${esc(x.name)}, your admin account has been created</h2>
+      <p>You now have access to the Ayaan admin panel. Sign in with the credentials below. You will be asked to set your own password immediately.</p>
+      <div class="meta"><b>Email:</b> ${esc(x.email)}<br/><b>Temporary password:</b> <code>${esc(x.tempPassword)}</code><br/><b>Role:</b> ${esc(roleLabel[x.role] || x.role)}${x.campuses.length ? `<br/><b>Campuses:</b> ${esc(x.campuses.join(", "))}` : "<br/><b>Campuses:</b> All"}</div>
+      <p><a class="cta" href="${esc(appUrl("/login"))}">Sign in to admin panel</a></p>
+      <p style="font-size:12px;color:#64748b">This temporary password is valid for your first login only. Change it immediately. If you were not expecting this account, ignore this email and contact your super admin.</p>`,
+  };
+}
+
+export function tplStaffCreated(x: { name: string; email: string; tempPassword: string; course?: string; branch?: string; studentId?: string; createdBy?: string }): { subject: string; html: string } {
+  return {
+    subject: `Your Ayaan student login is ready${x.studentId ? ` - ${x.studentId}` : ""}`,
+    html: `<h2>Hi ${esc(x.name)}, your student login is ready</h2>
+      <p>Use the credentials below on the student portal. You will be asked to set your own password on first login.</p>
+      <div class="meta"><b>Email:</b> ${esc(x.email)}<br/><b>Temporary password:</b> <code>${esc(x.tempPassword)}</code>${x.studentId ? `<br/><b>Student ID:</b> ${esc(x.studentId)}` : ""}${x.course ? `<br/><b>Course:</b> ${esc(x.course)}` : ""}${x.branch ? `<br/><b>Campus:</b> ${esc(x.branch)}` : ""}</div>
+      <p><a class="cta" href="${esc(appUrl("/login"))}">Sign in to student portal</a></p>
+      <p style="font-size:12px;color:#64748b">Change this password immediately after your first login. If you were not expecting this, contact admissions at +91 88866 67222.</p>`,
   };
 }
 

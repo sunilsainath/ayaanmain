@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { BRAND, LOGO_SVG_PATH } from "@/lib/brand";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RagBot from "@/components/RagBot";
@@ -7,9 +8,29 @@ import Banner from "@/components/Banner";
 import MetaMaskGuard from "@/components/MetaMaskGuard";
 
 export const metadata: Metadata = {
-  title: "Ayaan Institute — Police Academy & Competitive Exams | Telangana",
-  description:
-    "Ayaan Group of Competitive Institutions. India's first residential campus for uniform jobs. SI PC, Army, SSC GD & Group exams. Offline, Residential & Online coaching by Mohd. Anwar Sir.",
+  title: {
+    default: `${BRAND.documentTitle} — ${BRAND.tagline} | Telangana`,
+    template: `%s | ${BRAND.documentTitle}`,
+  },
+  description: `${BRAND.claim}. India's first residential campus for uniform jobs. SI PC, Army, SSC GD & Group exams. Offline, Residential & Online coaching by Mohd. Anwar Sir.`,
+  applicationName: BRAND.fullName,
+  icons: {
+    icon: [{ url: LOGO_SVG_PATH, type: "image/svg+xml" }],
+    apple: [{ url: LOGO_SVG_PATH }],
+  },
+  openGraph: {
+    title: `${BRAND.documentTitle} — ${BRAND.tagline}`,
+    description: `${BRAND.claim}. SI PC, Army, SSC GD & Group exams in Telangana.`,
+    siteName: BRAND.fullName,
+    images: [{ url: LOGO_SVG_PATH, type: "image/svg+xml", alt: BRAND.fullName }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: `${BRAND.documentTitle} — ${BRAND.tagline}`,
+    description: `${BRAND.claim}.`,
+    images: [LOGO_SVG_PATH],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
