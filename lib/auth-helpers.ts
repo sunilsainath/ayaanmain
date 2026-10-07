@@ -48,7 +48,6 @@ const PATH_TAB_MAP: Record<string, string> = {
   store: "store",
   rag: "rag",
   durations: "masters",
-  mediums: "masters",
   branches: "masters",
   addons: "masters",
   dues: "dues",

@@ -6,16 +6,33 @@ export const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
 export const ALLOWED = ALLOWED_IMAGE_TYPES;
 export const MAX_BYTES = MAX_IMAGE_BYTES;
 
+// Buckets holding identity documents (Aadhaar) must never be publicly readable.
+export const PRIVATE_BUCKETS = ["aadhaar-cards"] as const;
+
+export function isPrivateBucket(bucket: string) {
+  return (PRIVATE_BUCKETS as readonly string[]).includes(bucket);
+}
+
 export async function ensureBucket(bucket: string) {
   const { data: buckets, error } = await supabaseAdmin.storage.listBuckets();
   if (error) throw new Error(`Storage error: ${error.message}`);
-  if (!buckets?.find((b) => b.name === bucket)) {
-    const { error: createError } = await supabaseAdmin.storage.createBucket(bucket, { public: true });
+  const publicFlag = !isPrivateBucket(bucket);
+  const existing = buckets?.find((b) => b.name === bucket);
+  if (!existing) {
+    const { error: createError } = await supabaseAdmin.storage.createBucket(bucket, { public: publicFlag });
     if (createError) throw new Error(`Cannot create bucket: ${createError.message}`);
+    return;
+  }
+  // Heal buckets that were previously created public.
+  if (existing.public !== publicFlag) {
+    const { error: updateError } = await supabaseAdmin.storage.updateBucket(bucket, { public: publicFlag });
+    if (updateError) throw new Error(`Cannot update bucket: ${updateError.message}`);
   }
 }
 
-// Accepts a dataURL (data:image/jpeg;base64,...) or raw base64 + mime, validates, uploads, returns public URL
+// Accepts a dataURL (data:image/jpeg;base64,...) or raw base64 + mime, validates, uploads.
+// Public buckets return a public URL; private buckets return a storage object path that
+// must be resolved through createSignedUrl (see app/api/files/[...path]).
 export async function uploadDataUrl(bucket: string, dataUrl: string, prefix: string): Promise<string> {
   const m = String(dataUrl || "").match(/^data:(image\/(jpeg|png|webp));base64,(.+)$/);
   if (!m) throw new Error("Invalid image (expect JPG/PNG/WEBP data URL)");
@@ -35,6 +52,7 @@ export async function uploadDataUrl(bucket: string, dataUrl: string, prefix: str
   const path = `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
   const { error } = await supabaseAdmin.storage.from(bucket).upload(path, buf, { contentType: mime, upsert: false });
   if (error) throw new Error(`Upload failed: ${error.message}`);
+  if (isPrivateBucket(bucket)) return `${bucket}/${path}`;
   const { data } = supabaseAdmin.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl;
 }

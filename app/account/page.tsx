@@ -236,7 +236,7 @@ export default function AccountPage() {
                 <div className="font-semibold text-navy-900">{u.name}</div>
                 {u.studentId && <div className="text-xs font-bold text-emerald-700">{u.studentId}</div>}
                 <div className="text-sm text-slate-600">{u.email} • {u.phone}</div>
-                <div className="text-xs text-slate-500">{u.course} • {u.medium} • {u.mode}</div>
+                <div className="text-xs text-slate-500">{u.course} • {u.mode}</div>
               </div>
               <span className="ml-auto px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-emerald-700">Active</span>
             </div>
@@ -381,7 +381,7 @@ export default function AccountPage() {
             {a ? (
               <div className="mt-3 grid gap-2 text-sm">
                 <div className="flex justify-between"><span className="text-slate-500">Application ID</span><span className="font-medium text-navy-900">{a.applicationId || a.id}</span></div>
-                <div className="flex justify-between"><span className="text-slate-500">Course</span><span>{a.course} • {a.medium} • {a.mode}</span></div>
+                <div className="flex justify-between"><span className="text-slate-500">Course</span><span>{a.course} • {a.mode}</span></div>
                 <div className="flex justify-between"><span className="text-slate-500">Batch</span><span>{a.batchName || a.batchId || "Auto assigned"}</span></div>
                 <div className="flex justify-between"><span className="text-slate-500">Status</span><span className="capitalize">{a.status}</span></div>
               </div>

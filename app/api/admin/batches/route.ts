@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
   const data: any = {
     name: body.name ? String(body.name).trim().slice(0, 120) : null,
     course: String(body.course || "SI"),
-    medium: String(body.medium || "Telugu"),
     mode: String(body.mode || "Residential"),
     branch: body.branch ? String(body.branch) : null,
     slot: body.slot ? String(body.slot).trim().slice(0, 80) : null,

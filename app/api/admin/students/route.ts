@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   const auth = await requireAdminSession(req, ["super_admin", "admissions"]);
   if (auth.error) return auth.error;
   const body = await req.json();
-  const { id, action, password, name, fatherName, email, phone, address, reference, branch, course, courseType, medium, mode, active } = body;
+  const { id, action, password, name, fatherName, email, phone, address, reference, branch, course, courseType, mode, active } = body;
 
 if (action === "create") {
     if (!name || !email || !phone || !password) return NextResponse.json({ error: "name, email, phone, password required" }, { status: 400 });
@@ -58,7 +58,6 @@ if (action === "create") {
         branch: String(branch || ""),
         course: String(course || "SI"),
         courseType: String(courseType || "Regular"),
-        medium: String(medium || "Telugu"),
         mode: String(mode || "Residential"),
         supabaseId: supaData.user.id,
         isActive: true,
@@ -119,7 +118,6 @@ if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
         branch: branch !== undefined ? String(branch) : undefined,
         course: course ? String(course) : undefined,
         courseType: courseType !== undefined ? String(courseType) : undefined,
-        medium: medium ? String(medium) : undefined,
         mode: mode ? String(mode) : undefined,
       },
     });

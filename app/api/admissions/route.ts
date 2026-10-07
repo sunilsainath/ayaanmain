@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   // Honeypot for bots — if filled, silently reject as success to avoid probing
   if (body.website || body.honeypot || body.url) return NextResponse.json({ ok: true, id: "HP-" + Date.now(), applicationId: "HP", status: "pending" });
 
-  const { name, fatherName, phone, email, address, reference, aadharCardNumber, branch, course, courseType, medium, mode, batchId, durationId, addonIds, photo, payments } = body;
+  const { name, fatherName, phone, email, address, reference, aadharCardNumber, aadharCardFront, aadharCardBack, branch, course, courseType, mode, batchId, durationId, addonIds, photo, payments } = body;
 
   if (!name || !fatherName || !phone || !email || !address || !branch || !course || !aadharCardNumber) return NextResponse.json({ error: "name, fatherName, phone, email, address, aadhar, branch, course required" }, { status: 400 });
   if (!isPhone(String(phone))) return NextResponse.json({ error: "phone must be 10 digits" }, { status: 400 });
@@ -30,11 +30,6 @@ export async function POST(req: NextRequest) {
   if (branch) {
     const br = await prisma.branch.findFirst({ where: { name: String(branch).trim(), active: true } });
     if (!br) return NextResponse.json({ error: "Invalid or inactive branch — please select from available branches" }, { status: 400 });
-  }
-  // Medium validation — must exist and be active
-  if (medium) {
-    const m = await prisma.medium.findFirst({ where: { name: String(medium).trim(), active: true } });
-    if (!m) return NextResponse.json({ error: "Invalid or inactive medium" }, { status: 400 });
   }
   // Course validation — must exist in Course table (by slug or title, case-insensitive)
   if (course) {
@@ -83,6 +78,19 @@ export async function POST(req: NextRequest) {
   }
   const addonFees = addonRows.reduce((s, a) => s + a.fee, 0);
 
+  // Aadhaar card images are MANDATORY (front + back)
+  if (!aadharCardFront || !aadharCardBack) {
+    return NextResponse.json({ error: "Both Aadhaar card front and back images are required" }, { status: 400 });
+  }
+  let aadharFrontUrl: string;
+  let aadharBackUrl: string;
+  try {
+    aadharFrontUrl = await uploadDataUrl("aadhaar-cards", String(aadharCardFront), "aadhaar-front");
+    aadharBackUrl = await uploadDataUrl("aadhaar-cards", String(aadharCardBack), "aadhaar-back");
+  } catch (e: any) {
+    return NextResponse.json({ error: e.message || "Aadhaar upload failed" }, { status: 400 });
+  }
+
   // Photo upload (optional but encouraged)
   let photoUrl: string | null = null;
   if (photo) {
@@ -93,7 +101,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const baseFee = await resolveFee(String(course), String(mode || "Residential"), durationName, String(medium || ""), String(branch || ""));
+  const baseFee = await resolveFee(String(course), String(mode || "Residential"), durationName, String(branch || ""));
   // Registration never sets discount — discount goes through approval flow
   const totalFee = baseFee + addonFees;
 
@@ -151,7 +159,8 @@ export async function POST(req: NextRequest) {
       branch: sanitizeText(String(branch), 100),
       course: sanitizeText(String(course), 50),
       courseType: sanitizeText(String(courseType || "Regular"), 20),
-      medium: sanitizeText(String(medium || "Telugu"), 20),
+      aadharCardFront: aadharFrontUrl,
+      aadharCardBack: aadharBackUrl,
       mode: sanitizeText(String(mode || "Residential"), 20),
       batchId: batch ? batch.id : null,
       batchName: batch ? (batch.name || `${batch.course} • ${batch.slot || batch.mode}`) : null,

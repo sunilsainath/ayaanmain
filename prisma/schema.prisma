@@ -39,7 +39,6 @@ model User {
   branch              String?
   course              String
   courseType          String
-  medium              String
   mode                String
   passwordHash        String? // legacy - Supabase Auth is primary
   supabaseId          String?  @unique
@@ -66,10 +65,11 @@ model Admission {
   address         String
   reference       String?
   aadharCardNumber String? // 12-digit Aadhar, mandatory for new admissions
+  aadharCardFront  String? // uploaded photo of the AADHAAR FRONT side
+  aadharCardBack   String? // uploaded photo of the AADHAAR BACK side
   branch          String
   course          String
   courseType      String
-  medium          String
   mode            String
   batchId         String?
   paymentMethod   String   // cash, upi, bank, razorpay
@@ -121,7 +121,6 @@ model Payment {
   phone           String
   email           String
   course          String
-  medium          String
   mode            String
   amount          Int
   paidAmount      Int
@@ -166,7 +165,6 @@ model Batch {
   id          String   @id @default(cuid())
   name        String?  // e.g. "October 2026 Morning Batch"
   course      String
-  medium      String
   mode        String
   branch      String?  // branch this batch belongs to
   slot        String?  // e.g. "Morning 6-9 AM" / "Evening 5-8 PM"
@@ -380,7 +378,6 @@ model Lead {
   name         String
   phone        String
   course       String?
-  medium       String?
   mode         String?
   branch       String?   // campus the lead belongs to
   batchId      String?
@@ -445,6 +442,15 @@ model StoreOrder {
   razorpayPaymentId String?
   handedOverAt     DateTime?
   handedOverBy     String?
+  // Manual orders are taken by staff at the counter against an existing student
+  source           String          @default("student") // student | manual
+  studentId        String?         // linked student (required for manual orders)
+  studentCode      String?         // student ID shown at the counter, e.g. AYN-STU-2026-000004
+  course           String?         // course snapshot, for AR/AP campus reporting
+  branch           String?         // campus, for AR/AP campus reporting
+  manualNote       String?
+  placedByAdmin    String?
+  receiptNo        String?         // issued when a manual order is marked paid
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   items            StoreOrderItem[]
@@ -452,6 +458,8 @@ model StoreOrder {
 
   @@index([userId])
   @@index([status])
+  @@index([studentId])
+  @@index([source])
   @@map("store_orders")
 }
 
@@ -542,25 +550,15 @@ model FeeConfig {
   course    String
   mode      String   // Residential, Offline, Online
   duration  String   @default("") // Duration name e.g. "3 Months"; "" = base fee for all durations
-  medium    String   @default("") // Medium name e.g. "Telugu"; "" = base fee for all mediums
   branch    String   @default("") // Branch name e.g. "Warangal"; "" = base fee for all branches
   amount    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([course, mode, duration, medium, branch])
+  @@unique([course, mode, duration, branch])
   @@map("fee_configs")
 }
 
-model Medium {
-  id        String   @id @default(cuid())
-  name      String   @unique // e.g. "Telugu", "English", "Hindi"
-  active    Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("mediums")
-}
 
 model Course {
   id               String         @id @default(cuid())
@@ -575,7 +573,6 @@ model Course {
   notificationDate String
   prerequisites    String[]
   highlights       String[]
-  mediums          String[]
   modes            String[]
   image            String? // course hero image — dummy seeded, replace via Admin
   createdAt        DateTime       @default(now())

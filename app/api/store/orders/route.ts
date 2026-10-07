@@ -76,6 +76,12 @@ export async function POST(req: NextRequest) {
       subtotal,
       status: "placed",
       paymentStatus: "pending",
+      // Snapshot the campus/course so store revenue rolls into campus AR/AP
+      source: "student",
+      studentId: user.id,
+      studentCode: user.studentId || null,
+      course: user.course || null,
+      branch: user.branch || null,
       items: { create: lines },
     },
   });

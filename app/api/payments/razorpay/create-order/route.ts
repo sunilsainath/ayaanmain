@@ -72,7 +72,6 @@ export async function POST(req: NextRequest) {
       phone: admission.phone,
       email: admission.email,
       course: admission.course,
-      medium: admission.medium,
       mode: admission.mode,
       amount: reqAmount,
       paidAmount: 0,

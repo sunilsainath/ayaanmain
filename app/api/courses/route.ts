@@ -31,7 +31,6 @@ export async function GET() {
       notificationDate: c.notificationDate,
       prerequisites: c.prerequisites,
       highlights: c.highlights,
-      medium: c.mediums,
       mode: c.modes,
       syllabus: c.syllabus.map((s) => ({ subject: s.subject, topics: s.topics })),
     }));

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   const auth = await requireAdminSession(req, ["super_admin"]);
   if (auth.error) return auth.error;
   const body = await req.json();
-  const { id, slug, title, tag, desc, duration, fee, eligibility, ageLimit, notificationDate, prerequisites, highlights, mediums, modes, image } = body;
+  const { id, slug, title, tag, desc, duration, fee, eligibility, ageLimit, notificationDate, prerequisites, highlights, modes, image } = body;
   if (!slug || !String(slug).trim()) return NextResponse.json({ error: "slug required (e.g., si)" }, { status: 400 });
   if (!title || !String(title).trim()) return NextResponse.json({ error: "title required" }, { status: 400 });
   const data: any = {
@@ -30,7 +30,6 @@ export async function POST(req: NextRequest) {
     notificationDate: String(notificationDate || "").trim(),
     prerequisites: Array.isArray(prerequisites) ? prerequisites.map((s: string) => String(s).trim()).filter(Boolean) : String(prerequisites || "").split(",").map((s: string) => s.trim()).filter(Boolean),
     highlights: Array.isArray(highlights) ? highlights.map((s: string) => String(s).trim()).filter(Boolean) : String(highlights || "").split(",").map((s: string) => s.trim()).filter(Boolean),
-    mediums: Array.isArray(mediums) ? mediums.map((s: string) => String(s).trim()).filter(Boolean) : String(mediums || "").split(",").map((s: string) => s.trim()).filter(Boolean),
     modes: Array.isArray(modes) ? modes.map((s: string) => String(s).trim()).filter(Boolean) : String(modes || "").split(",").map((s: string) => s.trim()).filter(Boolean),
     image: image ? String(image).trim() : null,
   };

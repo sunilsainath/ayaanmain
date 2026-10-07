@@ -27,12 +27,11 @@ const quizQs = [
 
 export default function Home() {
   const [goal, setGoal] = useState("SI");
-  const [medium, setMedium] = useState("Telugu");
   const [mode, setMode] = useState("Residential");
   const finderText = useMemo(() => {
     const map: Record<string, string> = { SI: "SI", Constable: "Constable", Groups: "Groups", "SSC GD": "SSC GD", Defence: "Army/Defence", UPSC: "UPSC" };
-    return `${map[goal] ?? goal} • ${medium} • ${mode}`;
-  }, [goal, medium, mode]);
+    return `${map[goal] ?? goal} • ${mode}`;
+  }, [goal, mode]);
 
   const [batches, setBatches] = useState<any[]>([]);
   useEffect(() => {
@@ -44,14 +43,12 @@ export default function Home() {
     return batches.filter((b) => {
       if (b.status === "closed") return false;
       const c = String(b.course || "").toLowerCase();
-      const m = String(b.medium || "").toLowerCase();
       const mo = String(b.mode || "").toLowerCase();
       const goalMatch = c.includes(goalKey.split(" ")[0]) || (goalKey === "defence" && (c.includes("defence") || c.includes("army"))) || (goalKey === "groups" && c.includes("group")) || (goalKey === "ssc gd" && c.includes("ssc")) || (goalKey === "upsc" && c.includes("upsc"));
-      const mediumMatch = m === medium.toLowerCase();
       const modeMatch = mo === mode.toLowerCase();
-      return goalMatch && mediumMatch && modeMatch;
+      return goalMatch && modeMatch;
     });
-  }, [batches, goal, medium, mode]);
+  }, [batches, goal, mode]);
   const hasActive = matchingBatches.length > 0;
 
   const [activeTag, setActiveTag] = useState("ALL");
@@ -119,7 +116,7 @@ export default function Home() {
     if (!joinName.trim()) return setJoinError("Name required");
     if (!/^[0-9]{10}$/.test(joinPhone.trim())) return setJoinError("Valid 10-digit mobile required");
     setJoinSending(true);
-    const r = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: joinName.trim(), phone: joinPhone.trim(), course: goal, medium, mode, batchId: hasActive ? matchingBatches[0].id : null }) });
+    const r = await fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: joinName.trim(), phone: joinPhone.trim(), course: goal, mode, batchId: hasActive ? matchingBatches[0].id : null }) });
     const d = await r.json();
     setJoinSending(false);
     if (r.ok) { setJoinDone(true); setJoinName(""); setJoinPhone(""); setTimeout(() => setShowJoin(false), 2000); }
@@ -175,9 +172,9 @@ export default function Home() {
                     <div className="flex items-center justify-between"><div className="text-sm font-semibold text-navy-900">Find your batch in 20s</div><span className="text-xs px-2 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800">Interactive</span></div>
                     <div className="mt-4 grid gap-3">
                       <div><label className="text-xs font-medium text-slate-600">Goal</label><div className="mt-1 grid grid-cols-3 gap-2">{["SI", "Constable", "Groups", "SSC GD", "Defence", "UPSC"].map((g) => (<button key={g} onClick={() => setGoal(g)} className={`px-3 py-2.5 rounded-xl border text-sm font-medium transition ${goal === g ? "bg-navy-900 text-white border-navy-900 shadow-sm" : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700"}`}>{g}</button>))}</div></div>
-                      <div className="grid grid-cols-2 gap-3"><div><label className="text-xs font-medium text-slate-600">Medium</label><div className="mt-1 grid grid-cols-2 gap-2">{["Telugu", "English"].map((m) => (<button key={m} onClick={() => setMedium(m)} className={`py-2.5 rounded-xl border text-sm font-medium ${medium === m ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200 hover:bg-slate-50"}`}>{m}</button>))}</div></div><div><label className="text-xs font-medium text-slate-600">Mode</label><select value={mode} onChange={(e) => setMode(e.target.value)} className="mt-1 w-full py-2.5 px-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"><option>Residential</option><option>Offline</option><option>Online</option></select></div></div>
+                      <div className="grid grid-cols-1 gap-3"><div><label className="text-xs font-medium text-slate-600">Mode</label><select value={mode} onChange={(e) => setMode(e.target.value)} className="mt-1 w-full py-2.5 px-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"><option>Residential</option><option>Offline</option><option>Online</option></select></div></div>
                       <div className="rounded-xl bg-slate-50 border border-slate-200 p-3 flex items-center justify-between"><div><div className="text-xs text-slate-500">You selected</div><div className="text-sm font-semibold text-navy-900">{finderText}</div></div><span className={`w-8 h-8 rounded-full border grid place-items-center text-xs font-bold ${hasActive ? "bg-emerald-500 text-white border-emerald-500" : "bg-white border-slate-200"}`}>{hasActive ? "✓" : "•"}</span></div>
-                      {hasActive ? (<div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" /><span className="text-xs font-bold tracking-wide text-emerald-800 uppercase">Active Batch Available</span><span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-white border border-emerald-200 text-emerald-700">{matchingBatches[0].seats - matchingBatches[0].filled} seats left</span></div><div className="mt-2 text-sm font-semibold text-navy-900">{matchingBatches[0].course} • {matchingBatches[0].medium} • {matchingBatches[0].mode}</div><div className="mt-1 flex flex-wrap gap-1.5 text-xs"><span className="px-2 py-1 rounded-full bg-white border border-emerald-200 text-slate-700">Starts {new Date(matchingBatches[0].startDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span><span className="px-2 py-1 rounded-full bg-white border border-slate-200 text-slate-600">{matchingBatches[0].duration}</span><span className="px-2 py-1 rounded-full bg-navy-900 text-white">{matchingBatches[0].mode}</span></div>{matchingBatches[0].note && <div className="mt-2 text-xs text-slate-600">{matchingBatches[0].note}</div>}{matchingBatches.length > 1 && <div className="mt-1 text-xs text-emerald-700">+{matchingBatches.length - 1} more batch(es) for this combo</div>}</div>) : batches.length > 0 ? (<div className="rounded-xl border border-amber-200 bg-amber-50 p-3"><div className="text-xs font-semibold text-amber-800">No active batch for this exact combo</div><div className="text-xs text-slate-600 mt-1">Closest: {batches.filter((b) => b.status !== "closed")[0]?.course} • {batches.filter((b) => b.status !== "closed")[0]?.medium} • {batches.filter((b) => b.status !== "closed")[0]?.mode} — {batches[0] ? new Date(batches[0].startDate).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : ""}</div><div className="text-xs text-slate-500 mt-1">Enquire — we’ll open a batch on demand or suggest closest.</div></div>) : (<div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center"><div className="text-xs text-slate-500">Loading batches…</div></div>)}
+                      {hasActive ? (<div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3"><div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" /><span className="text-xs font-bold tracking-wide text-emerald-800 uppercase">Active Batch Available</span><span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-white border border-emerald-200 text-emerald-700">{matchingBatches[0].seats - matchingBatches[0].filled} seats left</span></div><div className="mt-2 text-sm font-semibold text-navy-900">{matchingBatches[0].course} • {matchingBatches[0].mode}</div><div className="mt-1 flex flex-wrap gap-1.5 text-xs"><span className="px-2 py-1 rounded-full bg-white border border-emerald-200 text-slate-700">Starts {new Date(matchingBatches[0].startDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</span><span className="px-2 py-1 rounded-full bg-white border border-slate-200 text-slate-600">{matchingBatches[0].duration}</span><span className="px-2 py-1 rounded-full bg-navy-900 text-white">{matchingBatches[0].mode}</span></div>{matchingBatches[0].note && <div className="mt-2 text-xs text-slate-600">{matchingBatches[0].note}</div>}{matchingBatches.length > 1 && <div className="mt-1 text-xs text-emerald-700">+{matchingBatches.length - 1} more batch(es) for this combo</div>}</div>) : batches.length > 0 ? (<div className="rounded-xl border border-amber-200 bg-amber-50 p-3"><div className="text-xs font-semibold text-amber-800">No active batch for this exact combo</div><div className="text-xs text-slate-600 mt-1">Closest: {batches.filter((b) => b.status !== "closed")[0]?.course} • {batches.filter((b) => b.status !== "closed")[0]?.mode} — {batches[0] ? new Date(batches[0].startDate).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : ""}</div><div className="text-xs text-slate-500 mt-1">Enquire — we’ll open a batch on demand or suggest closest.</div></div>) : (<div className="rounded-xl border border-slate-200 bg-slate-50 p-3 text-center"><div className="text-xs text-slate-500">Loading batches…</div></div>)}
                       <button onClick={openJoin} className={`w-full justify-center !py-3 text-[15px] hover:shadow-md inline-flex items-center gap-2 rounded-full font-medium transition ${hasActive ? "bg-emerald-600 hover:bg-emerald-700 text-white px-6" : "bg-navy-900 text-white hover:bg-navy-800 px-6"}`}>{hasActive ? `Join ${matchingBatches[0].course} — ${new Date(matchingBatches[0].startDate).toLocaleDateString("en-IN", { day: "numeric", month: "short" })} →` : `Enquire for ${goal} →`}</button>
                       <div className="text-center text-xs text-slate-500">{hasActive ? `${matchingBatches[0].filled}/${matchingBatches[0].seats} filled • Free demo available` : `${batches.filter((b) => b.status !== "closed").length} active batches overall • Free counselling`}</div>
                       <div className="flex gap-2 text-xs"><a href="tel:+918886667222" className="flex-1 py-2.5 rounded-xl border border-slate-200 bg-white grid place-items-center font-medium hover:bg-slate-50">Call Advisor</a><a href="https://api.whatsapp.com/send?phone=918886667222" target="_blank" className="flex-1 py-2.5 rounded-xl bg-[#25D366] text-white grid place-items-center font-medium hover:bg-[#1fb255]">WhatsApp</a></div>
@@ -292,7 +289,7 @@ export default function Home() {
         <div className="fixed inset-0 z-[70] bg-slate-900/40 backdrop-blur-sm p-4 grid place-items-center" onClick={() => setShowJoin(false)}>
           <div className="card w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between">
-              <h3 className="font-display font-bold text-lg text-navy-900">Join {goal} — {medium} • {mode}</h3>
+              <h3 className="font-display font-bold text-lg text-navy-900">Join {goal} —  • {mode}</h3>
               <button onClick={() => setShowJoin(false)} className="w-8 h-8 rounded-full bg-slate-100 grid place-items-center hover:bg-slate-200">✕</button>
             </div>
             <p className="text-sm text-slate-600 mt-1">Enter your details — we’ll call you for batch confirmation. Stored in admin portal.</p>

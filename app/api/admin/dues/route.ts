@@ -49,7 +49,7 @@ const INSTALLMENT_CAP = 20000;
     prisma.installment.findMany({ orderBy: [{ dueDate: "asc" }], take: INSTALLMENT_CAP }),
     prisma.feePayment.findMany({ where: { status: "acknowledged" }, select: { admissionId: true, amount: true }, take: INSTALLMENT_CAP }),
     prisma.payment.findMany({
-      select: { id: true, studentId: true, name: true, phone: true, email: true, course: true, branch: true, medium: true, mode: true, amount: true, paidAmount: true, dueDate: true, status: true },
+      select: { id: true, studentId: true, name: true, phone: true, email: true, course: true, branch: true,  mode: true, amount: true, paidAmount: true, dueDate: true, status: true },
       where: campus.branches === null ? {} : { branch: { in: campus.branches } },
       take: ADMISSION_CAP,
     }),

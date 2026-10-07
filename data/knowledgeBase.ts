@@ -60,7 +60,7 @@ export const knowledgeBase: KBChunk[] = [
     id: "courses-list",
     category: "Courses",
     keywords: ["courses", "si", "constable", "groups", "group 1", "group 2", "ssc gd", "army", "navy", "airforce", "defence", "offline", "online", "कोर्स", "కోర్సులు"],
-    en: "Courses: SI, Constable, Groups 1/2/3/4, SSC GD, Army/Navy/Airforce. Modes: Residential (Bollikunta), Offline day-scholar (Warangal/Hyderabad with hostel option), Online (live + recorded). Medium: Telugu & English separate batches. Duration ~3 months + continuous tests.",
+    en: "Courses: SI, Constable, Groups 1/2/3/4, SSC GD, Army/Navy/Airforce. Modes: Residential (Bollikunta), Offline day-scholar (Warangal/Hyderabad with hostel option), Online (live + recorded). Study language: Telugu & English. Duration ~3 months + continuous tests.",
     hi: "कोर्स: SI, कांस्टेबल, ग्रुप 1/2/3/4, SSC GD, आर्मी/नेवी/एयरफोर्स। मोड: रेजिडेंशियल, ऑफलाइन डे-स्कॉलर (वारंगल/हैदराबाद), ऑनलाइन (लाइव + रिकॉर्डेड)। माध्यम: तेलुगु & इंग्लिश अलग बैच, अवधि ~3 महीने।",
     te: "కోర్సులు: SI, కానిస్టేబుల్, గ్రూప్స్ 1/2/3/4, SSC GD, ఆర్మీ/నేవీ/ఎయిర్‌ఫోర్స్. మోడ్‌లు: రెసిడెన్షియల్, ఆఫ్‌లైన్ డే-స్కాలర్, ఆన్‌లైన్ (లైవ్ + రికార్డెడ్). మీడియం: తెలుగు & ఇంగ్లీష్ వేరు బ్యాచ్‌లు, వ్యవధి ~3 నెలలు.",
     source: "Courses → Offline",
@@ -113,11 +113,11 @@ export const knowledgeBase: KBChunk[] = [
   {
     id: "languages",
     category: "Languages",
-    keywords: ["language", "telugu", "english", "medium", "bilingual", "भाषा", "భాష"],
-    en: "Medium: Telugu and English separate batches for SI/Constable and others. Ask for your preferred medium during admission.",
-    hi: "माध्यम: SI/कांस्टेबल के लिए तेलुगु और इंग्लिश अलग बैच। एडमिशन पर अपना माध्यम चुनें।",
-    te: "మీడియం: SI/కానిస్టేబుల్‌కు తెలుగు & ఇంగ్లీష్ వేరు బ్యాచ్‌లు. అడ్మిషన్ సమయంలో మీ మీడియం ఎంచుకోండి.",
-    source: "Courses → Medium",
+    keywords: ["language", "telugu", "english", "bilingual", "భాషా", "भाषा"],
+    en: "Study material and support are available in Telugu and English. Batch timing and study language are confirmed at admission.",
+    hi: "अध्ययन सामग्री और सहायता तेलुगु व अंग्रेज़ी में उपलब्ध है। बैच का समय और अध्ययन भाषा प्रवेश के समय तय होती है।",
+    te: "అధ్యయన వనరులు, సహాయం తెలుగు & ఇంగ్లీష్‌లో అందుబాటులో ఉంటాయి. బ్యాచ్ సమయం, అధ్యయన భాష అడ్మిషన్ సమయంలో నిర్ధారిస్తారు.",
+    source: "Courses",
   },
 ];
 

@@ -45,7 +45,6 @@ export async function POST(req: NextRequest) {
           name: sanitizeText(String(item.name), 100),
           phone,
           course: sanitizeText(String(item.course || ""), 50),
-          medium: sanitizeText(String(item.medium || ""), 20),
           mode: sanitizeText(String(item.mode || ""), 20),
           batchId: item.batchId || null,
           status,
@@ -105,7 +104,7 @@ export async function PUT(req: NextRequest) {
   const auth = await requireAdminSession(req, ["super_admin", "admissions"]);
   if (auth.error) return auth.error;
   const body = await req.json();
-  const { id, name, phone, course, medium, mode, batchId, status, notes, freeText, employeeName, dueDate, branch } = body;
+  const { id, name, phone, course, mode, batchId, status, notes, freeText, employeeName, dueDate, branch } = body;
   if (!id) return NextResponse.json({ error: "id required" }, { status: 400 });
   const data: any = {};
   if (name !== undefined) data.name = sanitizeText(String(name), 100);
@@ -115,7 +114,6 @@ export async function PUT(req: NextRequest) {
     data.phone = ph;
   }
   if (course !== undefined) data.course = sanitizeText(String(course), 50);
-  if (medium !== undefined) data.medium = sanitizeText(String(medium), 20);
   if (mode !== undefined) data.mode = sanitizeText(String(mode), 20);
   if (batchId !== undefined) data.batchId = batchId || null;
   if (status !== undefined) {

@@ -28,9 +28,9 @@ async function main() {
   for (const course of Object.keys(FALLBACK_FEE)) {
     for (const mode of Object.keys(FALLBACK_FEE[course])) {
       await prisma.feeConfig.upsert({
-        where: { course_mode_duration_medium_branch: { course, mode, duration: "", medium: "", branch: "" } },
+        where: { course_mode_duration_branch: { course, mode, duration: "", branch: "" } },
         update: { amount: FALLBACK_FEE[course][mode] },
-        create: { course, mode, duration: "", medium: "", branch: "", amount: FALLBACK_FEE[course][mode] },
+        create: { course, mode, duration: "", branch: "", amount: FALLBACK_FEE[course][mode] },
       });
       feeCount++;
     }
@@ -52,7 +52,6 @@ async function main() {
         notificationDate: c.notificationDate,
         prerequisites: c.prerequisites,
         highlights: c.highlights,
-        mediums: c.medium,
         modes: c.mode,
       },
       create: {
@@ -67,7 +66,6 @@ async function main() {
         notificationDate: c.notificationDate,
         prerequisites: c.prerequisites,
         highlights: c.highlights,
-        mediums: c.medium,
         modes: c.mode,
       },
     });

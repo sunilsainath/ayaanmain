@@ -3,10 +3,9 @@ export type CourseDetail = {
   title: string;
   tag: string;
   desc: string;
-  duration: string;
-  mode: string[];
-  medium: string[];
+duration: string;
   fee: string;
+  mode: string[];
   image: string; // dummy seeded — replace via Admin → Courses
   prerequisites: string[];
   notificationDate: string; // e.g. "Expected Jan 2027"
@@ -24,7 +23,6 @@ export const courseDetails: CourseDetail[] = [
     desc: "Telangana SI — Written + Physical (1600m, Long Jump, High Jump). Complete syllabus + daily grand tests.",
     duration: "3-4 Months + Continuous Revision",
     mode: ["Residential", "Offline", "Online"],
-    medium: ["Telugu", "English"],
     fee: "₹35,000 (Residential incl. hostel/food) • ₹25,000 Offline",
     image: "https://images.unsplash.com/photo-1542395975-d6d3f2761a28?q=80&w=800&auto=format&fit=crop",
     eligibility: "Graduation (any degree) from recognized university",
@@ -46,12 +44,11 @@ export const courseDetails: CourseDetail[] = [
   },
   {
     slug: "constable",
-    title: "Constable (PC)",
-    tag: "Bilingual • Highest Selections",
-    desc: "TSLPRB Constable — 95% selections track. Telugu/English separate batches, daily doubts.",
+    title: "Constable",
+    tag: "Police Constable • Highest Selections",
+    desc: "TS Police Constable (PC) — 95% selections track. Daily written prep plus physical training.",
     duration: "3 Months + Practice Till Exam",
     mode: ["Residential", "Offline", "Online"],
-    medium: ["Telugu", "English"],
     fee: "₹28,000 (Residential) • ₹18,000 Offline",
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop",
     eligibility: "Intermediate (10+2) pass — any group",
@@ -78,7 +75,6 @@ export const courseDetails: CourseDetail[] = [
     desc: "TSPSC Groups — Prelims + Mains. Updated content, current affairs focus, answer writing.",
     duration: "4-6 Months (Mains incl.)",
     mode: ["Offline", "Online"],
-    medium: ["Telugu", "English"],
     fee: "₹32,000 (Groups 1/2) • ₹22,000 (Groups 3/4)",
     image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop",
     eligibility: "Graduation for Gr 1/2; Intermediate for Gr 4",
@@ -104,7 +100,6 @@ export const courseDetails: CourseDetail[] = [
     desc: "SSC GD Constable — CAPFs + Assam Rifles. Written + PST/PET + Medical.",
     duration: "3 Months",
     mode: ["Offline", "Online"],
-    medium: ["English", "Telugu"],
     fee: "₹18,000 Offline • ₹12,000 Online",
     image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?q=80&w=800&auto=format&fit=crop",
     eligibility: "10th Pass (SSC)",
@@ -132,7 +127,6 @@ export const courseDetails: CourseDetail[] = [
     desc: "Agniveer, GD, Tradesman, Navy MR/SSR, Airforce X/Y. Written, medical, physical guidance.",
     duration: "3 Months + Physical Till Selection",
     mode: ["Residential", "Offline"],
-    medium: ["Telugu", "English"],
     fee: "₹25,000 Residential • ₹18,000 Offline",
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop",
     eligibility: "10th/10+2 as per post (Army GD: 10th 45%, Navy SSR: 10+2 PCM 50%)",
@@ -159,7 +153,6 @@ export const courseDetails: CourseDetail[] = [
     desc: "CSE Prelims + Mains + Personality Test. GS 1-4, Essay, CSAT, Optional. Daily answer writing.",
     duration: "12 Months (Foundation) + Test Series",
     mode: ["Offline", "Online"],
-    medium: ["English", "Telugu"],
     fee: "₹65,000 Foundation • ₹25,000 Test Series",
     image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=800&auto=format&fit=crop",
     eligibility: "Graduation in any discipline",
@@ -187,7 +180,6 @@ export const courseDetails: CourseDetail[] = [
     desc: "Same offline faculty, unlimited rewatch, offline download. Since 2018 on ClassPlus.",
     duration: "Same as Offline (3-4 Months)",
     mode: ["Online"],
-    medium: ["Telugu", "English"],
     fee: "60% of Offline — e.g., SI Online ₹18,000",
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop",
     eligibility: "Same as chosen course (10th/Intermediate/Graduation)",
@@ -205,5 +197,32 @@ export const courseDetails: CourseDetail[] = [
       { subject: "Doubts & Support", topics: ["In-app doubts chat", "Weekly Zoom doubt session with faculty", "Telegram current affairs"] },
     ],
     highlights: ["Since 2018 — 50K+ app downloads", "Forward/reverse unlimited", "Offline + Online switch allowed (pay difference)"],
+  },
+  {
+    slug: "defence",
+    title: "Defence",
+    tag: "Army • Navy • Airforce",
+    desc: "Indian Army, Navy and Airforce entries — Agniveer, GD, Technical and Commissioning exams with written + physical/medical screening.",
+    duration: "3-6 Months + SSB/Medical Schedule",
+    mode: ["Residential", "Offline", "Online"],
+    fee: "₹30,000 (Residential) • ₹20,000 Offline • ₹12,000 Online",
+    image: "https://images.unsplash.com/photo-1580097580474-3d5d5f6e7d51?q=80&w=800&auto=format&fit=crop",
+    eligibility: "10+2 pass (GD/Agniveer) or Graduation (Commissioning) — varies by entry",
+    ageLimit: "17 – 21 years (entry-wise relaxation; Agniveer up to 21)",
+    prerequisites: [
+      "10+2 with 50%+ for Agniveer/GD; Graduation for Commissioning entries",
+      "Physical standards — 1600m run, 9ft jump, 3ft 9in reach as per category",
+      "Eye vision 6/9 with only glasses permitted; no colour blindness",
+      "No tattoo, no criminal record, medically fit per board standards",
+    ],
+    notificationDate: "Rolling — Indian Army Agniveer CEE twice yearly; Navy INET / SSR; Airforce Agniveer Vayu",
+    syllabus: [
+      { subject: "English & General Knowledge", topics: ["Grammar", "Vocabulary", "General Science", "General Awareness", "Current Affairs"] },
+      { subject: "General Intelligence", topics: ["Number Series", "Analogy", "Coding-Decoding", "Reasoning", "Rank & Order"] },
+      { subject: "Elementary Mathematics", topics: ["Number System", "HCF/LCM", "Percentage", "Profit & Loss", "Time & Work", "Time & Distance", "Simple Interest"] },
+      { subject: "General Science", topics: ["Physics", "Chemistry", "Biology", "Earth & Space", "Defence-related GK"] },
+      { subject: "Physical & Medical", topics: ["1600m Run (8:30)", "Long Jump 9ft", "Height/Weight standards", "Eye test & medical board process"] },
+    ],
+    highlights: ["Written + physical + SSB/medical stages mapped to your entry", "Daily physical training for Agniveer & GD standards", "Weekend mock tests with rank & cut-off analysis"],
   },
 ];

@@ -34,7 +34,7 @@ async function main() {
     await prisma.batch.update({
       where: { id: b.id },
       data: {
-        name: b.name || `${b.course} • ${b.medium} • ${b.mode} — ${new Date(b.startDate).toLocaleDateString("en-IN", { month: "short", year: "numeric" })}`,
+        name: b.name || `${b.course} • ${b.mode} — ${new Date(b.startDate).toLocaleDateString("en-IN", { month: "short", year: "numeric" })}`,
         durationMonths: months,
         endDate: b.endDate || addMonths(new Date(b.startDate), months),
         isActive: b.isActive ?? true,

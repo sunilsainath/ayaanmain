@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
   const stuIds = Array.from(new Set(list.map((r) => r.studentId).filter((x): x is string => typeof x === "string" && x.length > 0)));
   const [adms, users] = await Promise.all([
     admIds.length > 0
-      ? prisma.admission.findMany({ where: { id: { in: admIds } }, select: { id: true, name: true, phone: true, email: true, course: true, branch: true, medium: true, mode: true, batchName: true, applicantStudentId: true, applicationId: true } })
+      ? prisma.admission.findMany({ where: { id: { in: admIds } }, select: { id: true, name: true, phone: true, email: true, course: true, branch: true,  mode: true, batchName: true, applicantStudentId: true, applicationId: true } })
       : Promise.resolve([]),
     stuIds.length > 0
       ? prisma.user.findMany({ where: { id: { in: stuIds } }, select: { id: true, name: true, phone: true, email: true, course: true, branch: true, studentId: true } })
@@ -79,7 +79,6 @@ export async function GET(req: NextRequest) {
       applicationId: a?.applicationId || "",
       course: a?.course || u?.course || "",
       branch: a?.branch || u?.branch || "",
-      medium: a?.medium || "",
       mode: a?.mode || "",
       batchName: a?.batchName || "",
       allocations: (r.feePayment?.allocations || []).map((al: any) => ({ label: al.installment?.label || "", amount: al.amount, dueDate: al.installment?.dueDate || null })),
@@ -114,7 +113,6 @@ export async function GET(req: NextRequest) {
         applicationId: "",
         course: p.course,
         branch: p.branch || "",
-        medium: p.medium,
         mode: p.mode,
         batchName: "",
         allocations: [],

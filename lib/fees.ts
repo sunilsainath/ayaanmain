@@ -1,6 +1,6 @@
 // Central fee fallback — single source of truth for all fee defaults.
 // All fee calculations fall back to this map when no FeeConfig row exists.
-// Chain: exact (course×mode×duration×medium×branch) → peel branch → peel medium → peel duration → base ("","","") → hardcoded fallback
+// Chain: exact (course×mode×duration×branch) → peel branch → peel duration → base ("","") → hardcoded fallback
 //
 // ALL matching is case/whitespace insensitive. Course codes come from several places
 // (course slug "army", title code "Army", FeeConfig key "Army"), so an exact `===` lookup
@@ -31,37 +31,35 @@ export function nk(v: unknown): string {
   return v === undefined || v === null ? "" : String(v).trim().toLowerCase();
 }
 
-export type FeeRow = { course: string; mode: string; duration: string; medium: string; branch: string; amount: number };
+export type FeeRow = { course: string; mode: string; duration: string; branch: string; amount: number };
 
 // Resolve a fee row from an already-loaded FeeConfig list using the documented chain.
 // Pure + client-safe so the browser estimate always matches the server.
+// Medium is no longer a fee dimension.
 export function matchFeeRow<T extends FeeRow>(
   rows: T[],
   course: string,
   mode: string,
   duration?: string,
-  medium?: string,
   branch?: string,
 ): T | null {
   if (!Array.isArray(rows) || rows.length === 0) return null;
   const c = nk(course);
   const mo = nk(mode);
   const d = nk(duration);
-  const m = nk(medium);
   const b = nk(branch);
-  const chain: [string, string, string][] = [
-    [d, m, b],
-    [d, m, ""],
-    [d, "", ""],
-    ["", "", ""],
+  const chain: [string, string][] = [
+    [d, b],
+    [d, ""],
+    ["", ""],
   ];
   const seen = new Set<string>();
-  for (const [dd, mm, bb] of chain) {
-    const key = `${dd}|${mm}|${bb}`;
+  for (const [dd, bb] of chain) {
+    const key = `${dd}|${bb}`;
     if (seen.has(key)) continue;
     seen.add(key);
     const hit = rows.find(
-      (r) => nk(r.course) === c && nk(r.mode) === mo && nk(r.duration) === dd && nk(r.medium) === mm && nk(r.branch) === bb,
+      (r) => nk(r.course) === c && nk(r.mode) === mo && nk(r.duration) === dd && nk(r.branch) === bb,
     );
     if (hit) return hit;
   }
@@ -74,10 +72,9 @@ export function matchFeeAmount<T extends FeeRow>(
   course: string,
   mode: string,
   duration?: string,
-  medium?: string,
   branch?: string,
 ): number | null {
-  const hit = matchFeeRow(rows, course, mode, duration, medium, branch);
+  const hit = matchFeeRow(rows, course, mode, duration, branch);
   return hit ? Number(hit.amount) : null;
 }
 
@@ -132,11 +129,11 @@ export function matchCourseRows<T extends FeeRow>(rows: T[], course: string): T[
   return [];
 }
 
-export function fallbackList(): { course: string; mode: string; duration: string; medium: string; branch: string; amount: number }[] {
-  const list: { course: string; mode: string; duration: string; medium: string; branch: string; amount: number }[] = [];
+export function fallbackList(): { course: string; mode: string; duration: string; branch: string; amount: number }[] {
+  const list: { course: string; mode: string; duration: string; branch: string; amount: number }[] = [];
   for (const course of Object.keys(FALLBACK_FEE)) {
     for (const mode of Object.keys(FALLBACK_FEE[course])) {
-      list.push({ course, mode, duration: "", medium: "", branch: "", amount: FALLBACK_FEE[course][mode] });
+      list.push({ course, mode, duration: "", branch: "", amount: FALLBACK_FEE[course][mode] });
     }
   }
   return list;

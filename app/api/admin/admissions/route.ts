@@ -24,7 +24,23 @@ export async function GET(req: NextRequest) {
   if (scope.branches !== null) where.branch = { in: scope.branches };
   else if (requested.branch) where.branch = requested.branch;
   const admissions = await prisma.admission.findMany({ where, orderBy: { createdAt: "desc" }, take: 2000 });
-  return NextResponse.json(admissions, { headers: { "Cache-Control": "no-store" } });
+  // paidSoFar is derived here so the admin can see what is still outstanding per application
+  // before recording another manual payment.
+  const ids = admissions.map((a) => a.id);
+  const acked =
+    ids.length === 0
+      ? []
+      : await prisma.feePayment.groupBy({
+          by: ["admissionId"],
+          where: { admissionId: { in: ids }, status: { notIn: ["rejected", "failed"] } },
+          _sum: { amount: true },
+        });
+  const paidByAdm = new Map(acked.map((r) => [r.admissionId, Number(r._sum.amount || 0)]));
+  const withPaid = admissions.map((a) => ({
+    ...a,
+    paidSoFar: (paidByAdm.get(a.id) || 0) + Number(a.payingNow || 0),
+  }));
+  return NextResponse.json(withPaid, { headers: { "Cache-Control": "no-store" } });
 }
 
 async function txCounter(tx: any, kind: string): Promise<{ year: number; seq: number }> {
@@ -191,7 +207,6 @@ export async function POST(req: NextRequest) {
             branch: admission.branch,
             course: admission.course,
             courseType: admission.courseType,
-            medium: admission.medium,
             mode: admission.mode,
             supabaseId,
             admissionId: id,

@@ -21,7 +21,15 @@ export async function GET(req: NextRequest) {
   // A ?branch= drill-down must narrow every input, not just admissions
   const narrowWhere = (f: string) => (scope.branches !== null ? { branch: { in: scope.branches } } : only ? { branch: { in: only } } : {});
 
-  const [admissions, acked, installments, expenses, batches, legacyPayments, branchRows] = await Promise.all([
+  // Store orders snapshot their campus; older student orders rely on the buyer's campus.
+  const storeBranchFilter = scope.branches !== null ? [...scope.branches, ""] : only ? only : [];
+  const scopedStudentIds =
+    storeBranchFilter.length > 0
+      ? (await prisma.user.findMany({ where: { branch: { in: storeBranchFilter } }, select: { id: true, branch: true }, take: 20000 }))
+      : [];
+  const studentBranchById = new Map(scopedStudentIds.map((u: any) => [u.id, u.branch || ""]));
+
+  const [admissions, acked, installments, expenses, batches, legacyPayments, branchRows, storeOrders] = await Promise.all([
     prisma.admission.findMany({
       where: { status: "approved", ...branchWhere },
       select: { id: true, branch: true, finalFee: true, totalFee: true, feeAmount: true, amount: true },
@@ -33,6 +41,15 @@ export async function GET(req: NextRequest) {
     prisma.batch.findMany({ where: branchWhere, select: { branch: true, seats: true, filled: true, status: true }, take: 5000 }),
     prisma.payment.findMany({ where: narrowWhere("branch"), select: { branch: true, amount: true, paidAmount: true }, take: 5000 }),
     prisma.branch.findMany({ where: only ? { name: { in: only } } : {}, select: { name: true }, take: 500 }),
+    // Orders carry their own branch snapshot; older student orders rely on the buyer's campus.
+    prisma.storeOrder.findMany({
+      where: {
+        status: { not: "cancelled" },
+        ...(storeBranchFilter.length > 0 ? { OR: [{ branch: { in: storeBranchFilter } }, { userId: { in: scopedStudentIds.map((u: any) => u.id) } }] } : {}),
+      },
+      select: { branch: true, subtotal: true, paymentStatus: true, userId: true },
+      take: 5000,
+    }),
   ]);
 
   const ackedByAdm = new Map<string, number>();
@@ -45,13 +62,13 @@ export async function GET(req: NextRequest) {
   }
 
   const key = (b: unknown) => String(b ?? "").trim() || "Unassigned";
-  type Acc = { branch: string; admissions: number; receivable: number; collected: number; outstanding: number; overdue: number; seats: number; filled: number; batches: number; payable: number; paidAp: number; pendingAp: number; pendingApproval: number; legacyReceivable: number; legacyCollected: number };
+  type Acc = { branch: string; admissions: number; receivable: number; collected: number; outstanding: number; overdue: number; seats: number; filled: number; batches: number; payable: number; paidAp: number; pendingAp: number; pendingApproval: number; legacyReceivable: number; legacyCollected: number; storeReceivable: number; storeCollected: number };
   const map = new Map<string, Acc>();
   const bucket = (b: unknown): Acc => {
     const k = key(b);
     let a = map.get(k);
     if (!a) {
-      a = { branch: k, admissions: 0, receivable: 0, collected: 0, outstanding: 0, overdue: 0, seats: 0, filled: 0, batches: 0, payable: 0, paidAp: 0, pendingAp: 0, pendingApproval: 0, legacyReceivable: 0, legacyCollected: 0 };
+      a = { branch: k, admissions: 0, receivable: 0, collected: 0, outstanding: 0, overdue: 0, seats: 0, filled: 0, batches: 0, payable: 0, paidAp: 0, pendingAp: 0, pendingApproval: 0, legacyReceivable: 0, legacyCollected: 0, storeReceivable: 0, storeCollected: 0 };
       map.set(k, a);
     }
     return a;
@@ -98,6 +115,21 @@ export async function GET(req: NextRequest) {
     acc.seats += Number(b.seats || 0);
     acc.filled += Number(b.filled || 0);
     acc.batches += 1;
+  }
+
+  // Store orders (student + counter/manual) are receivables until paid.
+  for (const o of storeOrders) {
+    const acc = bucket(o.branch || studentBranchById.get(o.userId) || "");
+    const amt = Number(o.subtotal || 0);
+    if (amt <= 0) continue;
+    acc.storeReceivable += amt;
+    acc.receivable += amt;
+    if (o.paymentStatus === "success") {
+      acc.storeCollected += amt;
+      acc.collected += amt;
+    } else {
+      acc.outstanding += amt;
+    }
   }
 
   // Manual fee entries (Payments tab) are receivables too. They use synthetic admissionIds

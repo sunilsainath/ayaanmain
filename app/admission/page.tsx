@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { fallbackFee, matchFeeAmount, matchCourseRows } from "@/lib/fees";
 
-type Batch = { id: string; name?: string; course: string; medium: string; mode: string; branch?: string; slot?: string; days?: string; startDate: string; endDate?: string; seats: number; filled: number; availableSeats?: number };
+type Batch = { id: string; name?: string; course: string; mode: string; branch?: string; slot?: string; days?: string; startDate: string; endDate?: string; seats: number; filled: number; availableSeats?: number };
 type Duration = { id: string; name: string; months: number };
 type Addon = { id: string; name: string; fee: number; courses: string[] };
 type Split = { method: string; amount: string; transactionId: string; screenshot: string; shotName: string };
@@ -14,17 +14,22 @@ export default function AdmissionPage() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     name: "", fatherName: "", phone: "", email: "", address: "", reference: "", aadharCardNumber: "",
-    branch: "Warangal", course: "SI", courseType: "Regular", medium: "Telugu", mode: "Residential",
+    branch: "Warangal", course: "SI", courseType: "Regular", mode: "Residential",
     durationId: "", batchId: "", photo: "",
   });
   const [photoName, setPhotoName] = useState("");
+  // Aadhaar card images are mandatory. Held as data URLs, uploaded server-side on submit.
+  const [aadharFront, setAadharFront] = useState("");
+  const [aadharBack, setAadharBack] = useState("");
+  const [aadharFrontName, setAadharFrontName] = useState("");
+  const [aadharBackName, setAadharBackName] = useState("");
   const [durations, setDurations] = useState<Duration[]>([]);
   const [batches, setBatches] = useState<Batch[]>([]);
   const [addons, setAddons] = useState<Addon[]>([]);
   const [addonIds, setAddonIds] = useState<string[]>([]);
   const [splits, setSplits] = useState<Split[]>([{ method: "cash", amount: "", transactionId: "", screenshot: "", shotName: "" }]);
-  const [feeConfigs, setFeeConfigs] = useState<{ course: string; mode: string; duration: string; medium: string; branch: string; amount: number }[]>([]);
-  const [mediumOptions, setMediumOptions] = useState<string[]>(["Telugu", "English"]);
+  const [feeConfigs, setFeeConfigs] = useState<{ course: string; mode: string; duration: string; branch: string; amount: number }[]>([]);
+  
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
   const [courseOptions, setCourseOptions] = useState<string[]>(["SI", "Constable", "Groups", "SSC GD", "Defence", "Army", "UPSC"]);
   const [submitting, setSubmitting] = useState(false);
@@ -33,15 +38,6 @@ export default function AdmissionPage() {
   useEffect(() => {
     fetch("/api/fees").then((r) => r.json()).then((d) => Array.isArray(d) && setFeeConfigs(d)).catch(() => {});
     fetch("/api/durations").then((r) => r.json()).then((d) => Array.isArray(d) && setDurations(d)).catch(() => {});
-    fetch("/api/mediums").then((r) => r.json()).then((d) => {
-      if (Array.isArray(d)) {
-        const names = d.map((m: any) => String(m.name || m)).filter(Boolean);
-        if (names.length > 0) {
-          setMediumOptions(names);
-          setForm((f) => (names.includes(f.medium) ? f : { ...f, medium: names[0] }));
-        }
-      }
-    }).catch(() => {});
     fetch("/api/branches").then((r) => r.json()).then((d) => {
       if (Array.isArray(d)) {
         const names = d.map((b: any) => String(b.name || b)).filter(Boolean);
@@ -92,10 +88,10 @@ export default function AdmissionPage() {
     // displayed estimate always equals the fee the server actually locks.
     const durName = selDuration?.name || "";
     const rows = matchCourseRows(feeConfigs as any, form.course);
-    const hit = matchFeeAmount(rows.length > 0 ? rows : feeConfigs, form.course, form.mode, durName, form.medium, form.branch);
+    const hit = matchFeeAmount(rows.length > 0 ? rows : feeConfigs, form.course, form.mode, durName, form.branch);
     if (hit !== null) return hit;
     return fallbackFee(form.course, form.mode);
-  }, [feeConfigs, form.course, form.mode, form.medium, form.branch, selDuration]);
+  }, [feeConfigs, form.course, form.mode, form.branch, selDuration]);
 
   const addonFees = useMemo(() => addonIds.reduce((s, id) => s + (addons.find((a) => a.id === id)?.fee || 0), 0), [addonIds, addons]);
   const totalFee = baseFee + addonFees;
@@ -113,6 +109,20 @@ export default function AdmissionPage() {
     reader.readAsDataURL(f);
   };
 
+  const onAadhaarFile = (which: "front" | "back", file: File | undefined) => {
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) return alert("Aadhaar image must be under 2MB");
+    const ok = ["image/jpeg", "image/png", "image/webp"];
+    if (!ok.includes(file.type)) return alert("Aadhaar image must be JPG, PNG or WEBP");
+    const reader = new FileReader();
+    reader.onload = () => {
+      const url = String(reader.result);
+      if (which === "front") { setAadharFront(url); setAadharFrontName(file.name); }
+      else { setAadharBack(url); setAadharBackName(file.name); }
+    };
+    reader.readAsDataURL(file);
+  };
+
   const onSplitFile = (idx: number, file: File | undefined) => {
     if (!file) return;
     if (file.size > 3 * 1024 * 1024) return alert("Screenshot must be <3MB");
@@ -128,6 +138,8 @@ export default function AdmissionPage() {
       if (!form.email.trim() || !form.email.includes("@")) return "Valid email required";
       if (!form.address.trim()) return "Address required";
       if (!/^[0-9]{12}$/.test(String(form.aadharCardNumber || "").trim())) return "Valid 12-digit Aadhar number required";
+      if (!aadharFront) return "Upload the front side of your Aadhaar card";
+      if (!aadharBack) return "Upload the back side of your Aadhaar card";
     }
     if (s === 1) {
       if (!form.durationId) return "Select a duration";
@@ -161,12 +173,20 @@ export default function AdmissionPage() {
       setResult({ ok: false, error: `Payment total exceeds fee ₹${totalFee.toLocaleString("en-IN")}` });
       return;
     }
+    // Both Aadhaar images are mandatory — re-check here so a bypassed step cannot submit.
+    if (!aadharFront || !aadharBack) {
+      setSubmitting(false);
+      setResult({ ok: false, error: "Both Aadhaar card images (front and back) are required" });
+      return;
+    }
     const primary = normalized[0];
     const r = await fetch("/api/admissions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         ...form,
+        aadharCardFront: aadharFront,
+        aadharCardBack: aadharBack,
         durationId: form.durationId || undefined,
         addonIds,
         payments: normalized,
@@ -246,6 +266,42 @@ export default function AdmissionPage() {
                   <div><label className="text-xs font-medium text-slate-700">Reference (optional)</label><input value={form.reference} onChange={(e) => setForm({ ...form, reference: e.target.value })} placeholder="Referred by / Friend / Ad" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-4">
+                  <div className="text-sm font-semibold text-navy-900">Aadhaar Card — front & back required *</div>
+                  <p className="text-xs text-slate-600 mt-1">
+                    Upload clear photos of both sides. These are stored privately, are never publicly accessible, and are only shown to admissions staff.
+                  </p>
+                  <div className="mt-3 grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-medium text-slate-700">Front side *</label>
+                      <div className="mt-1 flex items-center gap-3">
+                        {aadharFront ? (
+                          <img src={aadharFront} alt="Aadhaar front" className="w-20 h-14 rounded-lg object-cover border border-slate-200" />
+                        ) : (
+                          <div className="w-20 h-14 rounded-lg bg-slate-100 border border-slate-200 grid place-items-center text-[10px] text-slate-400">Front</div>
+                        )}
+                        <label className="px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm hover:bg-slate-50 cursor-pointer">
+                          <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => onAadhaarFile("front", e.target.files?.[0])} className="hidden" />
+                          {aadharFrontName || "Choose front…"}
+                        </label>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium text-slate-700">Back side *</label>
+                      <div className="mt-1 flex items-center gap-3">
+                        {aadharBack ? (
+                          <img src={aadharBack} alt="Aadhaar back" className="w-20 h-14 rounded-lg object-cover border border-slate-200" />
+                        ) : (
+                          <div className="w-20 h-14 rounded-lg bg-slate-100 border border-slate-200 grid place-items-center text-[10px] text-slate-400">Back</div>
+                        )}
+                        <label className="px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm hover:bg-slate-50 cursor-pointer">
+                          <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => onAadhaarFile("back", e.target.files?.[0])} className="hidden" />
+                          {aadharBackName || "Choose back…"}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                   <div className="hidden sm:block"></div>
                   <div>
                     <label className="text-xs font-medium text-slate-700">Passport Photo (JPG/PNG/WEBP, max 2MB)</label>
@@ -270,7 +326,6 @@ export default function AdmissionPage() {
                 </div>
                 <div className="grid sm:grid-cols-3 gap-3">
                   <div><label className="text-xs font-medium text-slate-700">Course Type</label><select value={form.courseType} onChange={(e) => setForm({ ...form, courseType: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Regular</option><option>Crash</option><option>Weekend</option><option>Online</option></select></div>
-                  <div><label className="text-xs font-medium text-slate-700">Medium</label><select value={form.medium} onChange={(e) => setForm({ ...form, medium: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{mediumOptions.map((m) => <option key={m} value={m}>{m}</option>)}</select></div>
                   <div><label className="text-xs font-medium text-slate-700">Mode</label><select value={form.mode} onChange={(e) => setForm({ ...form, mode: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Residential</option><option>Offline</option><option>Online</option></select></div>
                 </div>
 
@@ -323,7 +378,7 @@ export default function AdmissionPage() {
             {step === 2 && (
               <div className="grid gap-4">
                 <div className="grid sm:grid-cols-3 gap-3">
-                  <div className="p-3 rounded-xl bg-slate-50 border"><div className="text-xs text-slate-500">Base Fee</div><div className="text-lg font-bold text-navy-900">₹{baseFee.toLocaleString("en-IN")}</div><div className="text-xs text-slate-500">{form.course} • {form.mode} • {selDuration?.name || "Base"} • {form.medium} • {form.branch}</div></div>
+                  <div className="p-3 rounded-xl bg-slate-50 border"><div className="text-xs text-slate-500">Base Fee</div><div className="text-lg font-bold text-navy-900">₹{baseFee.toLocaleString("en-IN")}</div><div className="text-xs text-slate-500">{form.course} • {form.mode} • {selDuration?.name || "Base"} • {form.branch}</div></div>
                   <div className="p-3 rounded-xl bg-violet-50 border border-violet-200"><div className="text-xs text-violet-700">Add-ons ({addonIds.length})</div><div className="text-lg font-bold text-violet-800">+ ₹{addonFees.toLocaleString("en-IN")}</div><div className="text-xs text-violet-600">Discounts applied by admin later</div></div>
                   <div className="p-3 rounded-xl bg-sky-50 border border-sky-200"><div className="text-xs text-sky-700">Total Fee</div><div className="text-lg font-bold text-sky-700">₹{totalFee.toLocaleString("en-IN")}</div><div className="text-xs text-sky-600">Pay now (optional) or later</div></div>
                 </div>
@@ -360,7 +415,8 @@ export default function AdmissionPage() {
                   ["Contact", `${form.email} • ${form.phone}`],
                   ["Aadhar", form.aadharCardNumber ? form.aadharCardNumber.replace(/(.{4})/g, "$1 ").trim() : "—"],
                   ["Address", form.address],
-                  ["Course", `${form.course} • ${form.courseType} • ${form.medium} • ${form.mode}`],
+                  ["Course", `${form.course} • ${form.courseType} • ${form.mode}`],
+                  ["Aadhaar card", aadharFront && aadharBack ? "Front + back uploaded" : "Missing"],
                   ["Duration", selDuration ? selDuration.name : "—"],
                   ["Branch", form.branch],
                   ["Batch", selBatch ? `${selBatch.name || selBatch.course} (${selBatch.availableSeats} seats left)` : "—"],

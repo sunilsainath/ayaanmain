@@ -20,7 +20,6 @@ function publicView(a: any) {
     branch: a.branch,
     course: a.course,
     courseType: a.courseType,
-    medium: a.medium,
     mode: a.mode,
     batchId: a.batchId,
     batchName: a.batchName,
@@ -45,7 +44,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { token, name, fatherName, phone, address, reference, aadharCardNumber, branch, course, courseType, medium, mode, batchId, photo, addonIds } = body;
+  const { token, name, fatherName, phone, address, reference, aadharCardNumber, branch, course, courseType, mode, batchId, photo, addonIds } = body;
   if (!token) return NextResponse.json({ error: "token required" }, { status: 400 });
   const a = await prisma.admission.findUnique({ where: { clarificationToken: token } });
   if (!a) return NextResponse.json({ error: "Invalid link" }, { status: 404 });
@@ -69,8 +68,7 @@ export async function POST(req: NextRequest) {
   if (branch !== undefined) data.branch = String(branch).trim();
   if (course !== undefined) data.course = String(course);
   if (courseType !== undefined) data.courseType = String(courseType);
-  if (medium !== undefined) data.medium = String(medium);
-  if (mode !== undefined) data.mode = String(mode);
+    if (mode !== undefined) data.mode = String(mode);
   if (photo) {
     try {
       data.photo = await uploadDataUrl("applicant-photos", String(photo), "photo");

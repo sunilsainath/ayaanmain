@@ -424,7 +424,7 @@ function RagTab() {
   );
 }
 
-const EMPTY_BATCH = { id: "", name: "", course: "SI", medium: "Telugu", mode: "Residential", branch: "Warangal", slot: "", days: "", startDate: "2026-10-01", endDate: "", seats: 40, filled: 0, duration: "3 Months", durationMonths: 3, status: "open", isActive: true, note: "" };
+const EMPTY_BATCH = { id: "", name: "", course: "SI", mode: "Residential", branch: "Warangal", slot: "", days: "", startDate: "2026-10-01", endDate: "", seats: 40, filled: 0, duration: "3 Months", durationMonths: 3, status: "open", isActive: true, note: "" };
 
 function BatchesTab({ campus = "" }: { campus?: string }) {
   const [list, setList] = useState<any[]>([]);
@@ -432,7 +432,6 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
   const [form, setForm] = useState({ ...EMPTY_BATCH });
   const [editing, setEditing] = useState<string | null>(null);
   const [courseOptions, setCourseOptions] = useState<string[]>(["SI", "Constable", "Groups", "SSC GD", "Defence", "Army", "UPSC"]);
-  const [mediumOptions, setMediumOptions] = useState<string[]>(["Telugu", "English"]);
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
 
   const load = () => fetch(`/api/admin/batches${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setList(d)).catch(() => {});
@@ -452,12 +451,6 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
         if (uniq.length > 0) setCourseOptions(uniq);
       }
     }).catch(() => {});
-    fetch("/api/mediums").then((r) => r.json()).then((d) => {
-      if (Array.isArray(d)) {
-        const names = d.map((m: any) => String(m.name || m)).filter(Boolean);
-        if (names.length > 0) setMediumOptions(names);
-      }
-    }).catch(() => {});
     fetch("/api/branches").then((r) => r.json()).then((d) => {
       if (Array.isArray(d)) {
         const names = d.map((b: any) => String(b.name || b)).filter(Boolean);
@@ -468,7 +461,7 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
   const filtered = list.filter((b: any) => {
     if (!q) return true;
     const qq = q.toLowerCase();
-    return [b.name, b.course, b.medium, b.mode, b.branch, b.slot, b.days, b.status, b.duration].join(" ").toLowerCase().includes(qq);
+    return [b.name, b.course, b.mode, b.branch, b.slot, b.days, b.status, b.duration].join(" ").toLowerCase().includes(qq);
   });
 
   const save = async () => {
@@ -485,7 +478,7 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
     else alert(d.error || "Failed");
   };
   const toForm = (b: any) => ({
-    id: b.id, name: b.name || "", course: b.course, medium: b.medium, mode: b.mode, branch: b.branch || "Warangal",
+    id: b.id, name: b.name || "", course: b.course, mode: b.mode, branch: b.branch || "Warangal",
     slot: b.slot || "", days: b.days || "",
     startDate: b.startDate ? new Date(b.startDate).toISOString().slice(0, 10) : "",
     endDate: b.endDate ? new Date(b.endDate).toISOString().slice(0, 10) : "",
@@ -506,7 +499,7 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="text-sm font-semibold text-navy-900">{b.name || `${b.course} Batch`} <span className={`ml-2 text-xs px-2 py-1 rounded-full border ${b.isActive !== false && b.status === "open" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-slate-100 border-slate-200 text-slate-600"}`}>{b.isActive === false ? "inactive" : b.status}</span></div>
-                  <div className="text-xs text-slate-600 mt-1">{b.course} • {b.medium} • {b.mode}{b.branch ? ` • ${b.branch}` : ""}{b.slot ? ` • ${b.slot}` : ""}{b.days ? ` • ${b.days}` : ""}</div>
+                  <div className="text-xs text-slate-600 mt-1">{b.course} • {b.mode}{b.branch ? ` • ${b.branch}` : ""}{b.slot ? ` • ${b.slot}` : ""}{b.days ? ` • ${b.days}` : ""}</div>
                   <div className="text-xs text-slate-600 mt-1">
                     {new Date(b.startDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                     {b.endDate ? ` → ${new Date(b.endDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""} • {b.duration}
@@ -530,9 +523,8 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
         <p className="text-xs text-slate-500">Batch = Course + Duration + Branch + Slot + Dates + Capacity. End date auto-fills from duration.</p>
         <div className="mt-4 grid gap-3">
           <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Batch name * (e.g., October 2026 Morning Batch)" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             <select value={form.course} onChange={(e) => setForm({ ...form, course: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}</select>
-            <select value={form.medium} onChange={(e) => setForm({ ...form, medium: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{mediumOptions.map((m) => <option key={m} value={m}>{m}</option>)}</select>
             <select value={form.mode} onChange={(e) => setForm({ ...form, mode: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Residential</option><option>Offline</option><option>Online</option></select>
           </div>
           <div className="grid grid-cols-3 gap-2">
@@ -581,6 +573,23 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
   const [role, setRole] = useState("super_admin");
   const [branchOptions, setBranchOptions] = useState<string[]>([]);
   const [courseOptions, setCourseOptions] = useState<string[]>([]);
+  const [viewId, setViewId] = useState<string | null>(null);
+  const [aadharUrls, setAadharUrls] = useState<Record<string, { front: string | null; back: string | null }>>({});
+
+  const setViewAdmissions = async (id: string) => {
+    setViewId(viewId === id ? null : id);
+    if (aadharUrls[id]) return;
+    const a: any = list.find((x) => x.id === id);
+    if (!a?.aadharCardFront && !a?.aadharCardBack) return;
+    const signOne = async (ref: string) => {
+      const r = await fetch(`/api/admin/file?ref=${encodeURIComponent(ref)}`, { credentials: "same-origin", cache: "no-store" });
+      if (!r.ok) return null;
+      const d = await r.json().catch(() => ({}));
+      return d.url || null;
+    };
+    const [front, back] = await Promise.all([a.aadharCardFront ? signOne(a.aadharCardFront) : null, a.aadharCardBack ? signOne(a.aadharCardBack) : null]);
+    setAadharUrls((prev) => ({ ...prev, [id]: { front, back } }));
+  };
   const load = () => fetch(`/api/admin/admissions${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setList(d)).catch(() => {});
   useEffect(() => {
     load();
@@ -617,9 +626,24 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
       load();
     } else alert(data.error || "Failed");
   };
-  const printForm = (a: any) => {
+  const printForm = async (a: any, preloaded?: { front: string | null; back: string | null } | null) => {
     const fmtDate = (d: any) => { try { return new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "long", year: "numeric" }); } catch { return String(d || "—"); } };
-    const aadhar = a.aadharCardNumber ? String(a.aadharCardNumber).replace(/(.{4})/g, "$1 ").trim() : "—";
+    // Aadhaar images are private, so they must be signed before the print window opens.
+    let aadhar = preloaded;
+    if (!aadhar && (a.aadharCardFront || a.aadharCardBack)) {
+      const signOne = async (ref: string) => {
+        const r = await fetch(`/api/admin/file?ref=${encodeURIComponent(ref)}`, { credentials: "same-origin", cache: "no-store" });
+        if (!r.ok) return null;
+        const d = await r.json().catch(() => ({}));
+        return d.url || null;
+      };
+      const [front, back] = await Promise.all([
+        a.aadharCardFront ? signOne(a.aadharCardFront) : null,
+        a.aadharCardBack ? signOne(a.aadharCardBack) : null,
+      ]);
+      aadhar = { front, back };
+    }
+    const aadharNo = a.aadharCardNumber ? String(a.aadharCardNumber).replace(/(.{4})/g, "$1 ").trim() : "—";
     const html = `<!DOCTYPE html><html><head><meta charset="utf-8"/><title>Admission Form — ${a.applicationId || a.id}</title>
     <style>
       *{box-sizing:border-box} body{font-family:Inter,system-ui,Arial,sans-serif; margin:0; padding:24px; color:#0f172a; -webkit-print-color-adjust:exact; print-color-adjust:exact}
@@ -630,6 +654,8 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
       .card h3{margin:0 0 8px;font-size:12px;letter-spacing:0.06em;color:#475569;text-transform:uppercase}
       .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #e2e8f0;font-size:13px} .row:last-child{border:none} .k{color:#64748b} .v{font-weight:600;text-align:right;max-width:60%;word-break:break-word}
       .photo{width:96px;height:96px;border-radius:12px;object-fit:cover;border:1px solid #e2e8f0;background:#fff}
+      .idimg{width:150px;height:96px;border-radius:8px;object-fit:cover;border:1px solid #e2e8f0;background:#fff}
+      .idph{width:150px;height:96px;border-radius:8px;border:1px dashed #cbd5e1;background:#f8fafc;display:grid;place-items:center;font-size:10px;color:#94a3b8;text-align:center;padding:6px}
       .footer{margin-top:18px;display:flex;justify-content:space-between;gap:16px;font-size:11px;color:#64748b;border-top:1px solid #e2e8f0;padding-top:12px}
       .sig{margin-top:28px;display:flex;justify-content:space-between;gap:24px} .sig div{flex:1;border-top:1px solid #0f172a;padding-top:6px;font-size:11px;text-align:center;color:#334155}
       @media print{ body{padding:12px} .no-print{display:none} }
@@ -642,10 +668,22 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
         <div class="card"><h3>Applicant</h3>
           <div class="row"><span class="k">Name</span><span class="v">${a.name || "—"} ${a.fatherName ? "S/o " + a.fatherName : ""}</span></div>
           <div class="row"><span class="k">Email • Phone</span><span class="v">${a.email || "—"} • ${a.phone || "—"}</span></div>
-          <div class="row"><span class="k">Aadhar</span><span class="v" style="letter-spacing:0.12em">${aadhar}</span></div>
+          <div class="row"><span class="k">Aadhar</span><span class="v" style="letter-spacing:0.12em">${aadharNo}</span></div>
           <div class="row"><span class="k">Address</span><span class="v">${(a.address || "—").replace(/</g,"&lt;")}</span></div>
           ${a.reference ? `<div class="row"><span class="k">Reference</span><span class="v">${String(a.reference).replace(/</g,"&lt;")}</span></div>` : ""}
-          ${a.photo ? `<div class="row"><span class="k">Photo</span><span class="v"><a href="${a.photo}" target="_blank" style="color:#0369a1">View</a></span></div>` : ""}
+        </div>
+        <div class="card">
+          <h3>Aadhaar Card</h3>
+          <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
+            <div>
+              <div style="font-size:10px;color:#64748b;margin-bottom:4px">Front</div>
+              ${aadhar?.front ? `<img src="${aadhar.front}" class="idimg" alt="Aadhaar front"/>` : `<div class="idph">Not<br/>uploaded</div>`}
+            </div>
+            <div>
+              <div style="font-size:10px;color:#64748b;margin-bottom:4px">Back</div>
+              ${aadhar?.back ? `<img src="${aadhar.back}" class="idimg" alt="Aadhaar back"/>` : `<div class="idph">Not<br/>uploaded</div>`}
+            </div>
+          </div>
         </div>
         <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px">
           ${a.photo ? `<img src="${a.photo}" class="photo" alt="Applicant photo"/>` : `<div style="width:96px;height:96px;border-radius:12px;background:#e2e8f0;display:grid;place-items:center;font-size:11px;color:#64748b">No Photo</div>`}
@@ -656,7 +694,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
       <div class="grid" style="margin-top:12px">
         <div class="card"><h3>Academic</h3>
           <div class="row"><span class="k">Course</span><span class="v">${a.course || "—"} ${a.courseType ? "• " + a.courseType : ""}</span></div>
-          <div class="row"><span class="k">Medium • Mode</span><span class="v">${a.medium || "—"} • ${a.mode || "—"}</span></div>
+          <div class="row"><span class="k">Mode</span><span class="v">${a.mode || "\u2014"}</span></div>
           <div class="row"><span class="k">Branch</span><span class="v">${a.branch || "—"}</span></div>
           <div class="row"><span class="k">Duration</span><span class="v">${a.durationName || "—"} ${a.durationMonths ? "(" + a.durationMonths + " months)" : ""}</span></div>
           <div class="row"><span class="k">Batch</span><span class="v">${a.batchName || "—"} ${a.batchId ? "(" + a.batchId + ")" : ""}</span></div>
@@ -680,11 +718,13 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
           ${a.approvedAt ? `<div class="row"><span class="k">Approved</span><span class="v">${fmtDate(a.approvedAt)}</span></div>` : ""}
           ${a.clarificationNote ? `<div class="row"><span class="k">Clarification</span><span class="v">${String(a.clarificationNote).replace(/</g,"&lt;")}</span></div>` : ""}
         </div>
-        <div class="card"><h3>Contact & Reference</h3>
+        <div class="card"><h3>Contact & Documents</h3>
           <div class="row"><span class="k">Phone</span><span class="v">${a.phone || "—"}</span></div>
           <div class="row"><span class="k">Email</span><span class="v">${a.email || "—"}</span></div>
           <div class="row"><span class="k">Reference</span><span class="v">${a.reference || "—"}</span></div>
           <div class="row"><span class="k">Submitted</span><span class="v">${fmtDate(a.createdAt)} • ${a.id}</span></div>
+          ${a.photo ? `<div class="row"><span class="k">Photo</span><span class="v"><a href="${a.photo}" target="_blank" style="color:#0369a1">View</a></span></div>` : ""}
+          ${a.aadharCardFront || a.aadharCardBack ? `<div class="row"><span class="k">Aadhaar images</span><span class="v">${aadhar?.front || aadhar?.back ? "Loaded in this copy" : "Stored securely — reopen to view"}</span></div>` : ""}
         </div>
       </div>
       <div class="sig"><div>Applicant Signature</div><div>Authorized Signatory • Ayaan Institute</div><div>Date & Seal</div></div>
@@ -701,7 +741,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
     if (branchFilter !== "all" && String(a.branch) !== branchFilter) return false;
     if (q) {
       const qq = q.toLowerCase();
-      const hay = [a.name, a.fatherName, a.phone, a.email, a.course, a.branch, a.medium, a.mode, a.applicationId, a.applicantStudentId, a.aadharCardNumber, a.address, a.reference, a.transactionId].join(" ").toLowerCase();
+      const hay = [a.name, a.fatherName, a.phone, a.email, a.course, a.branch, a.mode, a.applicationId, a.applicantStudentId, a.aadharCardNumber, a.address, a.reference, a.transactionId].join(" ").toLowerCase();
       if (!hay.includes(qq)) return false;
     }
     return true;
@@ -736,7 +776,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1">
                 <div className="text-sm font-semibold text-navy-900">{a.name} {a.fatherName ? <span className="font-normal text-slate-600">S/o {a.fatherName}</span> : ""} • {a.phone} <span className="text-xs font-normal text-slate-500">• {a.email}</span></div>
-                <div className="text-xs text-slate-600 mt-1">{a.course} {a.courseType ? `• ${a.courseType}` : ""} • {a.medium} • {a.mode} • {a.branch || "—"} {a.batchId ? `• ${a.batchId}` : ""}</div>
+                <div className="text-xs text-slate-600 mt-1">{a.course} {a.courseType ? `• ${a.courseType}` : ""} • {a.mode} • {a.branch || "—"} {a.batchId ? `• ${a.batchId}` : ""}</div>
                 <div className="text-xs text-slate-700 mt-1">🪪 Aadhar: <span className="font-mono tracking-widest">{a.aadharCardNumber ? String(a.aadharCardNumber).replace(/(.{4})/g, "$1 ").trim() : <span className="text-slate-400">— not provided (legacy)</span>}</span></div>
                 {a.address && <div className="text-xs text-slate-500 mt-1">📍 {a.address} {a.reference ? `• Ref: ${a.reference}` : ""}</div>}
                 <div className="text-xs mt-1 flex gap-2 items-center flex-wrap">
@@ -769,7 +809,8 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
                 )}
               </div>
               <div className="shrink-0 flex flex-col gap-2 items-end">
-                <button onClick={() => printForm(a)} className="px-3 py-1.5 rounded-full bg-navy-900 text-white text-xs font-medium hover:bg-navy-800">🖨️ Print / PDF</button>
+                <button onClick={() => setViewAdmissions(a.id)} className="px-3 py-1.5 rounded-full bg-white border border-navy-900 text-navy-900 text-xs font-medium hover:bg-navy-900 hover:text-white">View Admission</button>
+                <button onClick={() => printForm(a, aadharUrls[a.id] || null)} className="px-3 py-1.5 rounded-full bg-navy-900 text-white text-xs font-medium hover:bg-navy-800">🖨️ Print / PDF</button>
                 {a.screenshot && <a href={a.screenshot} target="_blank" className="text-xs text-sky-700 hover:underline"><img src={a.screenshot} alt="proof" className="w-20 h-14 object-cover rounded-lg border border-slate-200" /><div>View Proof</div></a>}
               </div>
             </div>
@@ -827,6 +868,98 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
             )}
             {a.status === "approved" && <div className="mt-2 text-xs text-emerald-700">✓ Student {a.applicantStudentId || ""} — login {a.email} / initial password, must-change on first login</div>}
             {a.status === "rejected" && <button onClick={() => act(a.id, "pending")} className="mt-2 text-xs px-3 py-1 rounded-full bg-white border">Mark Pending</button>}
+
+            {viewId === a.id && (
+              <div className="mt-3 p-4 rounded-2xl border border-navy-900/20 bg-white">
+                <div className="flex items-center justify-between gap-2">
+                  <h4 className="font-semibold text-navy-900">Full admission — {a.applicationId || a.id}</h4>
+                  <div className="flex gap-1.5">
+                    <button onClick={() => printForm(a, aadharUrls[a.id] || null)} className="px-3 py-1.5 rounded-full bg-navy-900 text-white text-xs">🖨️ Print / PDF</button>
+                    <button onClick={() => setViewAdmissions(a.id)} className="px-3 py-1.5 rounded-full border border-slate-200 text-xs">Close</button>
+                  </div>
+                </div>
+
+                <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                  <div className="sm:col-span-2 lg:col-span-1 flex flex-col items-center gap-2">
+                    {a.photo ? (
+                      <img src={a.photo} alt="Applicant photo" className="w-24 h-24 rounded-xl object-cover border border-slate-200" />
+                    ) : (
+                      <div className="w-24 h-24 rounded-xl border border-dashed border-slate-300 grid place-items-center text-[10px] text-slate-400">No photo</div>
+                    )}
+                    <div className="text-center">
+                      <div className="font-semibold text-navy-900">{a.name || "—"}</div>
+                      {a.fatherName && <div className="text-slate-500">S/o {a.fatherName}</div>}
+                    </div>
+                    <span className={`px-2 py-0.5 rounded-full border text-[11px] ${statusPill(a.status)}`}>{String(a.status || "").replace(/_/g, " ")}</span>
+                  </div>
+
+                  <div className="grid gap-1.5 content-start">
+                    <div className="text-[11px] font-bold tracking-widest text-slate-500">CONTACT</div>
+                    <div className="text-slate-600">{a.email || "—"}</div>
+                    <div className="text-slate-600">{a.phone || "—"}</div>
+                    <div className="text-slate-600">{a.branch || "—"}</div>
+                    <div className="text-slate-600">{a.address || "—"}</div>
+                    {a.reference && <div className="text-slate-500">Ref: {a.reference}</div>}
+                  </div>
+
+                  <div className="grid gap-1.5 content-start">
+                    <div className="text-[11px] font-bold tracking-widest text-slate-500">ACADEMIC</div>
+                    <div className="text-slate-700 font-medium">{a.course || "—"}{a.courseType ? ` (${a.courseType})` : ""}</div>
+                    <div className="text-slate-600">{a.mode || "—"}</div>
+                    <div className="text-slate-600">{a.durationName || "—"}{a.durationMonths ? ` • ${a.durationMonths} months` : ""}</div>
+                    <div className="text-slate-600">{a.batchName || a.batchId || "No batch yet"}</div>
+                    {a.admissionStartDate && <div className="text-slate-500">Starts {new Date(a.admissionStartDate).toLocaleDateString("en-IN")}</div>}
+                  </div>
+
+                  <div className="grid gap-1.5 content-start">
+                    <div className="text-[11px] font-bold tracking-widest text-slate-500">FEE</div>
+                    <div className="text-slate-700">Total ₹{Number(a.totalFee || 0).toLocaleString("en-IN")}</div>
+                    {Number(a.discount || 0) > 0 && <div className="text-emerald-700">Discount -₹{Number(a.discount).toLocaleString("en-IN")}</div>}
+                    {a.finalFee != null && <div className="font-semibold text-navy-900">Final ₹{Number(a.finalFee).toLocaleString("en-IN")}</div>}
+                    <div className="text-slate-600">Paid ₹{Number(a.paidSoFar ?? a.payingNow ?? 0).toLocaleString("en-IN")}</div>
+                    <div className="text-slate-600">Balance ₹{Number(a.balanceDue || 0).toLocaleString("en-IN")}</div>
+                    <div className="text-slate-500">Method: {a.paymentMethod || "—"}{a.transactionId ? ` • ${a.transactionId}` : ""}</div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-slate-200">
+                  <div className="text-[11px] font-bold tracking-widest text-slate-500 mb-2">AADHAAR CARD</div>
+                  {a.aadharCardFront || a.aadharCardBack ? (
+                    <>
+                      <div className="text-xs text-slate-600 mb-2">
+                        {a.aadharCardNumber ? `•••• ${String(a.aadharCardNumber).slice(-4)}` : "Number not recorded"}
+                        {aadharUrls[a.id] ? "" : " — loading secure images…"}
+                      </div>
+                      <div className="flex flex-wrap gap-3">
+                        <div>
+                          <div className="text-[10px] text-slate-500 mb-1">Front</div>
+                          {aadharUrls[a.id]?.front ? (
+                            <a href={aadharUrls[a.id].front!} target="_blank" rel="noreferrer">
+                              <img src={aadharUrls[a.id].front!} alt="Aadhaar front" className="w-44 h-28 object-cover rounded-lg border border-slate-200" />
+                            </a>
+                          ) : (
+                            <div className="w-44 h-28 rounded-lg border border-dashed border-slate-300 grid place-items-center text-[10px] text-slate-400">Not uploaded</div>
+                          )}
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-slate-500 mb-1">Back</div>
+                          {aadharUrls[a.id]?.back ? (
+                            <a href={aadharUrls[a.id].back!} target="_blank" rel="noreferrer">
+                              <img src={aadharUrls[a.id].back!} alt="Aadhaar back" className="w-44 h-28 object-cover rounded-lg border border-slate-200" />
+                            </a>
+                          ) : (
+                            <div className="w-44 h-28 rounded-lg border border-dashed border-slate-300 grid place-items-center text-[10px] text-slate-400">Not uploaded</div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="text-[10px] text-slate-400 mt-2">Images are stored privately and only shown through short-lived signed links.</div>
+                    </>
+                  ) : (
+                    <div className="text-xs text-amber-700">No Aadhaar images on this application (uploaded before this was mandatory).</div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         ))}
         {filtered.length === 0 && <div className="text-sm text-slate-500 text-center py-8">No {filter} admissions</div>}
@@ -1075,32 +1208,73 @@ function PaymentsTab({ campus = "" }: { campus?: string }) {
   const [q, setQ] = useState("");
   const [showAdd, setShowAdd] = useState(false);
   const [students, setStudents] = useState<any[]>([]);
-  const [selectedStudent, setSelectedStudent] = useState<string>("new");
-  const [newPay, setNewPay] = useState({ name: "", phone: "", email: "", course: "SI", medium: "Telugu", mode: "Offline", amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: "", address: "", branch: "Warangal", courseType: "Regular" });
+  const [selectedStudent, setSelectedStudent] = useState<string>("");
+  const [admissions, setAdmissions] = useState<any[]>([]);
+  const [payAdmission, setPayAdmission] = useState<string>("");
+  const [newPay, setNewPay] = useState({ name: "", phone: "", email: "", course: "SI", mode: "Offline", amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: "", address: "", branch: "Warangal", courseType: "Regular" });
   const load = () => fetch(`/api/admin/payments${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => setData(d)).catch(() => {});
   const loadStudents = () => fetch(`/api/admin/students${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setStudents(d)).catch(() => {});
-  useEffect(() => { load(); loadStudents(); }, [campus]);
+  const loadAdmissions = () => fetch(`/api/admin/admissions${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin", cache: "no-store" }).then((r) => r.json()).then((d) => Array.isArray(d) && setAdmissions(d)).catch(() => {});
+  useEffect(() => { load(); loadStudents(); loadAdmissions(); }, [campus]);
   useEffect(() => { setNewPay((x) => ({ ...x, branch: campus || x.branch })); }, [campus]);
+  // Only this student's admissions are offered, so a fee always lands on a real application.
+  const studentAdmissions = useMemo(
+    () => (selectedStudent ? admissions.filter((a: any) => a.applicantStudentId === selectedStudent || a.studentId === selectedStudent) : []),
+    [admissions, selectedStudent],
+  );
   useEffect(() => {
-    if (selectedStudent === "new") {
-      setNewPay({ name: "", phone: "", email: "", course: "SI", medium: "Telugu", mode: "Offline", amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: "", address: "", branch: "Warangal", courseType: "Regular" });
-    } else {
-      const s = students.find((x) => x.id === selectedStudent);
-      if (s) setNewPay({ name: s.name, phone: s.phone, email: s.email, course: s.course, medium: s.medium, mode: s.mode, amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: s.fatherName || "", address: s.address || "", branch: s.branch || "Warangal", courseType: s.courseType || "Regular" });
+    if (payAdmission && !studentAdmissions.some((a: any) => a.id === payAdmission)) setPayAdmission("");
+  }, [studentAdmissions, payAdmission]);
+  // Outstanding on the chosen admission = locked fee − already acknowledged
+  const payDue = useMemo(() => {
+    const a: any = studentAdmissions.find((x: any) => x.id === payAdmission);
+    if (!a) return 0;
+    const fee = Number(a.finalFee ?? a.totalFee ?? a.amount ?? 0);
+    const paid = Number(a.paidSoFar ?? 0);
+    return Math.max(0, fee - paid);
+  }, [studentAdmissions, payAdmission]);
+  useEffect(() => {
+    if (!selectedStudent) {
+      setNewPay((x) => ({ ...x, amount: 0, paidAmount: 0, dueDate: "", transactionId: "" }));
+      return;
     }
-  }, [selectedStudent, students]);
+    const s = students.find((x) => x.id === selectedStudent);
+    if (s) {
+      setNewPay((x) => ({
+        ...x,
+        name: s.name,
+        phone: s.phone,
+        email: s.email,
+        course: s.course,
+        mode: s.mode,
+        branch: s.branch || campus || "",
+        amount: 0,
+        paidAmount: 0,
+        dueDate: "",
+        transactionId: "",
+      }));
+    }
+  }, [selectedStudent, students, campus]);
   const create = async () => {
-    if (!newPay.name.trim() || !newPay.phone.trim() || !newPay.email.trim() || !newPay.amount) return alert("Name, phone, email, amount required");
-    if (selectedStudent === "new" && !newPay.password.trim()) {
-      // for new student, password will be auto-generated if not provided, but require at least 6 if provided
-      // allow auto generation
-    }
-    const payload: any = { ...newPay, studentId: selectedStudent, createStudent: selectedStudent === "new", password: newPay.password };
-    const r = await fetch("/api/admin/payments", { credentials: "same-origin",  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-    const d = await r.json();
+    if (!selectedStudent) return alert("Select the student this payment is for");
+    if (!payAdmission) return alert("Select the admission this payment belongs to");
+    if (!newPay.amount || newPay.amount <= 0) return alert("Amount required");
+    const paid = newPay.paidAmount > 0 ? Math.min(newPay.amount, newPay.paidAmount) : newPay.amount;
+    if (paid > payDue) return alert(`Paid amount (₹${paid.toLocaleString("en-IN")}) is more than the outstanding ₹${payDue.toLocaleString("en-IN")}`);
+    const r = await fetch("/api/admin/payments", {
+      credentials: "same-origin",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...newPay, paidAmount: paid, admissionId: payAdmission, studentId: selectedStudent }),
+    });
+    const d = await r.json().catch(() => ({}));
     if (r.ok) {
-      if (d.studentId && selectedStudent === "new") alert(`Payment added! Student created: ${d.generatedPassword ? `Password: ${d.generatedPassword}` : ""}. Check Students tab.`);
-      setNewPay({ name: "", phone: "", email: "", course: "SI", medium: "Telugu", mode: "Offline", amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: "", address: "", branch: "Warangal", courseType: "Regular" }); setSelectedStudent("new"); setShowAdd(false); load(); loadStudents();
+      setNewPay({ name: "", phone: "", email: "", course: "SI", mode: "Offline", amount: 0, paidAmount: 0, dueDate: "", paymentMethod: "cash", transactionId: "", password: "", fatherName: "", address: "", branch: campus || "Warangal", courseType: "Regular" });
+      setSelectedStudent("");
+      setPayAdmission("");
+      setShowAdd(false);
+      load();
+      loadAdmissions();
     } else alert(d.error || "Failed");
   };
   if (!data) return <div className="text-sm text-slate-500">Loading payments…</div>;
@@ -1133,41 +1307,43 @@ function PaymentsTab({ campus = "" }: { campus?: string }) {
           <div>
             <label className="text-xs font-medium text-slate-700">Student *</label>
             <select value={selectedStudent} onChange={(e) => setSelectedStudent(e.target.value)} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
-              <option value="new">+ New Student — enter details below</option>
+              <option value="">Select an existing student…</option>
               {students.map((s: any) => (
-                <option key={s.id} value={s.id}>{s.name} • {s.email} • {s.phone} • {s.course}</option>
+                <option key={s.id} value={s.id}>{s.name} • {s.studentId || s.email} • {s.phone} • {s.course}{s.branch ? ` • ${s.branch}` : ""}</option>
               ))}
             </select>
-            <div className="text-xs text-slate-500 mt-1">{selectedStudent === "new" ? "New student will be auto-created in Students tab (password required)" : "Existing student — payment will be linked, student auto-created if missing"}</div>
+            <div className="text-xs text-slate-500 mt-1">
+              Manual fees are always recorded against a registered student, so the amount rolls into their admission, dues and campus AR/AP. No student? Add them in the Students tab first.
+            </div>
           </div>
-          <div className="grid sm:grid-cols-3 gap-2">
-            <input value={newPay.name} onChange={(e) => setNewPay({ ...newPay, name: e.target.value })} placeholder="Student Name *" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
-            <input value={newPay.phone} onChange={(e) => setNewPay({ ...newPay, phone: e.target.value })} placeholder="Phone * (10 digits)" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
-            <input value={newPay.email} onChange={(e) => setNewPay({ ...newPay, email: e.target.value })} placeholder="Email *" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
-          </div>
-          {selectedStudent === "new" && (
-            <div className="grid sm:grid-cols-3 gap-2">
-              <input value={newPay.fatherName} onChange={(e) => setNewPay({ ...newPay, fatherName: e.target.value })} placeholder="Father Name" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
-              <input value={newPay.address} onChange={(e) => setNewPay({ ...newPay, address: e.target.value })} placeholder="Address" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
-              <input value={newPay.password} onChange={(e) => setNewPay({ ...newPay, password: e.target.value })} placeholder="Password * (for new student, min 6)" type="password" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
+          {selectedStudent && (
+            <div className="grid gap-2">
+              <label className="text-xs font-medium text-slate-700">Admission / Application *</label>
+              <select value={payAdmission} onChange={(e) => setPayAdmission(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+                <option value="">Select the admission this payment belongs to…</option>
+                {studentAdmissions.map((a: any) => (
+                  <option key={a.id} value={a.id}>
+                    {a.applicationId || a.id} • {a.course}{a.branch ? ` • ${a.branch}` : ""} • ₹{Number(a.finalFee ?? a.totalFee ?? a.amount ?? 0).toLocaleString("en-IN")}
+                  </option>
+                ))}
+              </select>
+              {studentAdmissions.length === 0 && (
+                <div className="text-xs text-amber-700">This student has no admission record yet. Approve their admission first, then the fee will post against it.</div>
+              )}
+              {payDue > 0 && <div className="text-xs text-slate-500">Outstanding on this admission: ₹{payDue.toLocaleString("en-IN")}</div>}
             </div>
           )}
-          <div className="grid sm:grid-cols-4 gap-2">
-            <select value={newPay.course} onChange={(e) => setNewPay({ ...newPay, course: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>SI</option><option>Constable</option><option>Groups</option><option>SSC GD</option><option>Defence</option><option>UPSC</option></select>
-            <select value={newPay.medium} onChange={(e) => setNewPay({ ...newPay, medium: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Telugu</option><option>English</option></select>
-            <select value={newPay.mode} onChange={(e) => setNewPay({ ...newPay, mode: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Residential</option><option>Offline</option><option>Online</option></select>
-            <input type="number" value={newPay.amount} onChange={(e) => setNewPay({ ...newPay, amount: Number(e.target.value) })} placeholder="Amount * (₹)" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
-          </div>
           <div className="grid sm:grid-cols-2 gap-2">
-            <div><label className="text-xs text-slate-500">Paid Amount (₹) — leave 0 for full</label><input type="number" value={newPay.paidAmount} onChange={(e) => setNewPay({ ...newPay, paidAmount: Number(e.target.value) })} placeholder="e.g., 10000" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
-            <div><label className="text-xs text-slate-500">Due Date (future dues)</label><input type="date" value={newPay.dueDate} onChange={(e) => setNewPay({ ...newPay, dueDate: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
+            <div><label className="text-xs text-slate-500">Amount * (₹)</label><input type="number" min={1} value={newPay.amount} onChange={(e) => setNewPay({ ...newPay, amount: Number(e.target.value) })} placeholder="e.g., 25000" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
+            <div><label className="text-xs text-slate-500">Paid Amount (₹) — leave blank to pay in full</label><input type="number" min={0} value={newPay.paidAmount} onChange={(e) => setNewPay({ ...newPay, paidAmount: Number(e.target.value) })} placeholder="e.g., 10000" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
           </div>
           <div className="grid sm:grid-cols-2 gap-2">
             <select value={newPay.paymentMethod} onChange={(e) => setNewPay({ ...newPay, paymentMethod: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option value="cash">Cash</option><option value="upi">UPI</option><option value="bank">Bank Transfer</option></select>
             <input value={newPay.transactionId} onChange={(e) => setNewPay({ ...newPay, transactionId: e.target.value })} placeholder="Transaction ID (for UPI/Bank)" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
           </div>
-          <div className="text-xs text-slate-500">Balance = Amount - Paid. If Paid &lt; Amount, shows as future dues with due date.</div>
-          <button onClick={create} className="btn-primary justify-center">Add Payment →</button>
+          <div><label className="text-xs text-slate-500">Due Date (only for the unpaid balance)</label><input type="date" value={newPay.dueDate} onChange={(e) => setNewPay({ ...newPay, dueDate: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
+          <div className="text-xs text-slate-500">Paid amount posts immediately against the admission. The remainder becomes a due with the date you set.</div>
+          <button onClick={create} disabled={!selectedStudent || !payAdmission} className="btn-primary justify-center disabled:opacity-50">Add Payment →</button>
         </div>
       )}
       <div className="mt-4 overflow-auto">
@@ -1344,10 +1520,9 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
   const [q, setQ] = useState("");
   const [pw, setPw] = useState<Record<string, string>>({});
   const [showAdd, setShowAdd] = useState(false);
-  const [newStu, setNewStu] = useState({ name: "", fatherName: "", email: "", phone: "", address: "", branch: "Warangal", course: "SI", courseType: "Regular", medium: "Telugu", mode: "Residential", password: "" });
+  const [newStu, setNewStu] = useState({ name: "", fatherName: "", email: "", phone: "", address: "", branch: "Warangal", course: "SI", courseType: "Regular", mode: "Residential", password: "" });
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
   const [courseOptions, setCourseOptions] = useState<string[]>(["SI", "Constable", "Groups", "SSC GD", "Defence", "Army", "UPSC"]);
-  const [mediumOptions, setMediumOptions] = useState<string[]>(["Telugu", "English"]);
   const load = () => fetch(`/api/admin/students${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setList(d)).catch(() => {});
   useEffect(() => {
     load();
@@ -1363,7 +1538,6 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
         setCourseOptions(Array.from(new Set(opts)));
       }
     }).catch(() => {});
-    fetch("/api/mediums").then((r) => r.json()).then((d) => Array.isArray(d) && setMediumOptions(d.map((m: any) => m.name))).catch(() => {});
   }, [campus]);
   const act = async (id: string, action: string, extra: any = {}) => {
     const r = await fetch("/api/admin/students", { credentials: "same-origin",  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, action, ...extra }) });
@@ -1375,7 +1549,7 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
     if (!newStu.name.trim() || !newStu.email.trim() || !newStu.phone.trim() || !newStu.password.trim()) return alert("Name, email, phone, password required");
     const r = await fetch("/api/admin/students", { credentials: "same-origin",  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "create", ...newStu }) });
     const data = await r.json();
-    if (r.ok) { setNewStu({ name: "", fatherName: "", email: "", phone: "", address: "", branch: "Warangal", course: "SI", courseType: "Regular", medium: "Telugu", mode: "Residential", password: "" }); setShowAdd(false); load(); }
+    if (r.ok) { setNewStu({ name: "", fatherName: "", email: "", phone: "", address: "", branch: "Warangal", course: "SI", courseType: "Regular", mode: "Residential", password: "" }); setShowAdd(false); load(); }
     else alert(data.error || "Failed");
   };
   const filtered = list.filter((u) => !q || `${u.name} ${u.email} ${u.phone} ${u.course}`.toLowerCase().includes(q.toLowerCase()));
@@ -1404,9 +1578,8 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
             <select value={newStu.course} onChange={(e) => setNewStu({ ...newStu, course: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}</select>
             <input value={newStu.password} onChange={(e) => setNewStu({ ...newStu, password: e.target.value })} placeholder="Password * (min 6)" type="password" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
           </div>
-          <div className="grid sm:grid-cols-3 gap-2">
+          <div className="grid sm:grid-cols-2 gap-2">
             <select value={newStu.courseType} onChange={(e) => setNewStu({ ...newStu, courseType: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Regular</option><option>Crash</option><option>Weekend</option><option>Online</option></select>
-            <select value={newStu.medium} onChange={(e) => setNewStu({ ...newStu, medium: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{mediumOptions.map((m) => <option key={m} value={m}>{m}</option>)}</select>
             <select value={newStu.mode} onChange={(e) => setNewStu({ ...newStu, mode: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Residential</option><option>Offline</option><option>Online</option></select>
           </div>
           <button onClick={create} className="btn-primary justify-center">Create Student →</button>
@@ -1418,7 +1591,7 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
             <div className="flex items-start justify-between gap-3">
               <div>
                 <div className="text-sm font-semibold text-navy-900">{u.name} <span className={`ml-2 text-xs px-2 py-1 rounded-full border ${u.active === false ? "bg-red-50 border-red-200 text-red-700" : "bg-emerald-50 border-emerald-200 text-emerald-700"}`}>{u.active === false ? "disabled" : "active"}</span></div>
-                <div className="text-xs text-slate-600 mt-1">{u.email} • {u.phone} • {u.course} • {u.medium} • {u.mode}</div>
+                <div className="text-xs text-slate-600 mt-1">{u.email} {u.phone} {u.course} {u.mode}</div>
                 <div className="text-xs text-slate-400">Created {new Date(u.createdAt).toLocaleDateString("en-IN")} • {u.id}</div>
               </div>
               <div className="flex gap-1">
@@ -1577,7 +1750,7 @@ function LeadsTab({ campus = "" }: { campus?: string }) {
     setEditId(null);
   };
   const exportCsv = () => {
-    const headers = ["id", "name", "phone", "course", "medium", "mode", "status", "employeeName", "lastActionAt", "dueDate", "notes", "freeText", "createdAt"];
+    const headers = ["id", "name", "phone", "course", "mode", "status", "employeeName", "lastActionAt", "dueDate", "notes", "freeText", "createdAt"];
     const rows = list.map((x) => headers.map((h) => {
       let v = x[h] ?? "";
       if (h === "lastActionAt" || h === "dueDate" || h === "createdAt") v = v ? new Date(v).toLocaleString("en-IN") : "";
@@ -1595,9 +1768,9 @@ function LeadsTab({ campus = "" }: { campus?: string }) {
   };
   const exportXlsx = () => {
     // Excel-compatible CSV with BOM
-    const headers = ["Name", "Phone", "Course", "Medium", "Mode", "Status", "Employee", "Last Action", "Due Date", "Notes", "Free Text", "Created"];
+    const headers = ["Name", "Phone", "Course", "Mode", "Status", "Employee", "Last Action", "Due Date", "Notes", "Free Text", "Created"];
     const rows = list.map((x) => [
-      x.name, x.phone, x.course || "", x.medium || "", x.mode || "", x.status,
+      x.name, x.phone, x.course || "", x.mode || "", x.status,
       x.employeeName || "", x.lastActionAt ? new Date(x.lastActionAt).toLocaleString("en-IN") : "",
       x.dueDate ? new Date(x.dueDate).toLocaleDateString("en-IN") : "",
       (x.notes || "").replace(/\n/g, " "), (x.freeText || "").replace(/\n/g, " "),
@@ -1647,7 +1820,6 @@ function LeadsTab({ campus = "" }: { campus?: string }) {
       leads.push({
         name, phone,
         course: get(cols, "course") || get(cols, "Course"),
-        medium: get(cols, "medium") || get(cols, "Medium"),
         mode: get(cols, "mode") || get(cols, "Mode"),
         status: get(cols, "status") || get(cols, "Status") || "new",
         employeeName: get(cols, "employee") || get(cols, "employeename") || "",
@@ -1693,7 +1865,7 @@ function LeadsTab({ campus = "" }: { campus?: string }) {
     if (overdueOnly && !isOverdue(x)) return false;
     if (!q) return true;
     const qq = q.toLowerCase();
-    const hay = [x.name, x.phone, x.employeeName, x.notes, x.freeText, x.course, x.medium, x.mode].filter(Boolean).join(" ").toLowerCase();
+    const hay = [x.name, x.phone, x.employeeName, x.notes, x.freeText, x.course, x.mode].filter(Boolean).join(" ").toLowerCase();
     return hay.includes(qq);
   });
 
@@ -1746,7 +1918,7 @@ function LeadsTab({ campus = "" }: { campus?: string }) {
                   <a href={`tel:${x.phone}`} className="text-xs text-sky-700 hover:underline">{x.phone}</a>
                   <div className="text-[11px] text-slate-400">{new Date(x.createdAt).toLocaleDateString("en-IN")}</div>
                 </td>
-                <td className="px-3 py-2 text-xs">{x.course || "—"}<div className="text-slate-500">{x.medium} • {x.mode}</div></td>
+                <td className="px-3 py-2 text-xs">{x.course || "—"}<div className="text-slate-500">{x.mode}</div></td>
                 <td className="px-3 py-2">
                   {editId === x.id ? (
                     <select value={editForm.status} onChange={(e) => setEditForm({ ...editForm, status: e.target.value })} className="px-2 py-1 rounded-full border text-xs bg-white">
@@ -2123,10 +2295,8 @@ function BannerTab() {
 function FeeConfigTab() {
   const [fees, setFees] = useState<any[]>([]);
   const [durations, setDurations] = useState<{ id: string; name: string; months: number }[]>([]);
-  const [mediums, setMediums] = useState<{ id?: string; name: string }[]>([]);
   const [branches, setBranches] = useState<{ id?: string; name: string }[]>([]);
   const [durKey, setDurKey] = useState<string>("");
-  const [medKey, setMedKey] = useState<string>("");
   const [brKey, setBrKey] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -2137,10 +2307,9 @@ function FeeConfigTab() {
   const load = async () => {
     setLoading(true);
     try {
-      const [fr, dr, mr, br, cr] = await Promise.all([
+      const [fr, dr, br, cr] = await Promise.all([
         fetch("/api/admin/fees", { credentials: "same-origin",  cache: "no-store" }),
         fetch("/api/durations", { cache: "no-store" }),
-        fetch("/api/mediums", { cache: "no-store" }),
         fetch("/api/branches", { cache: "no-store" }),
         fetch("/api/courses", { cache: "no-store" }),
       ]);
@@ -2148,8 +2317,6 @@ function FeeConfigTab() {
       if (Array.isArray(fd)) setFees(fd);
       const dd = await dr.json();
       if (Array.isArray(dd)) setDurations(dd);
-      const md = await mr.json();
-      if (Array.isArray(md)) setMediums(md.map((m: any) => ({ id: m.id, name: m.name })));
       const bd = await br.json();
       if (Array.isArray(bd)) setBranches(bd.map((b: any) => ({ id: b.id, name: b.name })));
       const cd = await cr.json();
@@ -2171,12 +2338,12 @@ function FeeConfigTab() {
   useEffect(() => { load(); }, []);
 
   const norm = (v: any) => (v === undefined || v === null ? "" : String(v));
-  // Fallback chain for the current picker key: exact → peel branch → peel medium → peel duration → all-base
-  const chainFor = (): [string, string, string][] => {
-    const chain: [string, string, string][] = [[durKey, medKey, brKey], [durKey, medKey, ""], [durKey, "", ""], ["", "", ""]];
+  // Fallback chain for the current picker key: exact → peel branch → peel duration → all-base
+  const chainFor = (): [string, string][] => {
+    const chain: [string, string][] = [[durKey, brKey], [durKey, ""], ["", ""]];
     const seen = new Set<string>();
-    return chain.filter(([d, m, b]) => {
-      const k = `${d}|${m}|${b}`;
+    return chain.filter(([d, b]) => {
+      const k = `${d}|${b}`;
       if (seen.has(k)) return false;
       seen.add(k);
       return true;
@@ -2185,19 +2352,19 @@ function FeeConfigTab() {
   // Resolve inherited value for placeholder (first hit below the exact key)
   const inheritedFee = (course: string, mode: string): number | string => {
     const chain = chainFor().slice(1);
-    for (const [d, m, b] of chain) {
-      const f = fees.find((x) => x.course === course && x.mode === mode && norm(x.duration) === d && norm(x.medium) === m && norm(x.branch) === b);
+    for (const [d, b] of chain) {
+      const f = fees.find((x) => x.course === course && x.mode === mode && norm(x.duration) === d && norm(x.branch) === b);
       if (f) return f.amount;
     }
     return FEE_FALLBACK[course]?.[mode] ?? "";
   };
   const hardcodedFee = (course: string, mode: string): number | string => FEE_FALLBACK[course]?.[mode] ?? "";
   const getFee = (course: string, mode: string) => {
-    const f = fees.find((x) => x.course === course && x.mode === mode && norm(x.duration) === durKey && norm(x.medium) === medKey && norm(x.branch) === brKey);
+    const f = fees.find((x) => x.course === course && x.mode === mode && norm(x.duration) === durKey && norm(x.branch) === brKey);
     return f ? f.amount : "";
   };
   const placeholderFor = (course: string, mode: string) => {
-    if (durKey === "" && medKey === "" && brKey === "") {
+    if (durKey === "" && brKey === "") {
       const h = hardcodedFee(course, mode);
       return h === "" || h === undefined ? "—" : `Base ${Number(h).toLocaleString("en-IN")}`;
     }
@@ -2206,13 +2373,13 @@ function FeeConfigTab() {
   };
   const setFee = (course: string, mode: string, amount: string) => {
     const val = amount === "" ? "" : Math.max(0, Number(amount));
-    const idx = fees.findIndex((x) => x.course === course && x.mode === mode && norm(x.duration) === durKey && norm(x.medium) === medKey && norm(x.branch) === brKey);
+    const idx = fees.findIndex((x) => x.course === course && x.mode === mode && norm(x.duration) === durKey && norm(x.branch) === brKey);
     if (idx >= 0) {
       const next = [...fees];
       next[idx] = { ...next[idx], amount: val === "" ? "" : val };
       setFees(next);
     } else {
-      setFees([...fees, { course, mode, duration: durKey, medium: medKey, branch: brKey, amount: val === "" ? "" : val }]);
+      setFees([...fees, { course, mode, duration: durKey, branch: brKey, amount: val === "" ? "" : val }]);
     }
   };
 
@@ -2221,9 +2388,9 @@ function FeeConfigTab() {
     // Send the full visible grid for the selected key; blanks delete that row (falls back up the chain)
     const payload = courses.flatMap((course) =>
       modes.map((mode) => {
-        const row = fees.find((x) => x.course === course && x.mode === mode && norm(x.duration) === durKey && norm(x.medium) === medKey && norm(x.branch) === brKey);
+        const row = fees.find((x) => x.course === course && x.mode === mode && norm(x.duration) === durKey && norm(x.branch) === brKey);
         const amount = row ? row.amount : "";
-        return { course, mode, duration: durKey, medium: medKey, branch: brKey, amount: amount === "" ? null : Number(amount) };
+        return { course, mode, duration: durKey, branch: brKey, amount: amount === "" ? null : Number(amount) };
       })
     );
     const r = await fetch("/api/admin/fees", { credentials: "same-origin",  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fees: payload }) });
@@ -2247,7 +2414,7 @@ function FeeConfigTab() {
       <div className="card p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 className="font-semibold text-navy-900">Fee Config • Per Course × Mode × Duration × Medium × Branch</h2>
+            <h2 className="font-semibold text-navy-900">Fee Config • Per Course × Mode × Duration × Branch</h2>
             <p className="text-xs text-slate-500 mt-1">Configurable — changes reflect instantly in admission form & student checkout. Only super_admin can save; finance can view.</p>
           </div>
           <div className="flex gap-2">
@@ -2276,24 +2443,6 @@ function FeeConfigTab() {
         </div>
         <div className="mt-3 grid gap-2">
           <div className="flex gap-2 items-center overflow-auto scrollbar-none pb-1">
-            <span className="text-xs font-semibold text-slate-500 w-16 shrink-0">Medium</span>
-            <button
-              onClick={() => setMedKey("")}
-              className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${medKey === "" ? "bg-navy-900 text-white border-navy-900 shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
-            >
-              Base (all mediums)
-            </button>
-            {mediums.map((m) => (
-              <button
-                key={m.id || m.name}
-                onClick={() => setMedKey(m.name)}
-                className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${medKey === m.name ? "bg-navy-900 text-white border-navy-900 shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
-              >
-                {m.name}
-              </button>
-            ))}
-          </div>
-          <div className="flex gap-2 items-center overflow-auto scrollbar-none pb-1">
             <span className="text-xs font-semibold text-slate-500 w-16 shrink-0">Branch</span>
             <button
               onClick={() => setBrKey("")}
@@ -2312,10 +2461,10 @@ function FeeConfigTab() {
             ))}
           </div>
         </div>
-        {durKey === "" && medKey === "" && brKey === "" ? (
-          <div className="mt-2 text-xs text-slate-500">Editing <b>Base</b> fees — used everywhere unless overridden. Clearing a cell removes the row (hardcoded fallback applies). Add mediums/branches in Masters.</div>
+        {durKey === "" && brKey === "" ? (
+          <div className="mt-2 text-xs text-slate-500">Editing <b>Base</b> fees — used everywhere unless overridden. Clearing a cell removes the row (hardcoded fallback applies). Add branches in Masters.</div>
         ) : (
-          <div className="mt-2 text-xs text-slate-500">Editing overrides for <b>{[durKey || "all durations", medKey || "all mediums", brKey || "all branches"].join(" • ")}</b> — empty cells inherit the value shown as placeholder. Clearing a filled cell deletes the override.</div>
+          <div className="mt-2 text-xs text-slate-500">Editing overrides for <b>{[durKey || "all durations", brKey || "all branches"].join(" • ")}</b> — empty cells inherit the value shown as placeholder. Clearing a filled cell deletes the override.</div>
         )}
 
         <div className="mt-4 overflow-auto border border-slate-200 rounded-2xl">
@@ -2376,8 +2525,8 @@ function FeeConfigTab() {
         <h3 className="font-semibold text-navy-900">How it works</h3>
         <ul className="mt-2 grid gap-1 text-sm text-slate-600">
           <li>• Admission form fetches <code className="px-1 py-0.5 bg-slate-100 rounded text-xs">GET /api/fees</code> (public) — no auth, cached no-store.</li>
-          <li>• Lookup order per course + mode: exact (duration + medium + branch) → peel branch → peel medium → peel duration → Base → hardcoded fallback.</li>
-          <li>• Save All does <code className="px-1 py-0.5 bg-slate-100 rounded text-xs">POST /api/admin/fees {"{ fees: [...] }"}</code> upsert by (course, mode, duration, medium, branch); blanks delete that row.</li>
+          <li>• Lookup order per course + mode: exact (duration + branch) → peel branch → peel duration → Base → hardcoded fallback.</li>
+          <li>• Save All does <code className="px-1 py-0.5 bg-slate-100 rounded text-xs">POST /api/admin/fees {"{ fees: [...] }"}</code> upsert by (course, mode, duration, , branch); blanks delete that row.</li>
           <li>• Changes reflect immediately — no redeploy needed.</li>
         </ul>
       </div>
@@ -2574,18 +2723,15 @@ function ExpenseTrackerTab({ campus = "" }: { campus?: string }) {
 function MastersTab() {
   const [durations, setDurations] = useState<any[]>([]);
   const [addons, setAddons] = useState<any[]>([]);
-  const [mediums, setMediums] = useState<any[]>([]);
   const [branches, setBranches] = useState<any[]>([]);
   const [courses, setCourses] = useState<any[]>([]);
   const [dForm, setDForm] = useState({ id: "", name: "", months: "", active: true });
   const [aForm, setAForm] = useState({ id: "", name: "", fee: "", courses: "", active: true });
-  const [mForm, setMForm] = useState({ id: "", name: "", active: true });
   const [bForm, setBForm] = useState({ id: "", name: "", address: "", phone: "", active: true });
   const [cForm, setCForm] = useState({ id: "", slug: "", title: "", fee: "", duration: "", eligibility: "" });
   const load = () => {
     fetch("/api/admin/durations", { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setDurations(d)).catch(() => {});
     fetch("/api/admin/addons", { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setAddons(d)).catch(() => {});
-    fetch("/api/admin/mediums", { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setMediums(d)).catch(() => {});
     fetch("/api/admin/branches", { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setBranches(d)).catch(() => {});
     fetch("/api/admin/courses", { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setCourses(d)).catch(() => {});
   };
@@ -2602,18 +2748,13 @@ function MastersTab() {
   };
   const del = async (kind: "d" | "a" | "m" | "b" | "c", id: string) => {
     if (!confirm("Delete?")) return;
-    const ep = kind === "d" ? "durations" : kind === "a" ? "addons" : kind === "m" ? "mediums" : kind === "b" ? "branches" : "courses";
+    const ep = kind === "d" ? "durations" : kind === "a" ? "addons" : kind === "b" ? "branches" : "courses";
     const r = await fetch(`/api/admin/${ep}?id=${encodeURIComponent(id)}`, { method: "DELETE" });
     if (!r.ok) {
       const d = await r.json().catch(() => ({}));
       alert(d.error || "Delete failed");
     }
     load();
-  };
-  const saveM = async () => {
-    if (!mForm.name.trim()) return alert("Name required");
-    const r = await fetch("/api/admin/mediums", { credentials: "same-origin",  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: mForm.id || undefined, name: mForm.name, active: mForm.active }) });
-    if (r.ok) { setMForm({ id: "", name: "", active: true }); load(); } else alert("Failed (name must be unique)");
   };
   const saveB = async () => {
     if (!bForm.name.trim() || !bForm.address.trim()) return alert("Name and address required");
@@ -2679,30 +2820,6 @@ function MastersTab() {
             <label className="flex items-center gap-1 text-xs px-2"><input type="checkbox" checked={aForm.active} onChange={(e) => setAForm({ ...aForm, active: e.target.checked })} /> Active</label>
             <button onClick={saveA} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{aForm.id ? "Update" : "Add"}</button>
             {aForm.id && <button onClick={() => setAForm({ id: "", name: "", fee: "", courses: "", active: true })} className="text-xs text-slate-500">Clear</button>}
-          </div>
-        </div>
-      </div>
-      <div className="card p-6">
-        <h2 className="font-semibold text-navy-900">Mediums • {mediums.length}</h2>
-        <p className="text-xs text-slate-500">Language options for registration & fee config. Inactive ones are hidden from forms.</p>
-        <div className="mt-4 grid gap-2">
-          {mediums.map((m) => (
-            <div key={m.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200">
-              <div className="text-sm font-medium">{m.name}</div>
-              <div className="flex gap-1 items-center">
-                <span className={`text-xs px-2 py-1 rounded-full border ${m.active ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-slate-100 border-slate-200"}`}>{m.active ? "active" : "off"}</span>
-                <button onClick={() => setMForm({ id: m.id, name: m.name, active: m.active })} className="px-2 py-1 rounded-full bg-white border text-xs">Edit</button>
-                <button onClick={() => del("m", m.id)} className="px-2 py-1 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs">✕</button>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 grid gap-2 p-3 rounded-xl bg-slate-50 border">
-          <input value={mForm.name} onChange={(e) => setMForm({ ...mForm, name: e.target.value })} placeholder="Name (e.g., Hindi)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <div className="flex gap-2 items-center">
-            <label className="flex items-center gap-1 text-xs px-2"><input type="checkbox" checked={mForm.active} onChange={(e) => setMForm({ ...mForm, active: e.target.checked })} /> Active</label>
-            <button onClick={saveM} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{mForm.id ? "Update" : "Add"}</button>
-            {mForm.id && <button onClick={() => setMForm({ id: "", name: "", active: true })} className="text-xs text-slate-500">Clear</button>}
           </div>
         </div>
       </div>
@@ -3293,7 +3410,17 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
   const [role, setRole] = useState("super_admin");
   const [note, setNote] = useState<Record<string, string>>({});
   const [openId, setOpenId] = useState<string | null>(null);
-  const load = () =>
+  const [students, setStudents] = useState<any[]>([]);
+  const [items, setItems] = useState<any[]>([]);
+  const [showManual, setShowManual] = useState(false);
+  const [mStudent, setMStudent] = useState("");
+  const [mStudentQuery, setMStudentQuery] = useState("");
+  const [mLines, setMLines] = useState<Record<string, { qty: number; size: string }>>({});
+  const [mMethod, setMMethod] = useState("cash");
+  const [mPaid, setMPaid] = useState(true);
+  const [mNote, setMNote] = useState("");
+  const [mSaving, setMSaving] = useState(false);
+  const load = () => {
     fetch(`/api/admin/orders${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin",  cache: "no-store" })
       .then((r) => r.json())
       .then((d) => {
@@ -3301,13 +3428,55 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
         setNewCount(Number(d.newCount || 0));
       })
       .catch(() => {});
+    fetch("/api/store", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => Array.isArray(d) && setItems(d))
+      .catch(() => {});
+  };
   useEffect(() => {
     load();
     fetch("/api/admin/login", { credentials: "same-origin" }).then((r) => r.json()).then((d) => d.role && setRole(d.role)).catch(() => {});
     const id = setInterval(load, 30000);
     return () => clearInterval(id);
   }, [campus]);
+  useEffect(() => {
+    if (!showManual) return;
+    fetch(`/api/admin/students${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin", cache: "no-store" })
+      .then((r) => r.json())
+      .then((d) => Array.isArray(d) && setStudents(d))
+      .catch(() => {});
+  }, [showManual, campus]);
   const isSuper = role === "super_admin";
+  const studentOptions = students.filter((s: any) => {
+    if (!mStudentQuery.trim()) return true;
+    const q = mStudentQuery.trim().toLowerCase();
+    return [s.name, s.email, s.phone, s.studentId, s.course, s.branch].filter(Boolean).some((v: any) => String(v).toLowerCase().includes(q));
+  });
+  const manualTotal = items.reduce((s, it) => s + Number(it.price || 0) * Number(mLines[it.id]?.qty || 0), 0);
+  const createManual = async () => {
+    const payload = items
+      .filter((it) => Number(mLines[it.id]?.qty || 0) > 0)
+      .map((it) => ({ storeItemId: it.id, qty: mLines[it.id].qty, size: mLines[it.id].size || null }));
+    if (!mStudent) return alert("Select the student this order is for");
+    if (payload.length === 0) return alert("Add at least one item with a quantity");
+    setMSaving(true);
+    const r = await fetch("/api/admin/orders", {
+      credentials: "same-origin",
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ studentId: mStudent, items: payload, paymentMethod: mMethod, paid: mPaid, note: mNote }),
+    });
+    const d = await r.json().catch(() => ({}));
+    setMSaving(false);
+    if (r.ok) {
+      setShowManual(false);
+      setMLines({});
+      setMStudent("");
+      setMStudentQuery("");
+      setMNote("");
+      load();
+    } else alert(d.error || "Failed to create order");
+  };
   const act = async (id: string, action: string) => {
     const r = await fetch("/api/admin/orders", { credentials: "same-origin",  method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, action, note: note[id] || "" }) });
     const d = await r.json().catch(() => ({}));
@@ -3336,6 +3505,103 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
           ))}
         </div>
       </div>
+      <div className="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="text-xs text-slate-500">
+          Counter sales must be raised against an existing student so the order lands on their account and in campus AR/AP.
+        </div>
+        <button onClick={() => setShowManual((v) => !v)} className="px-4 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium hover:bg-navy-800 shrink-0">
+          {showManual ? "Close counter sale" : "+ New counter sale"}
+        </button>
+      </div>
+
+      {showManual && (
+        <div className="card p-5 grid gap-4">
+          <div>
+            <h3 className="font-semibold text-navy-900">New counter sale</h3>
+            <p className="text-xs text-slate-500 mt-1">Prices come from the store catalogue. Unpaid orders stay open as a receivable until you mark them paid.</p>
+          </div>
+          <div className="grid gap-2">
+            <label className="text-xs font-semibold text-slate-600">Student *</label>
+            <input value={mStudentQuery} onChange={(e) => setMStudentQuery(e.target.value)} placeholder="Search by name, email, phone or student ID" className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm" />
+            <select value={mStudent} onChange={(e) => setMStudent(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+              <option value="">Select student…</option>
+              {studentOptions.map((s: any) => (
+                <option key={s.id} value={s.id}>
+                  {s.name} — {s.studentId || s.email}{s.branch ? ` (${s.branch})` : ""}
+                </option>
+              ))}
+            </select>
+            {studentOptions.length === 0 && mStudentQuery.trim() && <div className="text-xs text-amber-700">No student matches. Only registered students can receive a counter sale.</div>}
+          </div>
+          <div className="grid gap-2">
+            <label className="text-xs font-semibold text-slate-600">Items *</label>
+            <div className="grid gap-1.5 max-h-72 overflow-auto pr-1">
+              {items.length === 0 && <div className="text-xs text-slate-500">No store items yet.</div>}
+              {items.map((it: any) => {
+                const line = mLines[it.id];
+                const sizes: string[] = Array.isArray(it.sizes) ? it.sizes : [];
+                return (
+                  <div key={it.id} className="flex flex-wrap items-center gap-2 p-2.5 rounded-xl border border-slate-200">
+                    <div className="flex-1 min-w-[140px]">
+                      <div className="text-sm font-medium text-navy-900">{it.name}</div>
+                      <div className="text-[11px] text-slate-500">₹{Number(it.price).toLocaleString("en-IN")} • stock {it.stock}</div>
+                    </div>
+                    {sizes.length > 0 && (
+                      <select
+                        value={line?.size || ""}
+                        onChange={(e) => setMLines({ ...mLines, [it.id]: { qty: line?.qty || 1, size: e.target.value } })}
+                        className="px-2 py-1.5 rounded-lg border border-slate-200 text-xs bg-white"
+                      >
+                        <option value="">Size</option>
+                        {sizes.map((sz) => <option key={sz} value={sz}>{sz}</option>)}
+                      </select>
+                    )}
+                    <input
+                      type="number"
+                      min={0}
+                      value={line?.qty || 0}
+                      onChange={(e) => setMLines({ ...mLines, [it.id]: { qty: Math.max(0, parseInt(e.target.value) || 0), size: line?.size || (sizes[0] || "") } })}
+                      placeholder="Qty"
+                      className="w-20 px-2 py-1.5 rounded-lg border border-slate-200 text-xs"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-2">
+            <div>
+              <label className="text-xs font-semibold text-slate-600">Payment method</label>
+              <select value={mMethod} onChange={(e) => setMMethod(e.target.value)} className="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white">
+                <option value="cash">Cash</option>
+                <option value="upi">UPI</option>
+                <option value="card">Card</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-slate-600">Paid now?</label>
+              <select value={mPaid ? "yes" : "no"} onChange={(e) => setMPaid(e.target.value === "yes")} className="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white">
+                <option value="yes">Yes — collected at counter</option>
+                <option value="no">No — on account (receivable)</option>
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-slate-600">Note</label>
+              <input value={mNote} onChange={(e) => setMNote(e.target.value)} placeholder="Optional" className="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-sm" />
+            </div>
+          </div>
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="text-sm">
+              <span className="text-slate-500">Order total: </span>
+              <span className="font-bold text-navy-900">₹{manualTotal.toLocaleString("en-IN")}</span>
+            </div>
+            <button onClick={createManual} disabled={mSaving || manualTotal <= 0} className="px-6 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium disabled:opacity-50 hover:bg-navy-800">
+              {mSaving ? "Saving…" : "Create counter sale"}
+            </button>
+          </div>
+        </div>
+      )}
+
       {!isSuper && <div className="text-xs px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800">Read-only for finance — status changes need super_admin.</div>}
       {filtered.length === 0 && <div className="card p-10 text-center text-sm text-slate-500">No {filter} orders yet.</div>}
       {filtered.map((o) => (
@@ -3346,9 +3612,13 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
                 <span className="font-display font-bold text-navy-900">{o.orderNo}</span>
                 <span className={`px-2 py-1 rounded-full text-xs border ${pill(o.status)}`}>{ORDER_LABEL[o.status] || o.status}</span>
                 <span className={`px-2 py-1 rounded-full text-xs border ${o.paymentStatus === "success" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : o.paymentStatus === "failed" ? "bg-red-50 border-red-200 text-red-700" : "bg-slate-100 border-slate-200 text-slate-600"}`}>Pay: {o.paymentStatus}</span>
+                {o.source === "manual" && <span className="px-2 py-1 rounded-full text-xs border bg-violet-50 border-violet-200 text-violet-700">Counter sale</span>}
               </div>
               <div className="text-sm text-slate-700 mt-2">{o.name} • <a href={`tel:${o.phone}`} className="text-sky-700 hover:underline">{o.phone}</a> • {o.email}</div>
-              <div className="text-xs text-slate-500 mt-1">Ordered {new Date(o.createdAt).toLocaleString("en-IN")}{o.razorpayPaymentId ? ` • Ref: ${o.razorpayPaymentId}` : ""}{o.handedOverAt ? ` • Handed over ${new Date(o.handedOverAt).toLocaleString("en-IN")} by ${o.handedOverBy}` : ""}</div>
+              <div className="text-xs text-slate-500 mt-1">
+                {o.source === "manual"
+                  ? `Counter sale${o.studentCode ? ` • Student ${o.studentCode}` : ""}${o.course ? ` • ${o.course}` : ""}${o.branch ? ` • ${o.branch}` : ""}${o.placedByAdmin ? ` • by ${o.placedByAdmin}` : ""}`
+                  : `Ordered ${new Date(o.createdAt).toLocaleString("en-IN")}`}{o.razorpayPaymentId ? ` • Ref: ${o.razorpayPaymentId}` : ""}{o.handedOverAt ? ` • Handed over ${new Date(o.handedOverAt).toLocaleString("en-IN")} by ${o.handedOverBy}` : ""}</div>
             </div>
             <div className="text-right shrink-0">
               <div className="text-xl font-bold text-navy-900">₹{Number(o.subtotal).toLocaleString("en-IN")}</div>
@@ -3401,6 +3671,9 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
                       {["placed", "payment_confirmed", "processing"].includes(o.status) && <button onClick={() => act(o.id, "mark_ready")} className="px-3 py-1.5 rounded-full bg-sky-600 text-white text-xs">Ready for Handover</button>}
                       {["ready_for_handover", "processing", "payment_confirmed"].includes(o.status) && <button onClick={() => { if (confirm(`Confirm handover of ${o.orderNo} to customer?`)) act(o.id, "handover"); }} className="px-3 py-1.5 rounded-full bg-emerald-600 text-white text-xs font-semibold">✓ Confirm Handover</button>}
                       {o.status === "handed_over" && <button onClick={() => act(o.id, "complete")} className="px-3 py-1.5 rounded-full bg-emerald-600 text-white text-xs">Complete Order</button>}
+                      {o.paymentStatus !== "success" && !["handed_over", "completed", "cancelled"].includes(o.status) && (
+                        <button onClick={() => { if (confirm(`Mark ${o.orderNo} as paid (cash/UPI received)?`)) act(o.id, "mark_paid"); }} className="px-3 py-1.5 rounded-full bg-amber-600 text-white text-xs">Mark Paid</button>
+                      )}
                       {!["handed_over", "completed", "cancelled"].includes(o.status) && <button onClick={() => { if (confirm("Cancel this order?")) act(o.id, "cancel"); }} className="px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs">Cancel</button>}
                     </div>
                   </div>
@@ -3428,9 +3701,9 @@ const ADMIN_TABS: { id: string; label: string; desc: string }[] = [
   { id: "admissions", label: "Admissions", desc: "Applications & approvals" },
   { id: "rag", label: "RAG", desc: "Chatbot knowledge" },
   { id: "batches", label: "Batches", desc: "Course batches & capacity" },
-  { id: "masters", label: "Masters", desc: "Courses / Durations / Addons / Mediums / Branches" },
+  { id: "masters", label: "Masters", desc: "Courses / Durations / Addons / Branches" },
   { id: "banner", label: "Banner", desc: "Top announcement" },
-  { id: "fees", label: "Fee Config", desc: "Fee per course×mode×duration×medium×branch" },
+  { id: "fees", label: "Fee Config", desc: "Fee per course x mode x duration x branch" },
   { id: "admins", label: "Admins", desc: "Manage admin users (super_admin only)" },
   { id: "carousel", label: "Carousel", desc: "Home page carousel (super_admin only)" },
   { id: "email", label: "Email", desc: "Send updates to users (SMTP)" },

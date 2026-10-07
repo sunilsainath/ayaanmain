@@ -13,11 +13,9 @@ export default function CoursesPage() {
   const [tab, setTab] = useState<Tab>("overview");
   const [q, setQ] = useState("");
   const [courseDetails, setCourseDetails] = useState<CourseDetail[]>(fallbackDetails);
-  const [feeConfigs, setFeeConfigs] = useState<{ course: string; mode: string; duration: string; medium: string; branch: string; amount: number }[]>([]);
+  const [feeConfigs, setFeeConfigs] = useState<{ course: string; mode: string; duration: string; branch: string; amount: number }[]>([]);
   const [feeDurSel, setFeeDurSel] = useState<string>("");
-  const [feeMedSel, setFeeMedSel] = useState<string>("");
   const [feeBrSel, setFeeBrSel] = useState<string>("");
-  const [mediumOptions, setMediumOptions] = useState<string[]>(["Telugu", "English"]);
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
 
   useEffect(() => {
@@ -28,15 +26,6 @@ export default function CoursesPage() {
     fetch("/api/fees", { cache: "no-store" })
       .then((r) => r.json())
       .then((d) => Array.isArray(d) && setFeeConfigs(d))
-      .catch(() => {});
-    fetch("/api/mediums")
-      .then((r) => r.json())
-      .then((d) => {
-        if (Array.isArray(d)) {
-          const names = d.map((m: any) => String(m.name || m)).filter(Boolean);
-          if (names.length > 0) setMediumOptions(names);
-        }
-      })
       .catch(() => {});
     fetch("/api/branches")
       .then((r) => r.json())
@@ -61,27 +50,27 @@ export default function CoursesPage() {
     const rows = matchCourseRows(feeConfigs as any, key || slug);
     return rows.length > 0 ? rows : null;
   };
-  // Effective per-mode fees for the selected key (exact → peel branch → peel medium → peel duration → all-base)
+  // Effective per-mode fees for the selected key (exact → peel branch → peel duration → all-base)
   const norm = (v: any) => (v === undefined || v === null ? "" : String(v));
-  const effectiveFeesFor = (slug: string, dur: string, med: string, br: string) => {
+  const effectiveFeesFor = (slug: string, dur: string, br: string) => {
     const rows = liveFeesFor(slug);
     if (!rows) return null;
     const modes: string[] = [];
     for (const r of rows) if (modes.indexOf(r.mode) === -1) modes.push(r.mode);
-    const chain: [string, string, string][] = [[dur, med, br], [dur, med, ""], [dur, "", ""], ["", "", ""]];
+    const chain: [string, string][] = [[dur, br], [dur, ""], ["", ""]];
     const eff = modes
       .map((mode) => {
         let hit: any = null;
         let overridden = false;
         const seen = new Set<string>();
-        for (const [d, m, b] of chain) {
-          const k = `${d}|${m}|${b}`;
+        for (const [d, b] of chain) {
+          const k = `${d}|${b}`;
           if (seen.has(k)) continue;
           seen.add(k);
-          const row = rows.find((r) => nk(r.mode) === nk(mode) && norm(r.duration) === d && norm(r.medium) === m && norm(r.branch) === b);
+          const row = rows.find((r) => nk(r.mode) === nk(mode) && norm(r.duration) === d && norm(r.branch) === b);
           if (row) {
             hit = row;
-            overridden = d !== "" || m !== "" || b !== "";
+            overridden = d !== "" || b !== "";
             break;
           }
         }
@@ -90,7 +79,7 @@ export default function CoursesPage() {
       .filter((x): x is { mode: string; amount: number; overridden: boolean } => x !== null);
     return eff.length > 0 ? eff : null;
   };
-  const dimsFor = (slug: string, dim: "duration" | "medium" | "branch"): string[] => {
+  const dimsFor = (slug: string, dim: "duration" | "branch"): string[] => {
     const rows = liveFeesFor(slug);
     if (!rows) return [];
     const out: string[] = [];
@@ -111,7 +100,6 @@ export default function CoursesPage() {
     setActiveSlug(slug);
     setTab("overview");
     setFeeDurSel("");
-    setFeeMedSel("");
     setFeeBrSel("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -189,9 +177,9 @@ export default function CoursesPage() {
                         <div className="text-slate-500">Fee — live from Fee Config</div>
                         {(() => {
                           const durs = dimsFor(activeCourse.slug, "duration");
-                          const eff = effectiveFeesFor(activeCourse.slug, feeDurSel, feeMedSel, feeBrSel);
+                          const eff = effectiveFeesFor(activeCourse.slug, feeDurSel, feeBrSel);
                           if (!eff) return <div className="font-semibold text-navy-900 mt-1">Fee on request — contact admissions</div>;
-                          const hasOverride = feeDurSel || feeMedSel || feeBrSel;
+                          const hasOverride = feeDurSel || feeBrSel;
                           return (
                             <>
                               <div className="mt-2 grid gap-1.5">
@@ -207,17 +195,7 @@ export default function CoursesPage() {
                                     ))}
                                   </select>
                                 )}
-                                <div className="grid grid-cols-2 gap-1.5">
-                                  <select
-                                    value={feeMedSel}
-                                    onChange={(e) => setFeeMedSel(e.target.value)}
-                                    className="w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs bg-white focus:outline-none focus:ring-2 focus:ring-sky-500"
-                                  >
-                                    <option value="">Base (all mediums)</option>
-                                    {mediumOptions.map((m) => (
-                                      <option key={m} value={m}>{m}</option>
-                                    ))}
-                                  </select>
+                                <div className="grid grid-cols-1 gap-1.5">
                                   <select
                                     value={feeBrSel}
                                     onChange={(e) => setFeeBrSel(e.target.value)}
@@ -244,8 +222,7 @@ export default function CoursesPage() {
                         })()}
                       </div>
                       <div className="p-3 rounded-xl bg-white border"><div className="text-slate-500">Mode</div><div className="font-semibold text-navy-900">{activeCourse.mode.join(" • ")}</div></div>
-                      <div className="p-3 rounded-xl bg-white border"><div className="text-slate-500">Medium</div><div className="font-semibold text-navy-900">{activeCourse.medium.join(" • ")}</div></div>
-                    </div>
+                      </div>
                   </div>
                   <div className="card p-5 bg-navy-900 text-white border-navy-900">
                     <div className="font-semibold">Ready to join?</div>
