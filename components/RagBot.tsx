@@ -77,13 +77,13 @@ export default function RagBot() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label="Open Ayaan Assistant"
-        className="fixed bottom-6 left-6 lg:bottom-6 lg:right-[96px] lg:left-auto z-50 w-14 h-14 rounded-full bg-navy-900 text-white grid place-items-center shadow-lg hover:scale-105 active:scale-95 transition border border-white/10"
+        className="fixed bottom-[140px] right-4 lg:bottom-6 lg:right-[96px] lg:left-auto z-50 w-14 h-14 rounded-full bg-navy-900 text-white grid place-items-center shadow-lg hover:scale-105 active:scale-95 transition border border-white/10"
       >
         <span className="text-xl">{open ? "✕" : "◈"}</span>
         {!open && <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white animate-pulse" />}
       </button>
       {!open && (
-        <div className="fixed bottom-[84px] left-6 lg:left-auto lg:right-6 z-40 hidden sm:block">
+        <div className="fixed bottom-[148px] left-4 lg:bottom-[84px] lg:left-auto lg:right-6 z-40 hidden sm:block">
           <div className="px-3 py-2 rounded-full bg-white border border-slate-200 shadow-soft text-xs font-medium text-slate-700 flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             Ask Ayaan • EN / हिंदी / తెలుగు

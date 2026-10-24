@@ -292,10 +292,10 @@ if (d.mustChangePassword) setMustChange(true);
                   <input value={pass} onChange={(e) => setPass(e.target.value)} placeholder="Password" type="password" onKeyDown={(e) => e.key === "Enter" && doLogin()} className="px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500" />
                   {loginErr && <div className="text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded-xl">{loginErr}</div>}
                   <button onClick={doLogin} className="btn-primary justify-center">Sign In →</button>
-                  <div className="flex gap-2">
-                    <button onClick={() => setShowForgot(true)} className="flex-1 text-xs text-slate-600 hover:text-sky-700 hover:underline text-center py-2">Forgot password?</button>
-                    <span className="text-slate-300 py-2">•</span>
-                    <button onClick={() => { setOtpMode(true); setLoginErr(""); setOtpSent(false); }} className="flex-1 text-xs font-semibold text-navy-900 hover:text-sky-700 hover:underline text-center py-2">Login with OTP → Secured</button>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <button onClick={() => setShowForgot(true)} className="flex-1 min-w-0 text-xs text-slate-600 hover:text-sky-700 hover:underline text-center py-2">Forgot password?</button>
+                    <span className="hidden sm:inline text-slate-300 px-1">•</span>
+                    <button onClick={() => { setOtpMode(true); setLoginErr(""); setOtpSent(false); }} className="flex-1 min-w-0 text-xs font-semibold text-navy-900 hover:text-sky-700 hover:underline text-center py-2">Login with OTP → Secured</button>
                   </div>
                 </>
               ) : (
@@ -359,12 +359,12 @@ if (d.mustChangePassword) setMustChange(true);
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[64px] flex items-center justify-between gap-3">
+        <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-3">
           <div className="flex items-center gap-3 min-w-0">
             <div className="w-9 h-9 rounded-xl bg-white overflow-hidden grid place-items-center shrink-0 border border-slate-100"><BrandLogo height={34} showWordmark={false} /></div>
             <div className="min-w-0">
               <div className="font-display font-bold text-navy-900 leading-none truncate">AYAAN ADMIN</div>
-              <div className="text-xs text-slate-500 capitalize truncate">{role.replace("_", " ")} • {authUser}</div>
+              <div className="text-xs text-slate-500 capitalize truncate hidden sm:block">{role.replace("_", " ")} • {authUser}</div>
             </div>
             <span className={`ml-1 px-2.5 py-1 rounded-full text-xs font-semibold border capitalize hidden sm:inline ${role === "super_admin" ? "bg-navy-900 text-white border-navy-900" : role === "finance" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-sky-50 border-sky-200 text-sky-700"}`}>{role.replace("_", " ")}</span>
           </div>
@@ -384,7 +384,7 @@ if (d.mustChangePassword) setMustChange(true);
 
         {/* Mobile: one scrollable row instead of a wrapping pill cloud */}
         <div className="lg:hidden border-t border-slate-100">
-          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 flex gap-2 py-2 overflow-x-auto scrollbar-none">
+          <div className="max-w-[1440px] mx-auto px-3 sm:px-6 flex gap-2 py-2 overflow-x-auto scrollbar-none snap-x snap-mandatory">
             {visibleTabs.map((t) => (
               <button
                 key={t.id}
@@ -419,7 +419,7 @@ if (d.mustChangePassword) setMustChange(true);
               return (
                 <div key={g.id} className="mb-2 last:mb-0">
                   <div className="px-2 pt-2 pb-1 text-[10px] font-bold tracking-widest text-slate-400">{g.label.toUpperCase()}</div>
-                  <div className="grid gap-0.5">
+                  <div className="grid grid-cols-1 gap-0.5">
                     {tabs.map((t) => {
                       const active = tab === t.id;
                       const count = badgeFor(t);
@@ -543,7 +543,7 @@ function RagTab() {
   const filtered = list.filter((x) => !q || `${x.id} ${x.category} ${x.en}`.toLowerCase().includes(q.toLowerCase()));
 
   return (
-    <div className="grid lg:grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 card p-6">
         <div className="flex items-center justify-between gap-3">
           <h2 className="font-semibold text-navy-900">RAG Documents • {list.length}</h2>
@@ -584,7 +584,7 @@ function RagTab() {
           <textarea value={form.hi} onChange={(e) => setForm({ ...form, hi: e.target.value })} placeholder="Hindi (hi) — हिंदी में" rows={3} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
           <textarea value={form.te} onChange={(e) => setForm({ ...form, te: e.target.value })} placeholder="Telugu (te) — తెలుగులో" rows={3} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
           <div className="flex gap-2">
-            <button onClick={save} className="flex-1 btn-primary justify-center">{editing ? "Update" : "Add"} Document</button>
+            <button onClick={save} className="flex-1 min-w-0 btn-primary justify-center">{editing ? "Update" : "Add"} Document</button>
             <button onClick={() => { setEditing(null); setForm({ id: "", category: "General", keywords: "", en: "", hi: "", te: "", source: "Admin" }); }} className="px-4 py-2.5 rounded-full border border-slate-200 text-sm">Clear</button>
           </div>
           <div className="text-xs text-slate-400">Tip: keep each doc focused (one topic). Bot picks top 2 by keyword overlap.</div>
@@ -657,7 +657,7 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
   });
 
   return (
-    <div className="grid lg:grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 card p-6">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <h2 className="font-semibold text-navy-900">Batches • {filtered.length}/{list.length} <span className="font-normal text-slate-500">— academic groups students join</span></h2>
@@ -697,7 +697,7 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
             <select value={form.course} onChange={(e) => setForm({ ...form, course: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}</select>
             <select value={form.mode} onChange={(e) => setForm({ ...form, mode: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Residential</option><option>Offline</option><option>Online</option></select>
           </div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <select value={form.branch} onChange={(e) => setForm({ ...form, branch: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{branchOptions.map((b) => <option key={b} value={b}>{b}</option>)}</select>
             <input value={form.slot} onChange={(e) => setForm({ ...form, slot: e.target.value })} placeholder="Slot (e.g., Morning 6-9 AM)" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
             <input value={form.days} onChange={(e) => setForm({ ...form, days: e.target.value })} placeholder="Days (e.g., Mon–Sat)" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
@@ -706,19 +706,19 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
             <div><label className="text-xs text-slate-500">Start Date *</label><input type="date" value={form.startDate} onChange={(e) => setForm({ ...form, startDate: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
             <div><label className="text-xs text-slate-500">End Date (auto)</label><input type="date" value={form.endDate} onChange={(e) => setForm({ ...form, endDate: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
           </div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <div><label className="text-xs text-slate-500">Capacity *</label><input type="number" min={1} value={form.seats} onChange={(e) => setForm({ ...form, seats: Number(e.target.value) })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
             <div><label className="text-xs text-slate-500">Enrolled</label><input type="number" min={0} value={form.filled} onChange={(e) => setForm({ ...form, filled: Number(e.target.value) })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
             <div><label className="text-xs text-slate-500">Duration (months)</label><input type="number" min={1} value={form.durationMonths} onChange={(e) => setForm({ ...form, durationMonths: Number(e.target.value), duration: `${e.target.value} Months` })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
           </div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <input value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} placeholder="Duration label" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
             <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option value="open">open</option><option value="closed">closed</option></select>
             <label className="flex items-center gap-2 text-sm px-3"><input type="checkbox" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} /> Active</label>
           </div>
           <input value={form.note} onChange={(e) => setForm({ ...form, note: e.target.value })} placeholder="Note" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
           <div className="flex gap-2">
-            <button onClick={save} className="flex-1 btn-primary justify-center">{editing ? "Update" : "Add"} Batch</button>
+            <button onClick={save} className="flex-1 min-w-0 btn-primary justify-center">{editing ? "Update" : "Add"} Batch</button>
             <button onClick={() => { setEditing(null); setForm({ ...EMPTY_BATCH }); }} className="px-4 py-2.5 rounded-full border border-slate-200 text-sm">Clear</button>
           </div>
           <div className="text-xs text-slate-400">Capacity can't drop below enrollment. Deleting a batch with approved students is blocked.</div>
@@ -941,7 +941,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
           </div>
         </div>
         <div className="flex gap-2 flex-wrap items-center">
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, phone, email, course, Aadhar, App ID…" className="flex-1 min-w-[220px] px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, phone, email, course, Aadhar, App ID…" className="flex-1 min-w-0 min-w-[220px] px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white" />
           <select value={courseFilter} onChange={(e) => setCourseFilter(e.target.value)} className="px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white"><option value="all">All courses</option>{courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}</select>
           <select value={branchFilter} onChange={(e) => setBranchFilter(e.target.value)} className="px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white"><option value="all">All branches</option>{branchOptions.map((b) => <option key={b} value={b}>{b}</option>)}</select>
           {(q || courseFilter !== "all" || branchFilter !== "all") && <button onClick={() => { setQ(""); setCourseFilter("all"); setBranchFilter("all"); }} className="text-xs text-slate-500 hover:underline">Clear</button>}
@@ -994,7 +994,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
             {(a.status === "pending" || a.status === "clarification_required") && (
               <div className="mt-3 grid gap-2">
                 <div className="flex gap-2 items-center flex-wrap">
-                  <input value={clarNote[a.id] || ""} onChange={(e) => setClarNote({ ...clarNote, [a.id]: e.target.value })} placeholder="Clarification note for applicant…" className="flex-1 min-w-[200px] px-3 py-2 rounded-xl border border-slate-200 text-sm" />
+                  <input value={clarNote[a.id] || ""} onChange={(e) => setClarNote({ ...clarNote, [a.id]: e.target.value })} placeholder="Clarification note for applicant…" className="flex-1 min-w-0 min-w-[200px] px-3 py-2 rounded-xl border border-slate-200 text-sm" />
                   <button onClick={() => { if (!clarNote[a.id]?.trim()) return alert("Enter clarification note"); act(a.id, "request_clarification", { note: clarNote[a.id] }); }} className="px-3 py-2 rounded-full bg-violet-600 text-white text-xs font-medium hover:bg-violet-700">Ask Clarification</button>
                 </div>
                 <div className="flex gap-2 items-center flex-wrap">
@@ -1070,7 +1070,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
                     <span className={`px-2 py-0.5 rounded-full border text-[11px] ${statusPill(a.status)}`}>{String(a.status || "").replace(/_/g, " ")}</span>
                   </div>
 
-                  <div className="grid gap-1.5 content-start">
+                  <div className="grid grid-cols-1 gap-1.5 content-start">
                     <div className="text-[11px] font-bold tracking-widest text-slate-500">CONTACT</div>
                     <div className="text-slate-600">{a.email || "—"}</div>
                     <div className="text-slate-600">{a.phone || "—"}</div>
@@ -1079,7 +1079,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
                     {a.reference && <div className="text-slate-500">Ref: {a.reference}</div>}
                   </div>
 
-                  <div className="grid gap-1.5 content-start">
+                  <div className="grid grid-cols-1 gap-1.5 content-start">
                     <div className="text-[11px] font-bold tracking-widest text-slate-500">ACADEMIC</div>
                     <div className="text-slate-700 font-medium">{a.course || "—"}{a.courseType ? ` (${a.courseType})` : ""}</div>
                     <div className="text-slate-600">{a.mode || "—"}</div>
@@ -1088,7 +1088,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
                     {a.admissionStartDate && <div className="text-slate-500">Starts {new Date(a.admissionStartDate).toLocaleDateString("en-IN")}</div>}
                   </div>
 
-                  <div className="grid gap-1.5 content-start">
+                  <div className="grid grid-cols-1 gap-1.5 content-start">
                     <div className="text-[11px] font-bold tracking-widest text-slate-500">FEE</div>
                     <div className="text-slate-700">Total ₹{Number(a.totalFee || 0).toLocaleString("en-IN")}</div>
                     {Number(a.discount || 0) > 0 && <div className="text-emerald-700">Discount -₹{Number(a.discount).toLocaleString("en-IN")}</div>}
@@ -1329,7 +1329,7 @@ function DashboardTab({ onOrders, campus = "" }: { onOrders?: () => void; campus
     };
   });
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       {newOrders > 0 && (
         <button onClick={onOrders} className="text-left p-4 rounded-2xl bg-red-50 border border-red-200 flex items-center gap-3 hover:bg-red-100/60 transition">
           <span className="w-10 h-10 rounded-full bg-red-600 text-white grid place-items-center font-bold shrink-0">{newOrders}</span>
@@ -1339,7 +1339,7 @@ function DashboardTab({ onOrders, campus = "" }: { onOrders?: () => void; campus
           </span>
         </button>
       )}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="card p-5"><div className="text-xs tracking-widest font-semibold text-sky-700">ACCOUNTS RECEIVABLE</div><div className="text-2xl font-bold text-navy-900 mt-1">₹{totals.totalReceivable.toLocaleString("en-IN")}</div><div className="text-xs text-slate-500">Total fees receivable • {totals.count} admissions</div><div className="mt-3 flex gap-2 text-xs"><span className="px-2 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700">Collected ₹{totals.totalCollected.toLocaleString("en-IN")}</span><span className="px-2 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700">Pending ₹{totals.totalPending.toLocaleString("en-IN")}</span></div></div>
         <div className="card p-5"><div className="text-xs tracking-widest font-semibold text-amber-700">ACCOUNTS PAYABLE</div><div className="text-2xl font-bold text-navy-900 mt-1">₹{totalPayable.toLocaleString("en-IN")}</div><div className="text-xs text-slate-500">{approvedExpenses.length} approved • {pendingExpenses.length} pending approval • ₹{pendingApprovalTotal.toLocaleString("en-IN")} awaiting super_admin</div><div className="mt-3 flex gap-2 text-xs"><span className="px-2 py-1 rounded-full bg-slate-100 border">Paid ₹{paidPayable.toLocaleString("en-IN")}</span><span className="px-2 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700">Due ₹{pendingPayable.toLocaleString("en-IN")}</span><span className="px-2 py-1 rounded-full bg-red-50 border border-red-200 text-red-700">Pending Appr. ₹{pendingApprovalTotal.toLocaleString("en-IN")}</span></div></div>
         <div className="card p-5"><div className="text-xs tracking-widest font-semibold text-emerald-700">NET POSITION</div><div className={`text-2xl font-bold mt-1 ${totals.totalCollected - totalPayable >= 0 ? "text-emerald-700" : "text-red-600"}`}>₹{(totals.totalCollected - totalPayable).toLocaleString("en-IN")}</div><div className="text-xs text-slate-500">Collected - Payable</div><div className="mt-3 text-xs text-slate-500">Profitability at a glance</div></div>
@@ -1370,7 +1370,7 @@ function DashboardTab({ onOrders, campus = "" }: { onOrders?: () => void; campus
           <div className="mt-4"><GroupedBarChart groups={monthGroups} height={180} /></div>
         </div>
       </div>
-      <div className="grid lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="card p-5"><div className="font-semibold text-navy-900">Recent Payments</div><div className="mt-3 grid gap-2">{payments.slice(0, 5).map((p: any) => (<div key={p.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200 bg-slate-50"><div><div className="text-sm font-medium text-navy-900">{p.student} • {p.course}</div><div className="text-xs text-slate-500">{p.paymentMethod} • {p.status} • ₹{p.amount.toLocaleString("en-IN")}</div></div><span className={`text-xs px-2 py-1 rounded-full border ${p.collected ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-amber-50 border-amber-200 text-amber-700"}`}>{p.collected ? "Collected" : "Pending"}</span></div>))}{payments.length === 0 && <div className="text-sm text-slate-500">No payments yet</div>}</div></div>
         <div className="card p-5"><div className="font-semibold text-navy-900">Top Payables (AP)</div><div className="mt-3 grid gap-2">{expenses.slice(0, 5).map((e: any) => (<div key={e.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200"><div><div className="text-sm font-medium text-navy-900">{e.title}</div><div className="text-xs text-slate-500">{e.category} • {e.vendor} • Due {e.dueDate}</div></div><span className={`text-xs px-2 py-1 rounded-full border ${e.status === "paid" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-amber-50 border-amber-200 text-amber-700"}`}>₹{e.amount.toLocaleString("en-IN")} • {e.status}</span></div>))}{expenses.length === 0 && <div className="text-sm text-slate-500">No expenses</div>}</div></div>
       </div>
@@ -1473,8 +1473,8 @@ function PaymentsTab({ campus = "" }: { campus?: string }) {
       <>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <h2 className="font-semibold text-navy-900">Payments • ₹{data.totals.totalCollected.toLocaleString("en-IN")} collected / ₹{data.totals.totalReceivable.toLocaleString("en-IN")} receivable</h2>
-        <div className="flex gap-2">
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search student, txn…" className="px-3 py-2 rounded-full border border-slate-200 text-sm w-32" />
+        <div className="flex flex-wrap gap-2">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search student, txn…" className="px-3 py-2 rounded-full border border-slate-200 text-sm flex-1 min-w-0 sm:flex-none sm:w-32" />
           <select value={filter} onChange={(e) => setFilter(e.target.value as any)} className="px-3 py-2 rounded-full border border-slate-200 text-sm"><option value="all">All</option><option value="collected">Collected</option><option value="pending">Pending</option></select>
           <button onClick={() => setShowAdd(!showAdd)} className="px-4 py-2 rounded-full bg-navy-900 text-white text-sm">{showAdd ? "Close" : "+ Add Payment"}</button>
         </div>
@@ -1494,7 +1494,7 @@ function PaymentsTab({ campus = "" }: { campus?: string }) {
             </div>
           </div>
           {selectedStudent && (
-            <div className="grid gap-2">
+            <div className="grid grid-cols-1 gap-2">
               <label className="text-xs font-medium text-slate-700">Admission / Application *</label>
               <select value={payAdmission} onChange={(e) => setPayAdmission(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
                 <option value="">Select the admission this payment belongs to…</option>
@@ -1510,11 +1510,11 @@ function PaymentsTab({ campus = "" }: { campus?: string }) {
               {payDue > 0 && <div className="text-xs text-slate-500">Outstanding on this admission: ₹{payDue.toLocaleString("en-IN")}</div>}
             </div>
           )}
-          <div className="grid sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div><label className="text-xs text-slate-500">Amount * (₹)</label><input type="number" min={1} value={newPay.amount} onChange={(e) => setNewPay({ ...newPay, amount: Number(e.target.value) })} placeholder="e.g., 25000" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
             <div><label className="text-xs text-slate-500">Paid Amount (₹) — leave blank to pay in full</label><input type="number" min={0} value={newPay.paidAmount} onChange={(e) => setNewPay({ ...newPay, paidAmount: Number(e.target.value) })} placeholder="e.g., 10000" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
           </div>
-          <div className="grid sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <select value={newPay.paymentMethod} onChange={(e) => setNewPay({ ...newPay, paymentMethod: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option value="cash">Cash</option><option value="upi">UPI</option><option value="bank">Bank Transfer</option></select>
             <input value={newPay.transactionId} onChange={(e) => setNewPay({ ...newPay, transactionId: e.target.value })} placeholder="Transaction ID (for UPI/Bank)" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
           </div>
@@ -1641,7 +1641,7 @@ function ReceiptsPanel({ campus = "" }: { campus?: string }) {
               <button onClick={() => setView(null)} className="px-4 py-2 rounded-full bg-white text-xs">Close</button>
             </div>
             <div className="card p-5">
-              <div className="grid sm:grid-cols-2 gap-y-2 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 text-sm">
                 <div><span className="text-slate-500">Student:</span> <b>{view.studentName || "—"}</b></div>
                 <div><span className="text-slate-500">Receipt No:</span> <b>{view.receiptNo || "—"}</b></div>
                 <div><span className="text-slate-500">Student ID:</span> {view.studentCode || "—"}</div>
@@ -1741,21 +1741,21 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
       </div>
       {showAdd && (
         <div className="mt-4 p-4 rounded-2xl border border-slate-200 bg-slate-50 grid gap-3">
-          <div className="grid sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input value={newStu.name} onChange={(e) => setNewStu({ ...newStu, name: e.target.value })} placeholder="Full Name *" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
             <input value={newStu.fatherName} onChange={(e) => setNewStu({ ...newStu, fatherName: e.target.value })} placeholder="Father Name" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
           </div>
-          <div className="grid sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <input value={newStu.email} onChange={(e) => setNewStu({ ...newStu, email: e.target.value })} placeholder="Email * (login ID)" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
             <input value={newStu.phone} onChange={(e) => setNewStu({ ...newStu, phone: e.target.value })} placeholder="Phone * (10 digits)" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
           </div>
           <input value={newStu.address} onChange={(e) => setNewStu({ ...newStu, address: e.target.value })} placeholder="Address" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
-          <div className="grid sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <select value={newStu.branch} onChange={(e) => setNewStu({ ...newStu, branch: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{branchOptions.map((b) => <option key={b} value={b}>{b}</option>)}</select>
             <select value={newStu.course} onChange={(e) => setNewStu({ ...newStu, course: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}</select>
             <input value={newStu.password} onChange={(e) => setNewStu({ ...newStu, password: e.target.value })} placeholder="Password * (min 6)" type="password" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
           </div>
-          <div className="grid sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <select value={newStu.courseType} onChange={(e) => setNewStu({ ...newStu, courseType: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Regular</option><option>Crash</option><option>Weekend</option><option>Online</option></select>
             <select value={newStu.mode} onChange={(e) => setNewStu({ ...newStu, mode: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Residential</option><option>Offline</option><option>Online</option></select>
           </div>
@@ -1777,7 +1777,7 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
               </div>
             </div>
             <div className="mt-3 flex gap-2">
-              <input value={pw[u.id] || ""} onChange={(e) => setPw({ ...pw, [u.id]: e.target.value })} placeholder="New password (min 6)" className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-sm" />
+              <input value={pw[u.id] || ""} onChange={(e) => setPw({ ...pw, [u.id]: e.target.value })} placeholder="New password (min 6)" className="flex-1 min-w-0 px-3 py-2 rounded-xl border border-slate-200 text-sm" />
               <button onClick={() => act(u.id, "resetPassword", { password: pw[u.id] })} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">Reset PW</button>
             </div>
           </div>
@@ -1816,7 +1816,7 @@ function FinanceTab({ campus = "" }: { campus?: string }) {
   const paidPayable = expenses.filter((e: any) => e.status === "paid").reduce((s: number, e: any) => s + Number(e.amount), 0);
   const pendingApproval = expenses.filter((e: any) => e.status === "pending").reduce((s: number, e: any) => s + Number(e.amount), 0);
   return (
-    <div className="grid lg:grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7">
         <div className="card p-6">
           <h3 className="font-semibold text-navy-900">AR — Accounts Receivable (Fees)</h3>
@@ -2224,7 +2224,7 @@ function AlumniTab() {
     load();
   };
   return (
-    <div className="grid lg:grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 card p-6">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div><h2 className="font-semibold text-navy-900">Alumni • {filtered.length}/{list.length}</h2><p className="text-xs text-slate-500">From https://ayaaninstitute.in/ — manages /alumni page</p></div>
@@ -2282,7 +2282,7 @@ function AlumniTab() {
           </div>
           <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.featured} onChange={(e) => setForm({ ...form, featured: e.target.checked })} /> Featured on home</label>
           <div className="flex gap-2">
-            <button onClick={save} className="flex-1 btn-primary justify-center">{editing ? "Update" : "Add"} Alumni</button>
+            <button onClick={save} className="flex-1 min-w-0 btn-primary justify-center">{editing ? "Update" : "Add"} Alumni</button>
             <button onClick={() => { setEditing(null); setForm({ id: "", name: "", role: "", batch: "", course: "SI PC", quote: "", video: "", image: "", featured: false }); }} className="px-4 py-2.5 rounded-full border border-slate-200 text-sm">Clear</button>
           </div>
         </div>
@@ -2320,15 +2320,15 @@ function StoreStockTab() {
   const low = list.filter((x) => x.stock > 0 && x.stock <= x.threshold).length;
   const out = list.filter((x) => x.stock === 0).length;
   return (
-    <div className="grid lg:grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-7 card p-6">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold text-navy-900">Store Stock • {filtered.length}/{list.length} items</h2>
           <div className="flex gap-2 text-xs"><span className="px-2 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700">{low} low</span><span className="px-2 py-1 rounded-full bg-red-50 border border-red-200 text-red-700">{out} out</span></div>
         </div>
-        <div className="mt-3 flex gap-2">
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, category, SKU…" className="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white" />
-          <select value={catFilter} onChange={(e) => setCatFilter(e.target.value)} className="px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white"><option value="all">All categories</option>{categories.map((c) => <option key={c} value={c}>{c}</option>)}</select>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, category, SKU…" className="flex-1 min-w-0 px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white" />
+          <select value={catFilter} onChange={(e) => setCatFilter(e.target.value)} className="min-w-0 max-w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white"><option value="all">All categories</option>{categories.map((c) => <option key={c} value={c}>{c}</option>)}</select>
         </div>
         <div className="mt-4 grid gap-3 max-h-[70vh] overflow-auto pr-1">
           {filtered.length === 0 ? <div className="text-sm text-slate-500 text-center py-8">No items match.</div> : filtered.map((it) => (
@@ -2352,7 +2352,7 @@ function StoreStockTab() {
         <h3 className="font-semibold text-navy-900">{editing ? `Edit: ${editing}` : "Add / Update Item"}</h3>
         <div className="mt-4 grid gap-3">
           <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Name *" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <input type="number" value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} placeholder="Price" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
             <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Footwear</option><option>Apparel</option><option>Gear</option><option>Equipment</option><option>Fitness</option><option>General</option></select>
             <input value={form.sku} onChange={(e) => setForm({ ...form, sku: e.target.value })} placeholder="SKU" className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
@@ -2367,7 +2367,7 @@ function StoreStockTab() {
             <div className="text-xs text-slate-400 mt-1">Leave blank for products without sizing. Size is required at checkout when set.</div>
           </div>
           <div className="flex gap-2">
-            <button onClick={save} className="flex-1 btn-primary justify-center">{editing ? "Update" : "Add"} Item</button>
+            <button onClick={save} className="flex-1 min-w-0 btn-primary justify-center">{editing ? "Update" : "Add"} Item</button>
             <button onClick={() => { setEditing(null); setForm({ id: "", name: "", price: 0, category: "Gear", stock: 0, threshold: 5, sku: "", image: "", sizes: "" }); }} className="px-4 py-2.5 rounded-full border border-slate-200 text-sm">Clear</button>
           </div>
           <div className="text-xs text-slate-400">Stock 0 = Out of stock (button disabled on store). Low stock shows amber badge.</div>
@@ -2404,7 +2404,7 @@ function BannerTab() {
   const bg = data.type === "urgent" ? "bg-red-600" : data.type === "warning" ? "bg-[#f59e0b]" : data.type === "success" ? "bg-emerald-600" : "bg-navy-900";
 
   return (
-    <div className="grid lg:grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <div className="lg:col-span-5 card p-6 h-fit">
         <h2 className="font-semibold text-navy-900">Rolling Banner</h2>
         <p className="text-sm text-slate-500">Toggle on → banner appears site-wide (top). Turn off to hide.</p>
@@ -2452,7 +2452,7 @@ function BannerTab() {
             {data.enabled && data.message ? (
               <div className={`${bg} text-white px-4 py-3 flex items-center gap-3 text-sm`}>
                 <span className="hidden sm:inline-flex px-2.5 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-semibold">UPDATE</span>
-                <span className="flex-1 truncate">{data.message}</span>
+                <span className="flex-1 min-w-0 truncate">{data.message}</span>
                 {data.link && <span className="px-3 py-1.5 rounded-full bg-white text-navy-900 text-xs font-semibold hidden sm:inline-flex">View →</span>}
               </div>
             ) : (
@@ -2593,7 +2593,7 @@ function FeeConfigTab() {
   if (loading) return <div className="text-sm text-slate-500">Loading fee config…</div>;
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <div className="card p-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -2771,16 +2771,16 @@ function ExpenseTrackerTab({ campus = "" }: { campus?: string }) {
   const apPending = totals.pending;
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       {/* AR/AP summary related */}
-      <div className="grid sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
         <div className="card p-4"><div className="text-xs text-slate-500">Total Expenses</div><div className="text-xl font-bold text-navy-900">₹{totals.total.toLocaleString("en-IN")}</div><div className="text-xs text-slate-500">{expenses.length} records</div></div>
         <div className="card p-4 border-amber-200 bg-amber-50"><div className="text-xs text-amber-700 font-semibold">Pending Approval</div><div className="text-xl font-bold text-amber-800">₹{totals.pending.toLocaleString("en-IN")}</div><div className="text-xs text-amber-700">{expenses.filter((e) => e.status === "pending").length} awaiting super_admin</div></div>
         <div className="card p-4 border-emerald-200 bg-emerald-50"><div className="text-xs text-emerald-700 font-semibold">Approved (AP)</div><div className="text-xl font-bold text-emerald-800">₹{apTotal.toLocaleString("en-IN")}</div><div className="text-xs text-emerald-700">Counts toward Accounts Payable</div></div>
         <div className="card p-4"><div className="text-xs text-slate-500">Rejected</div><div className="text-xl font-bold text-slate-700">₹{expenses.filter((e) => e.status === "rejected").reduce((s, e) => s + Number(e.amount), 0).toLocaleString("en-IN")}</div></div>
       </div>
 
-      <div className="grid lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 card p-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <h2 className="font-semibold text-navy-900">Expense Tracker • {expenses.length}</h2>
@@ -2952,8 +2952,8 @@ function MastersTab() {
     if (r.ok) { setCForm({ id: "", slug: "", title: "", fee: "", duration: "", eligibility: "" }); load(); } else alert(d.error || "Failed");
   };
   return (
-    <div className="grid lg:grid-cols-2 gap-6">
-      <div className="card p-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-w-0">
+      <div className="card p-6 min-w-0">
         <h2 className="font-semibold text-navy-900">Durations • {durations.length}</h2>
         <p className="text-xs text-slate-500">Drives registration duration dropdown, batch end dates & course end dates.</p>
         <div className="mt-4 grid gap-2">
@@ -2969,19 +2969,19 @@ function MastersTab() {
           ))}
         </div>
         <div className="mt-4 grid gap-2 p-3 rounded-xl bg-slate-50 border">
-          <input value={dForm.name} onChange={(e) => setDForm({ ...dForm, name: e.target.value })} placeholder="Name (e.g., 1 Year)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <div className="flex gap-2">
-            <input type="number" min={1} value={dForm.months} onChange={(e) => setDForm({ ...dForm, months: e.target.value })} placeholder="Months" className="flex-1 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={dForm.name} onChange={(e) => setDForm({ ...dForm, name: e.target.value })} placeholder="Name (e.g., 1 Year)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <div className="flex flex-wrap gap-2">
+            <input type="number" min={1} value={dForm.months} onChange={(e) => setDForm({ ...dForm, months: e.target.value })} placeholder="Months" className="flex-1 min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
             <label className="flex items-center gap-1 text-xs px-2"><input type="checkbox" checked={dForm.active} onChange={(e) => setDForm({ ...dForm, active: e.target.checked })} /> Active</label>
             <button onClick={saveD} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{dForm.id ? "Update" : "Add"}</button>
             {dForm.id && <button onClick={() => setDForm({ id: "", name: "", months: "", active: true })} className="text-xs text-slate-500">Clear</button>}
           </div>
         </div>
       </div>
-      <div className="card p-6">
+      <div className="card p-6 min-w-0">
         <h2 className="font-semibold text-navy-900">Add-ons • {addons.length}</h2>
         <p className="text-xs text-slate-500">Offered at registration per course (blank courses = all). Fees snapshot at submit.</p>
-        <div className="mt-4 grid gap-2 max-h-[50vh] overflow-auto pr-1">
+        <div className="mt-4 grid gap-2 max-h-[50vh] overflow-auto pr-1 min-w-0">
           {addons.map((a) => (
             <div key={a.id} className="flex items-center justify-between p-3 rounded-xl border border-slate-200">
               <div><div className="text-sm font-medium">{a.name} <span className="font-bold">₹{Number(a.fee).toLocaleString("en-IN")}</span></div><div className="text-xs text-slate-500">{a.courses?.length ? a.courses.join(", ") : "All courses"}</div></div>
@@ -2994,22 +2994,22 @@ function MastersTab() {
           ))}
         </div>
         <div className="mt-4 grid gap-2 p-3 rounded-xl bg-slate-50 border">
-          <input value={aForm.name} onChange={(e) => setAForm({ ...aForm, name: e.target.value })} placeholder="Add-on name (e.g., Hostel Upgrade)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <div className="flex gap-2">
-            <input type="number" min={0} value={aForm.fee} onChange={(e) => setAForm({ ...aForm, fee: e.target.value })} placeholder="Fee ₹" className="flex-1 px-3 py-2 rounded-xl border text-sm bg-white" />
-            <input value={aForm.courses} onChange={(e) => setAForm({ ...aForm, courses: e.target.value })} placeholder="Courses (blank=all)" className="flex-1 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={aForm.name} onChange={(e) => setAForm({ ...aForm, name: e.target.value })} placeholder="Add-on name (e.g., Hostel Upgrade)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <div className="flex flex-wrap gap-2">
+            <input type="number" min={0} value={aForm.fee} onChange={(e) => setAForm({ ...aForm, fee: e.target.value })} placeholder="Fee ₹" className="flex-1 min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+            <input value={aForm.courses} onChange={(e) => setAForm({ ...aForm, courses: e.target.value })} placeholder="Courses (blank=all)" className="flex-1 min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex flex-wrap gap-2 items-center">
             <label className="flex items-center gap-1 text-xs px-2"><input type="checkbox" checked={aForm.active} onChange={(e) => setAForm({ ...aForm, active: e.target.checked })} /> Active</label>
             <button onClick={saveA} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{aForm.id ? "Update" : "Add"}</button>
             {aForm.id && <button onClick={() => setAForm({ id: "", name: "", fee: "", courses: "", active: true })} className="text-xs text-slate-500">Clear</button>}
           </div>
         </div>
       </div>
-      <div className="card p-6">
+      <div className="card p-6 min-w-0">
         <h2 className="font-semibold text-navy-900">Branches • {branches.length}</h2>
         <p className="text-xs text-slate-500">Branch options for registration, batches & fee config. Inactive ones are hidden from forms.</p>
-        <div className="mt-4 grid gap-2 max-h-[50vh] overflow-auto pr-1">
+        <div className="mt-4 grid gap-2 max-h-[50vh] overflow-auto pr-1 min-w-0">
           {branches.map((b) => (
             <div key={b.id} className="p-3 rounded-xl border border-slate-200">
               <div className="flex items-center justify-between gap-2">
@@ -3025,20 +3025,20 @@ function MastersTab() {
           ))}
         </div>
         <div className="mt-4 grid gap-2 p-3 rounded-xl bg-slate-50 border">
-          <input value={bForm.name} onChange={(e) => setBForm({ ...bForm, name: e.target.value })} placeholder="Branch name (e.g., Warangal)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <input value={bForm.address} onChange={(e) => setBForm({ ...bForm, address: e.target.value })} placeholder="Full address" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <input value={bForm.phone} onChange={(e) => setBForm({ ...bForm, phone: e.target.value })} placeholder="Phone (optional)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <div className="flex gap-2 items-center">
+          <input value={bForm.name} onChange={(e) => setBForm({ ...bForm, name: e.target.value })} placeholder="Branch name (e.g., Warangal)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={bForm.address} onChange={(e) => setBForm({ ...bForm, address: e.target.value })} placeholder="Full address" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={bForm.phone} onChange={(e) => setBForm({ ...bForm, phone: e.target.value })} placeholder="Phone (optional)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <div className="flex flex-wrap gap-2 items-center">
             <label className="flex items-center gap-1 text-xs px-2"><input type="checkbox" checked={bForm.active} onChange={(e) => setBForm({ ...bForm, active: e.target.checked })} /> Active</label>
             <button onClick={saveB} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{bForm.id ? "Update" : "Add"}</button>
             {bForm.id && <button onClick={() => setBForm({ id: "", name: "", address: "", phone: "", active: true })} className="text-xs text-slate-500">Clear</button>}
           </div>
         </div>
       </div>
-      <div className="card p-6">
+      <div className="card p-6 min-w-0">
         <h2 className="font-semibold text-navy-900">Courses • {courses.length}</h2>
         <p className="text-xs text-slate-500">Course options for registration, batches & fee config. Changes reflect instantly in admission form. Delete blocked if batches/admissions use it.</p>
-        <div className="mt-4 grid gap-2 max-h-[50vh] overflow-auto pr-1">
+        <div className="mt-4 grid gap-2 max-h-[50vh] overflow-auto pr-1 min-w-0">
           {courses.map((c: any) => (
             <div key={c.id} className="p-3 rounded-xl border border-slate-200">
               <div className="flex items-center justify-between gap-2">
@@ -3055,12 +3055,12 @@ function MastersTab() {
           ))}
         </div>
         <div className="mt-4 grid gap-2 p-3 rounded-xl bg-slate-50 border">
-          <input value={cForm.slug} onChange={(e) => setCForm({ ...cForm, slug: e.target.value })} placeholder="Slug (e.g., si-pc, groups, upsc)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <input value={cForm.title} onChange={(e) => setCForm({ ...cForm, title: e.target.value })} placeholder="Title (e.g., Sub-Inspector (SI))" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <input value={cForm.fee} onChange={(e) => setCForm({ ...cForm, fee: e.target.value })} placeholder="Fee (e.g., ₹35,000 Residential)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <input value={cForm.duration} onChange={(e) => setCForm({ ...cForm, duration: e.target.value })} placeholder="Duration (e.g., 3-4 Months)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <input value={cForm.eligibility} onChange={(e) => setCForm({ ...cForm, eligibility: e.target.value })} placeholder="Eligibility (e.g., Graduation)" className="px-3 py-2 rounded-xl border text-sm bg-white" />
-          <div className="flex gap-2 items-center">
+          <input value={cForm.slug} onChange={(e) => setCForm({ ...cForm, slug: e.target.value })} placeholder="Slug (e.g., si-pc, groups, upsc)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={cForm.title} onChange={(e) => setCForm({ ...cForm, title: e.target.value })} placeholder="Title (e.g., Sub-Inspector (SI))" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={cForm.fee} onChange={(e) => setCForm({ ...cForm, fee: e.target.value })} placeholder="Fee (e.g., ₹35,000 Residential)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={cForm.duration} onChange={(e) => setCForm({ ...cForm, duration: e.target.value })} placeholder="Duration (e.g., 3-4 Months)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={cForm.eligibility} onChange={(e) => setCForm({ ...cForm, eligibility: e.target.value })} placeholder="Eligibility (e.g., Graduation)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <div className="flex flex-wrap gap-2 items-center">
             <button onClick={saveC} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{cForm.id ? "Update" : "Add"}</button>
             {cForm.id && <button onClick={() => setCForm({ id: "", slug: "", title: "", fee: "", duration: "", eligibility: "" })} className="text-xs text-slate-500">Clear</button>}
           </div>
@@ -3245,7 +3245,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
   const allocTotal = allocRows.reduce((s, r) => s + (Number(r.amount) || 0), 0);
 
   return (
-    <div className="grid gap-4">
+    <div className="grid grid-cols-1 gap-4">
       <div className="card p-4 flex gap-2 flex-wrap">
         {([["queue", "Verify Queue"], ["workspace", "Student Workspace"], ["dues", "Due Payments"]] as const).map(([v, l]) => (
           <button key={v} onClick={() => { setView(v); if (v === "dues" && !duesLoaded) loadDues(); }} className={`px-4 py-2 rounded-full text-sm font-medium border ${view === v ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>{l}{v === "queue" && queue.length > 0 ? ` (${queue.length})` : ""}</button>
@@ -3259,7 +3259,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
         const partialCount = Number(duesTotals?.partialCount ?? 0);
         const studentCount = Number(duesTotals?.students ?? 0);
         return (
-          <div className="grid sm:grid-cols-5 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
             <div className="card p-4"><div className="text-xs text-slate-500">Total Receivable (Future Fees)</div><div className="text-xl font-bold text-red-700">₹{totalOut.toLocaleString("en-IN")}</div><div className="text-[11px] text-slate-400">{studentCount} students · {duesRows.length} dues</div></div>
             <div className="card p-4"><div className="text-xs text-slate-500">Overdue</div><div className="text-xl font-bold text-red-700">₹{overdueAmt.toLocaleString("en-IN")}</div><div className="text-[11px] text-slate-400">past due date</div></div>
             <div className="card p-4"><div className="text-xs text-slate-500">Due Today / Soon</div><div className="text-xl font-bold text-amber-700">₹{(Number(duesTotals?.dueToday ?? 0) + dueSoonAmt).toLocaleString("en-IN")}</div><div className="text-[11px] text-slate-400">within 7 days</div></div>
@@ -3270,7 +3270,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
       })()}
 
       {view === "queue" && (
-        <div className="card p-6">
+        <div className="card p-6 min-w-0">
           <h2 className="font-semibold text-navy-900">Payments Awaiting Acknowledgement • {queue.length}</h2>
           <p className="text-xs text-slate-500">Submitted / provider-paid. Acknowledge → allocate → receipt. Rejected payments never reduce outstanding.</p>
           <div className="mt-4 grid gap-3">
@@ -3313,7 +3313,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
       )}
 
       {view === "workspace" && (
-        <div className="grid gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <div className="card p-5">
             <div className="font-semibold text-navy-900">Find student admission</div>
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, email, Application ID, Student ID…" className="mt-2 w-full px-3 py-2.5 rounded-xl border text-sm" />
@@ -3354,7 +3354,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
                         </div>
                         <div className="mt-2 flex gap-2 flex-wrap">
                           <input type="date" value={dueEdit[i.id]?.date || ""} onChange={(e) => setDueEdit({ ...dueEdit, [i.id]: { ...(dueEdit[i.id] || { date: "", reason: "" }), date: e.target.value } })} className="px-2 py-1.5 rounded-lg border text-xs" />
-                          <input value={dueEdit[i.id]?.reason || ""} onChange={(e) => setDueEdit({ ...dueEdit, [i.id]: { ...(dueEdit[i.id] || { date: "", reason: "" }), reason: e.target.value } })} placeholder="Reason (kept in history)" className="flex-1 min-w-[160px] px-2 py-1.5 rounded-lg border text-xs" />
+                          <input value={dueEdit[i.id]?.reason || ""} onChange={(e) => setDueEdit({ ...dueEdit, [i.id]: { ...(dueEdit[i.id] || { date: "", reason: "" }), reason: e.target.value } })} placeholder="Reason (kept in history)" className="flex-1 min-w-0 min-w-[160px] px-2 py-1.5 rounded-lg border text-xs" />
                           <button onClick={() => saveDue(i.id)} className="px-3 py-1.5 rounded-full bg-navy-900 text-white text-xs">Update due date</button>
                         </div>
                         {dueHist[i.id] && (
@@ -3526,7 +3526,7 @@ function AllocSelect({ admissionId, value, onChange }: { admissionId: string; va
       .then((r) => r.json()).then((d) => Array.isArray(d) && setList(d)).catch(() => {});
   }, [admissionId]);
   return (
-    <select value={value} onChange={(e) => onChange(e.target.value)} className="flex-1 px-2 py-1.5 rounded-lg border text-xs bg-white">
+    <select value={value} onChange={(e) => onChange(e.target.value)} className="flex-1 min-w-0 px-2 py-1.5 rounded-lg border text-xs bg-white">
       <option value="">Select installment…</option>
       {list.map((i) => (
         <option key={i.id} value={i.id}>{i.label} — ₹{Number(i.originalAmount).toLocaleString("en-IN")} (paid ₹{Number(i.paidAmount || 0).toLocaleString("en-IN")})</option>
@@ -3545,7 +3545,7 @@ function ReceiptModal({ receiptNo, onClose }: { receiptNo: string; onClose: () =
   }, [receiptNo]);
   return (
     <div className="fixed inset-0 z-[70] bg-slate-900/40 p-4 grid place-items-center" onClick={onClose}>
-      <div onClick={(e) => e.stopPropagation()}>
+      <div onClick={(e) => e.stopPropagation()} className="w-full max-w-md max-h-[90vh] overflow-auto">
         {data ? <ReceiptView r={{ receiptNo: data.receiptNo, amount: data.amount, createdAt: data.createdAt, feePayment: data.feePayment }} /> : <div className="bg-white p-8 rounded-2xl text-sm">Loading…</div>}
       </div>
     </div>
@@ -3652,7 +3652,7 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
         ? "bg-red-50 border-red-200 text-red-700"
         : "bg-amber-50 border-amber-200 text-amber-700";
   return (
-    <div className="grid gap-4">
+    <div className="grid grid-cols-1 gap-4">
       <div className="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="font-semibold text-navy-900">Store Orders • {orders.length}</h2>
@@ -3681,7 +3681,7 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
             <h3 className="font-semibold text-navy-900">New counter sale</h3>
             <p className="text-xs text-slate-500 mt-1">Prices come from the store catalogue. Unpaid orders stay open as a receivable until you mark them paid.</p>
           </div>
-          <div className="grid gap-2">
+          <div className="grid grid-cols-1 gap-2">
             <label className="text-xs font-semibold text-slate-600">Student *</label>
             <input value={mStudentQuery} onChange={(e) => setMStudentQuery(e.target.value)} placeholder="Search by name, email, phone or student ID" className="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm" />
             <select value={mStudent} onChange={(e) => setMStudent(e.target.value)} className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
@@ -3694,16 +3694,16 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
             </select>
             {studentOptions.length === 0 && mStudentQuery.trim() && <div className="text-xs text-amber-700">No student matches. Only registered students can receive a counter sale.</div>}
           </div>
-          <div className="grid gap-2">
+          <div className="grid grid-cols-1 gap-2">
             <label className="text-xs font-semibold text-slate-600">Items *</label>
-            <div className="grid gap-1.5 max-h-72 overflow-auto pr-1">
+            <div className="grid grid-cols-1 gap-1.5 max-h-72 overflow-auto pr-1">
               {items.length === 0 && <div className="text-xs text-slate-500">No store items yet.</div>}
               {items.map((it: any) => {
                 const line = mLines[it.id];
                 const sizes: string[] = Array.isArray(it.sizes) ? it.sizes : [];
                 return (
                   <div key={it.id} className="flex flex-wrap items-center gap-2 p-2.5 rounded-xl border border-slate-200">
-                    <div className="flex-1 min-w-[140px]">
+                    <div className="flex-1 min-w-0 min-w-[140px]">
                       <div className="text-sm font-medium text-navy-900">{it.name}</div>
                       <div className="text-[11px] text-slate-500">₹{Number(it.price).toLocaleString("en-IN")} • stock {it.stock}</div>
                     </div>
@@ -3730,7 +3730,7 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
               })}
             </div>
           </div>
-          <div className="grid sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <div>
               <label className="text-xs font-semibold text-slate-600">Payment method</label>
               <select value={mMethod} onChange={(e) => setMMethod(e.target.value)} className="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white">
@@ -3996,7 +3996,7 @@ function ComplaintsTab({ campus = "" }: { campus?: string }) {
   const st = (s: string) => s === "resolved" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : s === "in_progress" ? "bg-amber-50 border-amber-200 text-amber-700" : "bg-sky-50 border-sky-200 text-sky-700";
 
   return (
-    <div className="grid gap-4">
+    <div className="grid grid-cols-1 gap-4">
       <div className="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="font-semibold text-navy-900">Student Complaints • {d?.counts?.total ?? 0}</h2>
@@ -4023,7 +4023,7 @@ function ComplaintsTab({ campus = "" }: { campus?: string }) {
 
       {msg && <div className="px-4 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs">{msg}</div>}
 
-      <div className="grid gap-3">
+      <div className="grid grid-cols-1 gap-3">
         {rows.map((c) => (
           <div key={c.id} className="card p-4">
             <div className="flex items-start justify-between gap-3 flex-wrap">
@@ -4165,21 +4165,21 @@ function AdminsTab() {
   const roleBadge = (r: string) => r === "super_admin" ? "bg-navy-900 text-white border-navy-900" : r === "finance" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-sky-50 border-sky-200 text-sky-700";
 
   return (
-    <div className="grid gap-4">
+    <div className="grid grid-cols-1 gap-4">
       <div className="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="font-semibold text-navy-900">Admins • {admins.length}</h2>
           <p className="text-xs text-slate-500 mt-1">Create admins with email + password • they must change on first login • super_admin configures per-admin permissions • deactivating blocks login immediately</p>
         </div>
-        <div className="flex gap-2">
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, email, role…" className="px-3 py-2 rounded-full border border-slate-200 text-sm w-48 focus:outline-none focus:ring-2 focus:ring-sky-500" />
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto sm:justify-end">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, email, role…" className="px-3 py-2 rounded-full border border-slate-200 text-sm flex-1 min-w-0 sm:flex-none sm:w-48 focus:outline-none focus:ring-2 focus:ring-sky-500" />
           <button onClick={() => setShowCreate(true)} className="btn-primary !py-2 !px-4 text-sm whitespace-nowrap">+ Create Admin</button>
         </div>
       </div>
 
       {msg && <div className={`px-4 py-3 rounded-xl border text-sm ${msg.type === "ok" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-600"}`}>{msg.text}</div>}
 
-      <div className="grid gap-3">
+      <div className="grid grid-cols-1 gap-3">
         {filtered.map((a) => (
           <div key={a.id} className="card p-4 flex flex-col lg:flex-row lg:items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
@@ -4222,7 +4222,7 @@ function AdminsTab() {
             </div>
             <p className="text-xs text-slate-500 mt-1">Email + password • they will be forced to change on first login. Configure role + per-tab permissions.</p>
             <div className="mt-4 grid gap-3">
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-medium">Email *</label>
                   <input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="name@ayaaninstitute.in" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" />
@@ -4232,7 +4232,7 @@ function AdminsTab() {
                   <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g., Finance Officer" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" />
                 </div>
               </div>
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs font-medium">Temporary Password *</label>
                   <input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Min 8 chars" type="password" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" />
@@ -4282,7 +4282,7 @@ function AdminsTab() {
               </div>
               <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} /> Active (can login)</label>
               <div className="flex gap-2">
-                <button onClick={create} className="flex-1 btn-primary justify-center">Create Admin →</button>
+                <button onClick={create} className="flex-1 min-w-0 btn-primary justify-center">Create Admin →</button>
                 <button onClick={() => setShowCreate(false)} className="px-4 py-2.5 rounded-full border text-sm">Cancel</button>
               </div>
             </div>
@@ -4344,7 +4344,7 @@ function AdminsTab() {
               <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!editing.isActive} onChange={(e) => setEditing({ ...editing, isActive: e.target.checked })} /> Active</label>
               <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={!!editing.mustChangePassword} onChange={(e) => setEditing({ ...editing, mustChangePassword: e.target.checked })} /> Must change password on next login</label>
               <div className="flex gap-2">
-                <button onClick={saveEdit} className="flex-1 btn-primary justify-center">Save Changes →</button>
+                <button onClick={saveEdit} className="flex-1 min-w-0 btn-primary justify-center">Save Changes →</button>
                 <button onClick={() => setEditing(null)} className="px-4 py-2.5 rounded-full border text-sm">Cancel</button>
               </div>
             </div>
@@ -4359,7 +4359,7 @@ function AdminsTab() {
             <p className="text-xs text-slate-500 mt-1">Sets new temporary password and forces change on next login. Old sessions will be revoked.</p>
             <input value={resetPw} onChange={(e) => setResetPw(e.target.value)} placeholder="New temporary password (min 8)" type="password" className="mt-4 w-full px-3 py-2.5 rounded-xl border text-sm" />
             <div className="mt-4 flex gap-2">
-              <button onClick={reset} className="flex-1 btn-primary justify-center">Reset & Force Change →</button>
+              <button onClick={reset} className="flex-1 min-w-0 btn-primary justify-center">Reset & Force Change →</button>
               <button onClick={() => setResetTarget(null)} className="px-4 py-2.5 rounded-full border text-sm">Cancel</button>
             </div>
           </div>
@@ -4451,7 +4451,7 @@ function CarouselTab() {
   const filtered = slides.filter((s) => !q || `${s.title} ${s.badge} ${s.desc}`.toLowerCase().includes(q.toLowerCase()));
 
   return (
-    <div className="grid gap-4">
+    <div className="grid grid-cols-1 gap-4">
       <div className="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h2 className="font-semibold text-navy-900">Carousel • {slides.length} slides</h2>
@@ -4465,7 +4465,7 @@ function CarouselTab() {
 
       {msg && <div className={`px-4 py-3 rounded-xl border text-sm ${msg.type === "ok" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-red-50 border-red-200 text-red-600"}`}>{msg.text}</div>}
 
-      <div className="grid gap-3">
+      <div className="grid grid-cols-1 gap-3">
         {filtered.sort((a, b) => a.order - b.order).map((s) => (
           <div key={s.id} className="card p-4 flex gap-4">
             <img src={s.image} alt={s.title} className="w-40 h-24 object-cover rounded-xl border border-slate-200 shrink-0" />
@@ -4508,29 +4508,29 @@ function CarouselTab() {
                 {form.image && <img src={form.image} alt="preview" className="mt-2 w-full h-40 object-cover rounded-xl border" />}
                 <div className="text-[11px] text-slate-500 mt-1">Stored as file in Supabase <b>carousel</b> bucket — you can replace anytime. No external link needed.</div>
               </div>
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div><label className="text-xs font-medium">Badge</label><input value={form.badge} onChange={(e) => setForm({ ...form, badge: e.target.value })} placeholder="SI • CONSTABLE • MOST DEMANDED" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
                 <div><label className="text-xs font-medium">Accent</label><select value={form.accent} onChange={(e) => setForm({ ...form, accent: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm bg-white"><option value="from-sky-600 to-navy-900">Sky → Navy</option><option value="from-emerald-600 to-teal-800">Emerald → Teal</option><option value="from-amber-600 to-orange-700">Amber → Orange</option><option value="from-violet-600 to-indigo-800">Violet → Indigo</option><option value="from-slate-800 to-navy-900">Slate → Navy</option></select></div>
               </div>
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div><label className="text-xs font-medium">Title</label><input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="Wear the Khaki" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
                 <div><label className="text-xs font-medium">Highlight</label><input value={form.highlight} onChange={(e) => setForm({ ...form, highlight: e.target.value })} placeholder="with Pride." className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
               </div>
               <div><label className="text-xs font-medium">Description</label><textarea value={form.desc} onChange={(e) => setForm({ ...form, desc: e.target.value })} rows={2} placeholder="Telangana's No.1 …" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div><label className="text-xs font-medium">CTA Label</label><input value={form.ctaLabel} onChange={(e) => setForm({ ...form, ctaLabel: e.target.value })} placeholder="Join SI Batch →" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
                 <div><label className="text-xs font-medium">CTA Href</label><input value={form.ctaHref} onChange={(e) => setForm({ ...form, ctaHref: e.target.value })} placeholder="/admission" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
               </div>
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div><label className="text-xs font-medium">CTA2 Label (optional)</label><input value={form.cta2Label} onChange={(e) => setForm({ ...form, cta2Label: e.target.value })} placeholder="View Batches" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
                 <div><label className="text-xs font-medium">CTA2 Href</label><input value={form.cta2Href} onChange={(e) => setForm({ ...form, cta2Href: e.target.value })} placeholder="/courses" className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
               </div>
-              <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div><label className="text-xs font-medium">Order</label><input type="number" min={0} value={form.order} onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
                 <label className="flex items-center gap-2 text-sm mt-6"><input type="checkbox" checked={form.active} onChange={(e) => setForm({ ...form, active: e.target.checked })} /> Active</label>
               </div>
               <div className="flex gap-2">
-                <button onClick={save} disabled={uploading} className="flex-1 btn-primary justify-center disabled:opacity-50">{editing ? "Update Slide →" : "Create Slide →"}</button>
+                <button onClick={save} disabled={uploading} className="flex-1 min-w-0 btn-primary justify-center disabled:opacity-50">{editing ? "Update Slide →" : "Create Slide →"}</button>
                 <button onClick={() => setShowForm(false)} className="px-4 py-2.5 rounded-full border text-sm">Cancel</button>
               </div>
             </div>
@@ -4611,7 +4611,7 @@ function EmailTab() {
   };
 
   return (
-    <div className="grid gap-6">
+    <div className="grid grid-cols-1 gap-6">
       <div className="card p-6">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div><h2 className="font-semibold text-navy-900">Email • Send updates to users (SMTP)</h2><p className="text-xs text-slate-500 mt-1">Auto-emails already fire on: application submitted / approved / rejected / clarification, discount, payment acknowledged/rejected. Use this for custom updates (admission, payments, or any announcement).</p></div>
@@ -4643,7 +4643,7 @@ function EmailTab() {
       ) : (
         <div className="card p-6 grid gap-3">
           <h3 className="font-semibold text-navy-900 text-sm">Bulk — filtered admissions or users</h3>
-          <div className="grid sm:grid-cols-4 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
             <select value={bulkType} onChange={(e) => setBulkType(e.target.value as any)} className="px-3 py-2.5 rounded-xl border bg-white text-sm"><option value="admissions">Admissions (applicants)</option><option value="users">Users (students)</option></select>
             <select value={bulkCourse} onChange={(e) => setBulkCourse(e.target.value)} className="px-3 py-2.5 rounded-xl border bg-white text-sm"><option value="">All courses</option>{courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}</select>
             <select value={bulkBranch} onChange={(e) => setBulkBranch(e.target.value)} className="px-3 py-2.5 rounded-xl border bg-white text-sm"><option value="">All branches</option>{branchOptions.map((b) => <option key={b} value={b}>{b}</option>)}</select>

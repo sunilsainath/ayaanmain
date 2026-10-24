@@ -17,7 +17,7 @@ export default function AcademyPage(){
       </section>
 
       <section className="container-soft mt-8">
-        <div className="grid lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           <div className="lg:col-span-8">
             <div className="card p-8">
               <h2 className="font-display font-bold text-xl text-navy-900">Our Coaching Method</h2>

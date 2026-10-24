@@ -48,7 +48,7 @@ export default function AuthForgotPassword({ onClose, defaultEmail = "" }: { onC
 
   return (
     <div className="fixed inset-0 z-[70] bg-slate-900/40 backdrop-blur-sm p-4 grid place-items-center" onClick={onClose}>
-      <div className="card w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
+      <div className="card w-full max-w-md p-6 max-h-[90vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between">
           <h3 className="font-display font-bold text-lg text-navy-900">Reset Password — OTP to Email</h3>
           <button onClick={onClose} className="w-8 h-8 rounded-full bg-slate-100 grid place-items-center hover:bg-slate-200">✕</button>

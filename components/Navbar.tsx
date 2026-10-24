@@ -86,7 +86,7 @@ export default function Navbar() {
           <div className="h-[72px] flex items-center justify-between gap-4">
             <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="Ayan Institute — home">
               <BrandLogo height={46} />
-              <span className="sm:hidden font-display font-bold text-navy-800">AYAN</span>
+              
             </Link>
 
             <nav className="hidden lg:flex items-center gap-1">

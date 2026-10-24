@@ -29,7 +29,7 @@ export default function AboutPage() {
       </section>
 
       <section className="container-soft mt-8">
-        <div className="grid lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {[
             { n: "01", t: "Mission", d: "Stand by the unemployed youth with high-standard written & physical coaching to make them strong competitors for their dream Govt job." },
             { n: "02", t: "Vision", d: "Evidence-based coaching & learning methods where every aspirant gains confidence and proven preparation strategy." },
@@ -43,7 +43,7 @@ export default function AboutPage() {
         </div>
 
         <div className="card mt-6 overflow-hidden">
-          <div className="grid lg:grid-cols-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="lg:col-span-5 bg-slate-100 min-h-[360px] grid place-items-center text-slate-500 text-sm">Director Photo</div>
             <div className="lg:col-span-7 p-8">
               <div className="badge bg-slate-50 border-slate-200 text-slate-700">DIRECTOR MESSAGE</div>

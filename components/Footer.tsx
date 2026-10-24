@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="mt-16 bg-navy-900 text-slate-300">
       <div className="container-soft py-12">
-        <div className="grid lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] gap-10">
           <div>
             <div className="flex items-center gap-3">
               <div

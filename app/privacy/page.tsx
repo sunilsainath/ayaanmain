@@ -221,7 +221,7 @@ export default function PrivacyPage() {
       </section>
 
       <section className="container-soft mt-8 mb-12">
-        <div className="grid lg:grid-cols-[220px_1fr] gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[220px_1fr] gap-6 items-start">
           <nav className="card p-4 lg:sticky lg:top-[88px] hidden lg:block">
             <div className="text-xs font-bold tracking-widest text-slate-500">ON THIS PAGE</div>
             <ul className="mt-3 grid gap-1.5 text-sm">
@@ -235,7 +235,7 @@ export default function PrivacyPage() {
             </ul>
           </nav>
 
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 gap-4">
             {sections.map((s) => (
               <article key={s.id} id={s.id} className="card p-6 scroll-mt-24">
                 <h2 className="font-display font-bold text-lg text-navy-900">{s.title}</h2>

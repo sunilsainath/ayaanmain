@@ -243,7 +243,7 @@ export default function AdmissionPage() {
               <div key={s} className="flex-1 flex items-center gap-1">
                 <div className="flex-1">
                   <div className={`h-1.5 rounded-full ${i <= step ? "bg-navy-900" : "bg-slate-200"}`} />
-                  <div className={`mt-1 text-[11px] font-medium ${i <= step ? "text-navy-900" : "text-slate-400"}`}>{i + 1}. {s}</div>
+                  <div className={`mt-1 text-[11px] font-medium ${i <= step ? "text-navy-900" : "text-slate-400"}`}><span className="sm:hidden">{i === step ? `${i + 1}. ${s}` : i + 1}</span><span className="hidden sm:inline">{i + 1}. {s}</span></div>
                 </div>
               </div>
             ))}
@@ -251,21 +251,21 @@ export default function AdmissionPage() {
 
           <div className="card mt-6 p-6 lg:p-8">
             {step === 0 && (
-              <div className="grid gap-4">
-                <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div><label className="text-xs font-medium text-slate-700">Full Name *</label><input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="e.g., Sai Kumar" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
                   <div><label className="text-xs font-medium text-slate-700">Father Name *</label><input value={form.fatherName} onChange={(e) => setForm({ ...form, fatherName: e.target.value })} placeholder="e.g., Ramesh Kumar" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
                 </div>
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div><label className="text-xs font-medium text-slate-700">Email * (will be username)</label><input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="you@example.com" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
                   <div><label className="text-xs font-medium text-slate-700">Mobile * (10 digits)</label><input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="9876543210" inputMode="numeric" maxLength={10} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
                 </div>
                 <div><label className="text-xs font-medium text-slate-700">Address *</label><textarea value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} placeholder="H.No, Street, Village, District, State - PIN" rows={2} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div><label className="text-xs font-medium text-slate-700">Aadhar Card Number * (12 digits)</label><input value={form.aadharCardNumber} onChange={(e) => setForm({ ...form, aadharCardNumber: e.target.value.replace(/\D/g, "").slice(0,12) })} placeholder="1234 5678 9012" inputMode="numeric" maxLength={12} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm tracking-widest" /></div>
                   <div><label className="text-xs font-medium text-slate-700">Reference (optional)</label><input value={form.reference} onChange={(e) => setForm({ ...form, reference: e.target.value })} placeholder="Referred by / Friend / Ad" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" /></div>
                 </div>
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-4">
                   <div className="text-sm font-semibold text-navy-900">Aadhaar Card — front & back required *</div>
                   <p className="text-xs text-slate-600 mt-1">
@@ -318,13 +318,13 @@ export default function AdmissionPage() {
             )}
 
             {step === 1 && (
-              <div className="grid gap-4">
-                <div className="grid sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div><label className="text-xs font-medium text-slate-700">Course *</label><select value={form.course} onChange={(e) => setForm({ ...form, course: e.target.value, batchId: "" })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
                   <div><label className="text-xs font-medium text-slate-700">Duration *</label><select value={form.durationId} onChange={(e) => setForm({ ...form, durationId: e.target.value, batchId: "" })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option value="">Select duration…</option>{durations.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}</select></div>
                   <div><label className="text-xs font-medium text-slate-700">Branch *</label><select value={form.branch} onChange={(e) => setForm({ ...form, branch: e.target.value, batchId: "" })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm">{branchOptions.map((b) => <option key={b} value={b}>{b}</option>)}</select></div>
                 </div>
-                <div className="grid sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div><label className="text-xs font-medium text-slate-700">Course Type</label><select value={form.courseType} onChange={(e) => setForm({ ...form, courseType: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Regular</option><option>Crash</option><option>Weekend</option><option>Online</option></select></div>
                   <div><label className="text-xs font-medium text-slate-700">Mode</label><select value={form.mode} onChange={(e) => setForm({ ...form, mode: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><option>Residential</option><option>Offline</option><option>Online</option></select></div>
                 </div>
@@ -376,8 +376,8 @@ export default function AdmissionPage() {
             )}
 
             {step === 2 && (
-              <div className="grid gap-4">
-                <div className="grid sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="p-3 rounded-xl bg-slate-50 border"><div className="text-xs text-slate-500">Base Fee</div><div className="text-lg font-bold text-navy-900">₹{baseFee.toLocaleString("en-IN")}</div><div className="text-xs text-slate-500">{form.course} • {form.mode} • {selDuration?.name || "Base"} • {form.branch}</div></div>
                   <div className="p-3 rounded-xl bg-violet-50 border border-violet-200"><div className="text-xs text-violet-700">Add-ons ({addonIds.length})</div><div className="text-lg font-bold text-violet-800">+ ₹{addonFees.toLocaleString("en-IN")}</div><div className="text-xs text-violet-600">Discounts applied by admin later</div></div>
                   <div className="p-3 rounded-xl bg-sky-50 border border-sky-200"><div className="text-xs text-sky-700">Total Fee</div><div className="text-lg font-bold text-sky-700">₹{totalFee.toLocaleString("en-IN")}</div><div className="text-xs text-sky-600">Pay now (optional) or later</div></div>
@@ -408,7 +408,7 @@ export default function AdmissionPage() {
             )}
 
             {step === 3 && (
-              <div className="grid gap-3 text-sm">
+              <div className="grid grid-cols-1 gap-3 text-sm">
                 <div className="text-sm font-semibold text-navy-900">Review Registration</div>
                 {[
                   ["Name", `${form.name} S/o ${form.fatherName}`],

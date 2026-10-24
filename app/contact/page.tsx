@@ -9,7 +9,7 @@ export default function ContactPage(){
       </section>
 
       <section className="container-soft mt-8">
-        <div className="grid lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {[
             { t:"Warangal — Residential Academy", a:"Don Bosco School, Opp. Vaagdevi College, Bollikunta, Warangal 506005", p:"+91 88866 67222" },
             { t:"Hanamkonda", a:"2nd Floor, Kishanpura, Mayuri Mall, Hanamkonda, Warangal 506001", p:"+91 88866 67222" },

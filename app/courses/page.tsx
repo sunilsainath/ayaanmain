@@ -167,7 +167,7 @@ export default function CoursesPage() {
 
             <div className="p-5 lg:p-6 bg-slate-50/50">
               {tab === "overview" && (
-                <div className="grid lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <div>
                     <div className="text-xs tracking-widest font-bold text-slate-700">HIGHLIGHTS</div>
                     <ul className="mt-2 grid gap-2">{activeCourse.highlights.map((h) => <li key={h} className="text-sm text-slate-700 flex gap-2"><span className="text-emerald-600">✓</span>{h}</li>)}</ul>
@@ -262,7 +262,7 @@ export default function CoursesPage() {
               )}
 
               {tab === "syllabus" && (
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {activeCourse.syllabus.map((sec) => (
                     <div key={sec.subject} className="card p-4">
                       <div className="text-sm font-bold text-navy-900">{sec.subject}</div>
@@ -277,7 +277,7 @@ export default function CoursesPage() {
       )}
 
       <section className="container-soft mt-6">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((c) => (
             <div key={c.slug} className={`card overflow-hidden flex flex-col transition ${activeSlug === c.slug ? "ring-2 ring-navy-900 border-navy-900" : ""}`}>
               <img src={(c as any).image || dummyForCourse(c.slug)} alt={c.title} className="w-full h-40 object-cover" onError={(e) => { (e.target as HTMLImageElement).src = dummyForCourse(c.slug); }} />

@@ -15,6 +15,7 @@ body {
   font-feature-settings: "ss01" on, "ss02" on, "cv01" on;
 }
 
+@layer components {
 .container-soft {
   @apply max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8;
 }
@@ -40,6 +41,8 @@ body {
 .focus-ring:focus-visible {
   @apply outline-none ring-2 ring-sky-500 ring-offset-2;
 }
+}
+
 .scrollbar-none {
   scrollbar-width: none;
 }
@@ -79,3 +82,24 @@ body {
   @apply absolute bottom-0 left-0 right-0 h-16 pointer-events-none overflow-hidden;
 }
 .section-wave svg { @apply w-full h-full; }
+
+/* ===== Mobile hardening ===== */
+html { -webkit-text-size-adjust: 100%; }
+
+/* Long ids, emails and tokens must never widen the page on a phone */
+body { overflow-wrap: break-word; }
+img, video, canvas { max-width: 100%; }
+
+/* iOS Safari zooms the viewport when a focused control is under 16px.
+   Matching 16px on small screens removes that zoom + layout jump. */
+@media (max-width: 640px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea { font-size: 16px !important; }
+
+  /* comfortable touch targets on the primary actions */
+  .btn-primary, .btn-ghost { min-height: 44px; }
+}
+
+/* Momentum horizontal scroll for wide data tables */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }

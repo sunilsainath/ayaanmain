@@ -79,18 +79,18 @@ function CorrectForm() {
           <div className="card mt-6 p-6 grid gap-3">
             <div className="text-xs px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800">Admin note: <b>{data.clarificationNote}</b></div>
             <div className="text-xs text-slate-500">Application {data.applicationId} • {data.email} (email can't be changed here)</div>
-            <div className="grid sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div><label className="text-xs font-medium">Full Name *</label><input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
               <div><label className="text-xs font-medium">Father Name *</label><input value={form.fatherName} onChange={(e) => setForm({ ...form, fatherName: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
             </div>
             <div><label className="text-xs font-medium">Mobile * (10 digits)</label><input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
             <div><label className="text-xs font-medium">Address *</label><textarea value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} rows={2} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
             <div><label className="text-xs font-medium">Aadhar * (12 digits)</label><input value={form.aadharCardNumber} onChange={(e) => setForm({ ...form, aadharCardNumber: e.target.value.replace(/\D/g, "").slice(0,12) })} placeholder="123456789012" inputMode="numeric" maxLength={12} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm tracking-widest" /></div>
-            <div className="grid sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div><label className="text-xs font-medium">Reference</label><input value={form.reference} onChange={(e) => setForm({ ...form, reference: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm" /></div>
               <div><label className="text-xs font-medium">Branch</label><select value={form.branch} onChange={(e) => setForm({ ...form, branch: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm">{branchOptions.map((b) => <option key={b} value={b}>{b}</option>)}</select></div>
             </div>
-            <div className="grid sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div><label className="text-xs font-medium">Course</label><select value={form.course} onChange={(e) => setForm({ ...form, course: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm">{courseOptions.map((c) => <option key={c} value={c}>{c}</option>)}</select></div>
               <div><label className="text-xs font-medium">Mode</label><select value={form.mode} onChange={(e) => setForm({ ...form, mode: e.target.value })} className="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"><option>Residential</option><option>Offline</option><option>Online</option></select></div>
             </div>

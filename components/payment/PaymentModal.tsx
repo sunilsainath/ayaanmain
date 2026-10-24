@@ -107,7 +107,7 @@ export default function PaymentModal({
           </div>
 
           <div className="card p-4 mb-4">
-            <div className="grid gap-2 text-sm">
+            <div className="grid grid-cols-1 gap-2 text-sm">
               <div className="flex justify-between"><span className="text-slate-500">Course:</span> <span className="font-medium">{pendingPayment.course}</span></div>
               <div className="flex justify-between"><span className="text-slate-500">Amount:</span> <span className="font-bold text-sky-600">₹{pendingPayment.amount.toLocaleString()}</span></div>
               <div className="flex justify-between"><span className="text-slate-500">Status:</span> <span className="font-medium text-amber-600">{pendingPayment.status}</span></div>
