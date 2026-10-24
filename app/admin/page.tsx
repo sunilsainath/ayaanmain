@@ -8,39 +8,61 @@ import { FALLBACK_FEE as FEE_FALLBACK } from "@/lib/fees";
 import { LOGO_SVG_INLINE, BRAND } from "@/lib/brand";
 import { compressImage, formatBytes } from "@/lib/image-client";
 
-type Tab = "dashboard" | "rag" | "batches" | "banner" | "admissions" | "payments" | "students" | "finance" | "leads" | "alumni" | "store" | "fees" | "expenses" | "orders" | "dues" | "masters" | "admins" | "carousel" | "email" | "activity" | "complaints" | "store-orders";
+type Tab = "dashboard" | "rag" | "batches" | "banner" | "admissions" | "payments" | "students" | "finance" | "leads" | "alumni" | "store" | "fees" | "expenses" | "orders" | "dues" | "masters" | "admins" | "carousel" | "email" | "activity" | "complaints";
 type Role = "super_admin" | "finance" | "admissions";
 
 const roleTabs: Record<Role, Tab[]> = {
-  super_admin: ["dashboard", "activity", "complaints", "store", "orders", "alumni", "leads", "payments", "students", "finance", "dues", "expenses", "admissions", "rag", "batches", "masters", "banner", "fees", "admins", "carousel", "email", "store-orders"],
+  super_admin: ["dashboard", "activity", "complaints", "store", "orders", "alumni", "leads", "payments", "students", "finance", "dues", "expenses", "admissions", "rag", "batches", "masters", "banner", "fees", "admins", "carousel", "email"],
   finance: ["dashboard", "activity", "payments", "finance", "dues", "expenses", "orders", "fees"],
   admissions: ["dashboard", "complaints", "admissions", "leads", "students", "alumni"],
 };
 
-const allTabs: { id: Tab; label: string }[] = [
-  { id: "dashboard", label: "Dashboard" },
-  { id: "store", label: "Store Stock" },
-  { id: "orders", label: "Orders" },
-  { id: "alumni", label: "Alumni" },
-  { id: "leads", label: "Leads" },
-  { id: "payments", label: "Payments" },
-  { id: "students", label: "Students" },
-  { id: "finance", label: "AR / AP" },
-  { id: "dues", label: "Dues & Receipts" },
-  { id: "expenses", label: "Expense Tracker" },
+type TabGroupId = "overview" | "admissions" | "money" | "store" | "content" | "system";
+type BadgeKey = "orders" | "admissions" | "complaints" | "dues";
+
+// Navigation is grouped so 21 destinations read as six areas instead of one
+// flat wall of pills. Order inside each group is the order it renders in.
+const TAB_GROUPS: { id: TabGroupId; label: string }[] = [
+  { id: "overview", label: "Overview" },
   { id: "admissions", label: "Admissions" },
-  { id: "rag", label: "RAG" },
-  { id: "batches", label: "Batches" },
-  { id: "masters", label: "Masters" },
-  { id: "banner", label: "Banner" },
-  { id: "fees", label: "Fee Config" },
-  { id: "admins", label: "Admins" },
-  { id: "carousel", label: "Carousel" },
-  { id: "activity", label: "Activity Log" },
-  { id: "complaints", label: "Complaints" },
-  { id: "email", label: "Email" },
-  { id: "store-orders", label: "Store Orders" },
+  { id: "money", label: "Money" },
+  { id: "store", label: "Store" },
+  { id: "content", label: "Content" },
+  { id: "system", label: "System" },
 ];
+
+export type TabMeta = { id: Tab; label: string; group: TabGroupId; desc: string; badge?: BadgeKey };
+
+const allTabs: TabMeta[] = [
+  { id: "dashboard", label: "Dashboard", group: "overview", desc: "Overview & reports" },
+
+  { id: "admissions", label: "Admissions", group: "admissions", desc: "Applications & approvals", badge: "admissions" },
+  { id: "students", label: "Students", group: "admissions", desc: "Enrolled students" },
+  { id: "leads", label: "Leads", group: "admissions", desc: "Enquiries" },
+  { id: "batches", label: "Batches", group: "admissions", desc: "Course batches & capacity" },
+  { id: "alumni", label: "Alumni", group: "admissions", desc: "Alumni stories" },
+  { id: "complaints", label: "Complaints", group: "admissions", desc: "Student complaint box", badge: "complaints" },
+
+  { id: "payments", label: "Payments", group: "money", desc: "Fee payments & receipts" },
+  { id: "dues", label: "Dues", group: "money", desc: "Installments & collections", badge: "dues" },
+  { id: "finance", label: "Receivables & Payables", group: "money", desc: "Campus-wise AR / AP" },
+  { id: "expenses", label: "Expenses", group: "money", desc: "Expenses & approvals" },
+  { id: "fees", label: "Fee Config", group: "money", desc: "Fee per course, mode, duration, campus" },
+
+  { id: "store", label: "Stock", group: "store", desc: "Inventory" },
+  { id: "orders", label: "Orders", group: "store", desc: "Store orders & handover", badge: "orders" },
+
+  { id: "masters", label: "Catalog", group: "content", desc: "Courses, durations, add-ons, campuses" },
+  { id: "carousel", label: "Carousel", group: "content", desc: "Home page carousel" },
+  { id: "banner", label: "Banner", group: "content", desc: "Top announcement" },
+  { id: "email", label: "Email", group: "content", desc: "Send updates to users" },
+  { id: "rag", label: "RAG", group: "content", desc: "Chatbot knowledge" },
+
+  { id: "activity", label: "Activity Log", group: "system", desc: "All actions with user + time" },
+  { id: "admins", label: "Admins", group: "system", desc: "Manage admin users" },
+];
+
+const TAB_BY_ID: Record<string, TabMeta> = Object.fromEntries(allTabs.map((t) => [t.id, t]));
 
 export default function AdminPage() {
   const [tab, setTab] = useState<Tab>("dashboard");
@@ -56,7 +78,9 @@ export default function AdminPage() {
   const [otp, setOtp] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
-  const [newOrders, setNewOrders] = useState(0);
+  const [navCounts, setNavCounts] = useState<{ orders: number; admissions: number; complaints: number; dues: number }>({ orders: 0, admissions: 0, complaints: 0, dues: 0 });
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [paletteQ, setPaletteQ] = useState("");
   const [permissions, setPermissions] = useState<string[] | null>(null);
   const [mustChange, setMustChange] = useState(false);
   const [oldPass, setOldPass] = useState("");
@@ -85,6 +109,31 @@ export default function AdminPage() {
 
   const allowedTabs = permissions && permissions.length > 0 ? (permissions as Tab[]) : (roleTabs[role] || roleTabs.super_admin);
 
+  const visibleTabs = allTabs.filter((t) => allowedTabs.includes(t.id));
+
+  // Tab lives in the URL (?tab=dues) so refresh, the back button and shared
+  // links all keep their place instead of resetting to Dashboard.
+  const selectTab = (next: Tab) => {
+    setTab(next);
+    try {
+      const url = new URL(window.location.href);
+      if (next === "dashboard") url.searchParams.delete("tab");
+      else url.searchParams.set("tab", next);
+      window.history.pushState({ tab: next }, "", `${url.pathname}${url.search}`);
+    } catch {}
+  };
+
+  const readTabFromUrl = (): Tab | null => {
+    try {
+      const wanted = new URLSearchParams(window.location.search).get("tab");
+      if (wanted && allTabs.some((t) => t.id === wanted)) return wanted as Tab;
+    } catch {}
+    return null;
+  };
+
+  const badgeFor = (t: TabMeta): number => (t.badge ? Number(navCounts[t.badge] || 0) : 0);
+  const groupLabel = (g: TabGroupId) => TAB_GROUPS.find((x) => x.id === g)?.label || "";
+
   useEffect(() => {
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), 10000);
@@ -109,19 +158,46 @@ if (d.mustChangePassword) setMustChange(true);
     return () => { clearTimeout(timer); ctl.abort(); };
   }, []);
 
+  // One cheap request powers every nav badge (pending admissions, open
+  // complaints, overdue dues, new orders) instead of four per-tab calls.
   useEffect(() => {
     if (!auth) return;
-    if (role !== "super_admin" && role !== "finance") return;
+    const ctl = new AbortController();
     const poll = () => {
-      fetch(`/api/admin/orders${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin",  cache: "no-store" })
-        .then((r) => r.json())
-        .then((d) => setNewOrders(Number(d.newCount || 0)))
+      fetch(`/api/admin/nav-counts${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin", cache: "no-store", signal: ctl.signal })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => { if (d) setNavCounts({ orders: Number(d.orders || 0), admissions: Number(d.admissions || 0), complaints: Number(d.complaints || 0), dues: Number(d.dues || 0) }); })
         .catch(() => {});
     };
     poll();
     const id = setInterval(poll, 30000);
-    return () => clearInterval(id);
-  }, [auth, role, tab]);
+    return () => { ctl.abort(); clearInterval(id); };
+  }, [auth, campus]);
+
+  // Restore the tab from the URL on first load, and follow back/forward.
+  useEffect(() => {
+    const wanted = readTabFromUrl();
+    if (wanted) setTab(wanted);
+    const onPop = () => setTab(readTabFromUrl() || "dashboard");
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Ctrl/Cmd+K opens the jump palette; Esc closes it.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setPaletteOpen((v) => !v);
+        setPaletteQ("");
+      } else if (e.key === "Escape") {
+        setPaletteOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const doLogin = async () => {
     setLoginErr("");
@@ -251,7 +327,6 @@ if (d.mustChangePassword) setMustChange(true);
     );
   }
 
-  const visibleTabs = allTabs.filter((t) => allowedTabs.includes(t.id));
 
   if (mustChange) {
     return (
@@ -274,80 +349,172 @@ if (d.mustChangePassword) setMustChange(true);
     );
   }
 
+  const limited = allowedTabs.length < allTabs.length;
+  const paletteResults = visibleTabs.filter((t) => {
+    const q = paletteQ.trim().toLowerCase();
+    if (!q) return true;
+    return `${t.label} ${t.desc} ${groupLabel(t.group)}`.toLowerCase().includes(q);
+  });
+
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[64px] flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-white overflow-hidden grid place-items-center shrink-0"><BrandLogo height={34} showWordmark={false} /></div>
-            <div>
-              <div className="font-display font-bold text-navy-900 leading-none">AYAAN ADMIN</div>
-              <div className="text-xs text-slate-500 capitalize">{role.replace("_", " ")} • {authUser}</div>
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-[64px] flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="w-9 h-9 rounded-xl bg-white overflow-hidden grid place-items-center shrink-0 border border-slate-100"><BrandLogo height={34} showWordmark={false} /></div>
+            <div className="min-w-0">
+              <div className="font-display font-bold text-navy-900 leading-none truncate">AYAAN ADMIN</div>
+              <div className="text-xs text-slate-500 capitalize truncate">{role.replace("_", " ")} • {authUser}</div>
             </div>
-            <span className={`ml-2 px-2.5 py-1 rounded-full text-xs font-semibold border capitalize ${role === "super_admin" ? "bg-navy-900 text-white border-navy-900" : role === "finance" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-sky-50 border-sky-200 text-sky-700"}`}>{role.replace("_", " ")}</span>
+            <span className={`ml-1 px-2.5 py-1 rounded-full text-xs font-semibold border capitalize hidden sm:inline ${role === "super_admin" ? "bg-navy-900 text-white border-navy-900" : role === "finance" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-sky-50 border-sky-200 text-sky-700"}`}>{role.replace("_", " ")}</span>
           </div>
-          <div className="flex items-center gap-2">
-            <a href="/" className="px-4 py-2 rounded-full border border-slate-200 text-sm hover:bg-slate-50">View Site →</a>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => { setPaletteOpen(true); setPaletteQ(""); }}
+              className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-full border border-slate-200 text-sm text-slate-500 hover:bg-slate-50"
+              title="Jump to a tab (Ctrl+K)"
+            >
+              <span>Search</span>
+              <kbd className="text-[10px] px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-500">Ctrl K</kbd>
+            </button>
+            <a href="/" className="hidden sm:inline-flex px-4 py-2 rounded-full border border-slate-200 text-sm hover:bg-slate-50">View Site →</a>
             <button onClick={doLogout} className="px-4 py-2 rounded-full bg-navy-900 text-white text-sm">Logout</button>
           </div>
         </div>
-        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 flex gap-2 pb-3 flex-wrap">
-          {visibleTabs.map((t) => (
-            <button key={t.id} onClick={() => setTab(t.id as Tab)} className={`px-3 py-2 rounded-full text-xs sm:text-sm font-medium border transition relative ${tab === t.id ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}>
-              {t.label}
-              {t.id === "orders" && newOrders > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-red-600 text-white text-[11px] font-bold grid place-items-center border-2 border-white">{newOrders}</span>
-              )}
-            </button>
-          ))}
+
+        {/* Mobile: one scrollable row instead of a wrapping pill cloud */}
+        <div className="lg:hidden border-t border-slate-100">
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 flex gap-2 py-2 overflow-x-auto scrollbar-none">
+            {visibleTabs.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => selectTab(t.id)}
+                className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition relative ${tab === t.id ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200 text-slate-600"}`}
+              >
+                {t.label}
+                {badgeFor(t) > 0 && (
+                  <span className="ml-1 inline-grid place-items-center min-w-[16px] h-4 px-1 rounded-full bg-red-600 text-white text-[10px] font-bold">{badgeFor(t)}</span>
+                )}
+              </button>
+            ))}
+          </div>
         </div>
-        {allowedTabs.length < allTabs.length && (
-          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pb-3">
-            <div className="text-xs px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800">Limited access — {role} ({allowedTabs.join(", ")}) {permissions && permissions.length > 0 ? "• custom permissions" : ""}</div>
+
+        {limited && (
+          <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pb-3">
+            <div className="text-xs px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800">
+              Limited access — you can see {visibleTabs.length} of {allTabs.length} areas
+              {permissions && permissions.length > 0 ? " (custom permissions)" : ` for the ${role.replace("_", " ")} role`}.
+            </div>
           </div>
         )}
       </header>
 
-      <main className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Global campus filter — applies to every tab */}
-        <div className="card px-4 py-3 mb-4 flex flex-wrap items-center gap-3">
-          <span className="text-xs font-semibold text-slate-600">Campus</span>
-          <select value={campus} onChange={(e) => setCampus(e.target.value)} disabled={!allCampuses && selectableCampuses.length <= 1} className="px-3 py-2 rounded-lg border bg-white text-sm disabled:opacity-60 disabled:cursor-not-allowed">
-            {allCampuses
-              ? <option value="">All campuses</option>
-              : myCampuses.length > 1 && <option value="">All my campuses</option>}
-            {selectableCampuses.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
-          {campus && <button onClick={() => setCampus("")} className="text-xs text-slate-500 hover:underline">Clear</button>}
-          <span className="text-xs text-slate-500 ml-auto">
-            {allCampuses
-              ? "Viewing all campuses — pick one to drill into campus-wise stats"
-              : `You have access to ${myCampuses.length} campus${myCampuses.length === 1 ? "" : "es"}: ${myCampuses.join(", ")}`}
-          </span>
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6 flex gap-6 items-start">
+        <aside className="hidden lg:block w-[240px] shrink-0">
+          <nav className="card p-2.5 sticky top-[84px] max-h-[calc(100vh-104px)] overflow-auto">
+            {TAB_GROUPS.map((g) => {
+              const tabs = visibleTabs.filter((t) => t.group === g.id);
+              if (tabs.length === 0) return null;
+              return (
+                <div key={g.id} className="mb-2 last:mb-0">
+                  <div className="px-2 pt-2 pb-1 text-[10px] font-bold tracking-widest text-slate-400">{g.label.toUpperCase()}</div>
+                  <div className="grid gap-0.5">
+                    {tabs.map((t) => {
+                      const active = tab === t.id;
+                      const count = badgeFor(t);
+                      return (
+                        <button
+                          key={t.id}
+                          onClick={() => selectTab(t.id)}
+                          aria-current={active ? "page" : undefined}
+                          className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-left text-sm transition ${active ? "bg-navy-900 text-white font-medium" : "text-slate-600 hover:bg-slate-50"}`}
+                        >
+                          <span className="flex-1 min-w-0 truncate">{t.label}</span>
+                          {count > 0 && (
+                            <span className={`shrink-0 min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-bold grid place-items-center ${active ? "bg-white text-navy-900" : "bg-red-600 text-white"}`}>{count}</span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </nav>
+        </aside>
+
+        <main className="flex-1 min-w-0">
+  {/* Global campus filter — applies to every tab */}
+          <div className="card px-4 py-3 mb-4 flex flex-wrap items-center gap-3">
+            <span className="text-xs font-semibold text-slate-600">Campus</span>
+            <select value={campus} onChange={(e) => setCampus(e.target.value)} disabled={!allCampuses && selectableCampuses.length <= 1} className="px-3 py-2 rounded-lg border bg-white text-sm disabled:opacity-60 disabled:cursor-not-allowed">
+              {allCampuses
+                ? <option value="">All campuses</option>
+                : myCampuses.length > 1 && <option value="">All my campuses</option>}
+              {selectableCampuses.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            {campus && <button onClick={() => setCampus("")} className="text-xs text-slate-500 hover:underline">Clear</button>}
+            <span className="text-xs text-slate-500 ml-auto">
+              {allCampuses
+                ? "Viewing all campuses — pick one to drill into campus-wise stats"
+                : `You have access to ${myCampuses.length} campus${myCampuses.length === 1 ? "" : "es"}: ${myCampuses.join(", ")}`}
+            </span>
+          </div>
+          {tab === "dashboard" && <><CampusStats branch={campus} onPick={setCampus} /><DashboardTab onOrders={() => selectTab("orders")} campus={campus} /></>}
+          {tab === "store" && <StoreStockTab />}
+          {tab === "alumni" && <AlumniTab />}
+          {tab === "leads" && <LeadsTab campus={campus} />}
+          {tab === "payments" && <PaymentsTab campus={campus} />}
+          {tab === "students" && <StudentsTab campus={campus} />}
+          {tab === "finance" && <FinanceTab campus={campus} />}
+          {tab === "admissions" && <AdmissionsTab campus={campus} />}
+          {tab === "rag" && <RagTab />}
+          {tab === "batches" && <BatchesTab campus={campus} />}
+          {tab === "banner" && <BannerTab />}
+          {tab === "fees" && <FeeConfigTab />}
+          {tab === "expenses" && <ExpenseTrackerTab campus={campus} />}
+          {tab === "orders" && <OrdersTab campus={campus} />}
+          {tab === "dues" && <DuesTab campus={campus} />}
+          {tab === "masters" && <MastersTab />}
+          {tab === "admins" && <AdminsTab />}
+          {tab === "carousel" && <CarouselTab />}
+          {tab === "email" && <EmailTab />}
+          {tab === "activity" && <ActivityTab campus={campus} />}
+          {tab === "complaints" && <ComplaintsTab campus={campus} />}
+      
+        </main>
+      </div>
+
+      {paletteOpen && (
+        <div className="fixed inset-0 z-[80] bg-slate-900/40 backdrop-blur-sm p-4 flex items-start justify-center pt-[12vh]" onClick={() => setPaletteOpen(false)}>
+          <div className="w-full max-w-lg card p-2" onClick={(e) => e.stopPropagation()}>
+            <input
+              autoFocus
+              value={paletteQ}
+              onChange={(e) => setPaletteQ(e.target.value)}
+              placeholder="Jump to a section…"
+              className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+            />
+            <div className="mt-2 max-h-[60vh] overflow-auto">
+              {paletteResults.map((t) => (
+                <button
+                  key={t.id}
+                  onClick={() => { selectTab(t.id); setPaletteOpen(false); setPaletteQ(""); }}
+                  className="w-full flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-slate-50 text-left"
+                >
+                  <span className="flex-1 min-w-0">
+                    <span className="text-sm font-medium text-navy-900">{t.label}</span>
+                    <span className="block text-[11px] text-slate-500 truncate">{groupLabel(t.group)} • {t.desc}</span>
+                  </span>
+                  {badgeFor(t) > 0 && <span className="shrink-0 min-w-[18px] h-[18px] px-1 rounded-full bg-red-600 text-white text-[10px] font-bold grid place-items-center">{badgeFor(t)}</span>}
+                </button>
+              ))}
+              {paletteResults.length === 0 && <div className="px-3 py-6 text-center text-sm text-slate-500">No matching section</div>}
+            </div>
+          </div>
         </div>
-        {tab === "dashboard" && <><CampusStats branch={campus} onPick={setCampus} /><DashboardTab onOrders={() => setTab("orders")} campus={campus} /></>}
-        {tab === "store" && <StoreStockTab />}
-        {tab === "alumni" && <AlumniTab />}
-        {tab === "leads" && <LeadsTab campus={campus} />}
-        {tab === "payments" && <PaymentsTab campus={campus} />}
-        {tab === "students" && <StudentsTab campus={campus} />}
-        {tab === "finance" && <FinanceTab campus={campus} />}
-        {tab === "admissions" && <AdmissionsTab campus={campus} />}
-        {tab === "rag" && <RagTab />}
-        {tab === "batches" && <BatchesTab campus={campus} />}
-        {tab === "banner" && <BannerTab />}
-        {tab === "fees" && <FeeConfigTab />}
-        {tab === "expenses" && <ExpenseTrackerTab campus={campus} />}
-        {tab === "orders" && <OrdersTab campus={campus} />}
-        {tab === "dues" && <DuesTab campus={campus} />}
-        {tab === "masters" && <MastersTab />}
-        {tab === "admins" && <AdminsTab />}
-        {tab === "carousel" && <CarouselTab />}
-        {tab === "email" && <EmailTab />}
-        {tab === "store-orders" && <StoreOrdersTab campus={campus} />}
-        {tab === "activity" && <ActivityTab campus={campus} />}
-        {tab === "complaints" && <ComplaintsTab campus={campus} />}
-      </main>
+      )}
     </div>
   );
 }
@@ -2904,7 +3071,7 @@ function MastersTab() {
 }
 
 function DuesTab({ campus = "" }: { campus?: string }) {
-  const [view, setView] = useState<"queue" | "workspace" | "dues" | "receipts">("queue");
+  const [view, setView] = useState<"queue" | "workspace" | "dues">("queue");
   const [queue, setQueue] = useState<any[]>([]);
   const [admissions, setAdmissions] = useState<any[]>([]);
   const [q, setQ] = useState("");
@@ -2916,8 +3083,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
   const [duesRows, setDuesRows] = useState<any[]>([]);
   const [duesTotals, setDuesTotals] = useState<any>(null);
   const [duesTruncated, setDuesTruncated] = useState(false);
-  const [allReceipts, setAllReceipts] = useState<any[]>([]);
-  const [showReceipt, setShowReceipt] = useState<any>(null);
+    const [showReceipt, setShowReceipt] = useState<any>(null);
   const [ackFor, setAckFor] = useState<string | null>(null);
   const [allocRows, setAllocRows] = useState<{ installmentId: string; amount: string }[]>([{ installmentId: "", amount: "" }]);
   const [newInst, setNewInst] = useState({ label: "", amount: "", dueDate: "", notes: "" });
@@ -2981,12 +3147,6 @@ function DuesTab({ campus = "" }: { campus?: string }) {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [f.q, f.due, f.status, f.scope, f.branch, f.course, f.batch, f.from, f.to, campus]);
-  const loadReceipts = async () => {
-    const r = await fetch("/api/admin/receipts", { credentials: "same-origin",  cache: "no-store" });
-    const d = await r.json().catch(() => []);
-    if (Array.isArray(d)) setAllReceipts(d);
-  };
-
   // Roll installment rows up into one receivable line per student
   const duesByStudent = useMemo(() => {
     const map = new Map<string, any>();
@@ -3087,8 +3247,8 @@ function DuesTab({ campus = "" }: { campus?: string }) {
   return (
     <div className="grid gap-4">
       <div className="card p-4 flex gap-2 flex-wrap">
-        {([["queue", "Verify Queue"], ["workspace", "Student Workspace"], ["dues", "Due Payments"], ["receipts", "Receipts"]] as const).map(([v, l]) => (
-          <button key={v} onClick={() => { setView(v); if (v === "receipts") loadReceipts(); if (v === "dues" && !duesLoaded) loadDues(); }} className={`px-4 py-2 rounded-full text-sm font-medium border ${view === v ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>{l}{v === "queue" && queue.length > 0 ? ` (${queue.length})` : ""}</button>
+        {([["queue", "Verify Queue"], ["workspace", "Student Workspace"], ["dues", "Due Payments"]] as const).map(([v, l]) => (
+          <button key={v} onClick={() => { setView(v); if (v === "dues" && !duesLoaded) loadDues(); }} className={`px-4 py-2 rounded-full text-sm font-medium border ${view === v ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>{l}{v === "queue" && queue.length > 0 ? ` (${queue.length})` : ""}</button>
         ))}
       </div>
       {(() => {
@@ -3334,21 +3494,6 @@ function DuesTab({ campus = "" }: { campus?: string }) {
               </table>
               {duesRows.length === 0 && <div className="p-6 text-center text-xs text-slate-400">No due rows.</div>}
             </div>
-          </div>
-        </div>
-      )}
-
-      {view === "receipts" && (
-        <div className="card p-5">
-          <h2 className="font-semibold text-navy-900">Receipts • {allReceipts.length}</h2>
-          <div className="mt-3 grid gap-2">
-            {allReceipts.map((r: any) => (
-              <div key={r.id} className="flex justify-between items-center text-sm p-3 rounded-xl border">
-                <span><b>{r.receiptNo}</b> • ₹{Number(r.amount).toLocaleString("en-IN")} • {new Date(r.createdAt).toLocaleString("en-IN")} • {r.feePayment?.allocations?.map((a: any) => a.installment?.label).filter(Boolean).join(", ")}</span>
-                <button onClick={() => setShowReceipt(r)} className="text-xs text-sky-700 hover:underline">View / Print</button>
-              </div>
-            ))}
-            {allReceipts.length === 0 && <div className="text-xs text-slate-400">No receipts yet — generated when payments are acknowledged.</div>}
           </div>
         </div>
       )}
@@ -3703,30 +3848,6 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
   );
 }
 
-const ADMIN_TABS: { id: string; label: string; desc: string }[] = [
-  { id: "dashboard", label: "Dashboard", desc: "Overview & reports" },
-  { id: "store", label: "Store Stock", desc: "Inventory" },
-  { id: "orders", label: "Orders", desc: "Store orders & handover" },
-  { id: "alumni", label: "Alumni", desc: "Alumni stories" },
-  { id: "leads", label: "Leads", desc: "Enquiries" },
-  { id: "payments", label: "Payments", desc: "Student fee payments" },
-  { id: "students", label: "Students", desc: "Enrolled students" },
-  { id: "finance", label: "AR / AP", desc: "Receivables / Payables" },
-  { id: "dues", label: "Dues & Receipts", desc: "Installments & receipts" },
-  { id: "expenses", label: "Expense Tracker", desc: "Expenses & approvals" },
-  { id: "admissions", label: "Admissions", desc: "Applications & approvals" },
-  { id: "rag", label: "RAG", desc: "Chatbot knowledge" },
-  { id: "batches", label: "Batches", desc: "Course batches & capacity" },
-  { id: "masters", label: "Masters", desc: "Courses / Durations / Addons / Branches" },
-  { id: "banner", label: "Banner", desc: "Top announcement" },
-  { id: "fees", label: "Fee Config", desc: "Fee per course x mode x duration x branch" },
-  { id: "admins", label: "Admins", desc: "Manage admin users (super_admin only)" },
-  { id: "carousel", label: "Carousel", desc: "Home page carousel (super_admin only)" },
-  { id: "email", label: "Email", desc: "Send updates to users (SMTP)" },
-  { id: "activity", label: "Activity Log", desc: "All actions with timestamp + user" },
-  { id: "complaints", label: "Complaints", desc: "Student complaint box" },
-  { id: "store-orders", label: "Store Orders", desc: "Uniform order handover" },
-];
 
 // Global activity log: every action with timestamp and the real user name + role
 function ActivityTab({ campus = "" }: { campus?: string }) {
@@ -4130,7 +4251,7 @@ function AdminsTab() {
                 <label className="text-xs font-medium">Per-tab Permissions (optional override)</label>
                 <div className="text-[11px] text-slate-500">If you select any, the admin will only see those tabs (instead of role defaults). Leave empty to use role defaults.</div>
                 <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-1.5 p-3 rounded-xl bg-slate-50 border max-h-52 overflow-auto">
-                  {ADMIN_TABS.map((t) => (
+                  {allTabs.map((t) => (
                     <label key={t.id} className="flex items-start gap-1.5 text-xs p-1.5 rounded hover:bg-white cursor-pointer border border-transparent hover:border-slate-200">
                       <input type="checkbox" checked={form.permissions.includes(t.id)} onChange={() => togglePerm(t.id, form.permissions, (v) => setForm({ ...form, permissions: v }))} className="mt-0.5" />
                       <span><span className="font-medium">{t.label}</span><span className="block text-[11px] text-slate-500">{t.desc}</span></span>
@@ -4138,7 +4259,7 @@ function AdminsTab() {
                   ))}
                 </div>
                 <div className="mt-1 flex gap-2 text-xs">
-                  <button onClick={() => setForm({ ...form, permissions: ADMIN_TABS.map((t) => t.id) })} className="text-sky-700 hover:underline">Select all</button>
+                  <button onClick={() => setForm({ ...form, permissions: allTabs.map((t) => t.id) })} className="text-sky-700 hover:underline">Select all</button>
                   <button onClick={() => setForm({ ...form, permissions: [] })} className="text-slate-500 hover:underline">Clear (use role defaults)</button>
                 </div>
               </div>
@@ -4192,7 +4313,7 @@ function AdminsTab() {
               <div>
                 <label className="text-xs font-medium">Permissions (override role defaults)</label>
                 <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-1.5 p-3 rounded-xl bg-slate-50 border max-h-52 overflow-auto">
-                  {ADMIN_TABS.map((t) => (
+                  {allTabs.map((t) => (
                     <label key={t.id} className="flex items-start gap-1.5 text-xs p-1.5 rounded hover:bg-white cursor-pointer">
                       <input type="checkbox" checked={editing.permissions?.includes(t.id)} onChange={() => togglePerm(t.id, editing.permissions || [], (v) => setEditing({ ...editing, permissions: v }))} className="mt-0.5" />
                       <span><span className="font-medium">{t.label}</span><span className="block text-[11px] text-slate-500">{t.desc}</span></span>
@@ -4200,7 +4321,7 @@ function AdminsTab() {
                   ))}
                 </div>
                 <div className="mt-1 flex gap-2 text-xs">
-                  <button onClick={() => setEditing({ ...editing, permissions: ADMIN_TABS.map((t) => t.id) })} className="text-sky-700 hover:underline">Select all</button>
+                  <button onClick={() => setEditing({ ...editing, permissions: allTabs.map((t) => t.id) })} className="text-sky-700 hover:underline">Select all</button>
                   <button onClick={() => setEditing({ ...editing, permissions: [] })} className="text-slate-500 hover:underline">Clear (use role defaults)</button>
                 </div>
               </div>
@@ -4421,124 +4542,6 @@ function CarouselTab() {
 }
 
 // Store orders: status flow + handover. Campus-scoped by the customer's campus.
-function StoreOrdersTab({ campus = "" }: { campus?: string }) {
-  const [d, setD] = useState<any>(null);
-  const [status, setStatus] = useState("all");
-  const [q, setQ] = useState("");
-  const [openId, setOpenId] = useState<string | null>(null);
-  const [msg, setMsg] = useState<string | null>(null);
-
-  const load = async () => {
-    const p = new URLSearchParams({ status });
-    if (campus) p.set("branch", campus);
-    const r = await fetch(`/api/admin/orders?${p.toString()}`, { credentials: "same-origin", cache: "no-store" });
-    const j = await r.json().catch(() => null);
-    if (j) setD(j);
-  };
-  useEffect(() => { load(); }, [campus, status]);
-
-  const act = async (id: string, action: string) => {
-    setMsg(null);
-    const r = await fetch("/api/admin/orders", { credentials: "same-origin", method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, action }) });
-    const j = await r.json().catch(() => ({}));
-    if (r.ok) { setMsg(`Updated to ${j.status}`); load(); }
-    else setMsg(j.error || "Failed");
-  };
-
-  const FLOW: Record<string, { label: string; next?: [string, string][] }> = {
-    placed: { label: "Placed", next: [["start_processing", "Start processing"], ["mark_ready", "Mark ready"], ["cancel", "Cancel"]] },
-    payment_confirmed: { label: "Payment confirmed", next: [["start_processing", "Start processing"], ["mark_ready", "Mark ready"], ["handover", "Hand over"], ["cancel", "Cancel"]] },
-    processing: { label: "Processing", next: [["mark_ready", "Mark ready"], ["handover", "Hand over"], ["cancel", "Cancel"]] },
-    ready_for_handover: { label: "Ready for handover", next: [["handover", "Hand over"], ["cancel", "Cancel"]] },
-    handed_over: { label: "Handed over", next: [["complete", "Mark completed"]] },
-    completed: { label: "Completed", next: [] },
-    cancelled: { label: "Cancelled", next: [] },
-    payment_failed: { label: "Payment failed", next: [["cancel", "Cancel"]] },
-  };
-
-  const orders: any[] = (d?.orders || []).filter((o: any) => {
-    if (!q) return true;
-    return `${o.orderNo} ${o.name} ${o.email} ${o.phone} ${(o.items || []).map((i: any) => i?.name || i?.itemName || "").join(" ")}`.toLowerCase().includes(q.toLowerCase());
-  });
-  const revenue = orders.filter((o: any) => o.paymentStatus === "success").reduce((s: number, o: any) => s + Number(o.subtotal || 0), 0);
-
-  return (
-    <div className="grid gap-4">
-      <div className="card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h2 className="font-semibold text-navy-900">Store Orders • {orders.length}</h2>
-          <p className="text-xs text-slate-500 mt-1">Uniform/stationery orders — process, hand over and close.</p>
-        </div>
-        <div className="text-xs text-slate-500">Paid revenue in view <b>₹{revenue.toLocaleString("en-IN")}</b> • new {d?.newCount ?? 0}</div>
-      </div>
-
-      <div className="card p-4 grid sm:grid-cols-4 gap-2 text-xs">
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search order no, name, item…" className="px-3 py-2 rounded-lg border bg-white" />
-        <select value={status} onChange={(e) => setStatus(e.target.value)} className="px-2 py-2 rounded-lg border bg-white">
-          <option value="all">All statuses</option>
-          {Object.keys(FLOW).map((s) => <option key={s} value={s}>{FLOW[s].label}</option>)}
-        </select>
-        <button onClick={load} className="px-3 py-2 rounded-lg border bg-white hover:bg-slate-50 self-start">Refresh</button>
-        <button onClick={() => { setQ(""); setStatus("all"); }} className="text-xs text-slate-500 hover:underline self-start text-left sm:text-right">Clear</button>
-      </div>
-
-      {msg && <div className="px-4 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs">{msg}</div>}
-
-      <div className="grid gap-3">
-        {orders.map((o: any) => {
-          const flow = FLOW[o.status] || { label: o.status, next: [] as [string, string][] };
-          return (
-            <div key={o.id} className="card p-4">
-              <div className="flex items-start justify-between gap-3 flex-wrap">
-                <div>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <b className="text-navy-900">{o.orderNo}</b>
-                    <span className="px-2 py-0.5 rounded-full border border-slate-200 text-slate-600 text-[11px]">{flow.label}</span>
-                    <span className={`px-2 py-0.5 rounded-full border text-[11px] ${o.paymentStatus === "success" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : o.paymentStatus === "failed" ? "bg-red-50 border-red-200 text-red-700" : "bg-amber-50 border-amber-200 text-amber-700"}`}>{String(o.paymentStatus || "pending").replace(/_/g, " ")}</span>
-                  </div>
-                  <div className="text-xs text-slate-500 mt-1">{o.name} • {o.email} • {o.phone} • {new Date(o.createdAt).toLocaleString("en-IN")}</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-lg font-bold text-navy-900">₹{Number(o.subtotal || 0).toLocaleString("en-IN")}</div>
-                  <div className="text-[11px] text-slate-400">{(o.items || []).length} item(s)</div>
-                </div>
-              </div>
-
-              <div className="mt-2 text-xs text-slate-600 flex flex-wrap gap-x-4 gap-y-1">
-                {(o.items || []).map((i: any, k: number) => (
-                  <span key={k}>• {i.name || i.itemName} ×{i.quantity} {i.size ? `(${i.size})` : ""} ₹{Number(i.price || 0) * Number(i.quantity || 1)}</span>
-                ))}
-              </div>
-
-              {o.handedOverAt && <div className="mt-2 text-xs text-emerald-700">Handed over {new Date(o.handedOverAt).toLocaleString("en-IN")} by {o.handedOverBy || "—"}</div>}
-
-              <div className="mt-3 flex gap-1.5 flex-wrap items-center">
-                {flow.next!.map(([a, label]) => (
-                  <button key={a} onClick={() => act(o.id, a)} className={`px-3 py-1.5 rounded-full border text-xs ${a === "cancel" ? "bg-red-50 border-red-200 text-red-700" : "bg-navy-900 text-white border-navy-900"}`}>{label}</button>
-                ))}
-                <button onClick={() => setOpenId(openId === o.id ? null : o.id)} className="px-3 py-1.5 rounded-full border border-slate-200 text-xs">{openId === o.id ? "Hide timeline" : "Timeline"}</button>
-              </div>
-
-              {openId === o.id && (
-                <div className="mt-2 grid gap-1">
-                  {(o.events || []).map((e: any) => (
-                    <div key={e.id} className="text-xs p-2 rounded-lg bg-slate-50 border border-slate-100">
-                      <b>{String(e.action).replace(/_/g, " ")}</b> • {new Date(e.createdAt).toLocaleString("en-IN")} • by {e.actor}
-                      {e.note && <div className="text-slate-600">{e.note}</div>}
-                    </div>
-                  ))}
-                  {(o.events || []).length === 0 && <div className="text-xs text-slate-400">No events yet.</div>}
-                </div>
-              )}
-            </div>
-          );
-        })}
-        {orders.length === 0 && <div className="card p-8 text-center text-sm text-slate-500">No store orders match.</div>}
-      </div>
-    </div>
-  );
-}
-
 function EmailTab() {
   const [smtp, setSmtp] = useState<any>(null);
   const [tab, setTab] = useState<"single" | "bulk">("single");
