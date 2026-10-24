@@ -213,23 +213,6 @@ export default function HeroCarousel() {
                   <span className="px-3 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/20 text-emerald-200">✓ 5000+ Selections</span>
                 </div>
               </div>
-
-              {/* side stats card - desktop only */}
-              <div className="hidden lg:block absolute right-8 top-1/2 -translate-y-1/2 w-[340px]">
-                <div className="rounded-3xl bg-white/95 backdrop-blur border border-white/40 p-5 shadow-2xl">
-                  <div className="text-xs tracking-widest font-bold text-sky-700">WHY AYAAN • {String(idx + 1).padStart(2, "0")} / {String(list.length).padStart(2, "0")}</div>
-                  <div className="mt-2 font-display font-bold text-navy-900 leading-tight">Trusted by 5000+ families since 2016</div>
-                  <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-                    <div className="p-3 rounded-xl bg-slate-50 border"><div className="font-bold text-navy-900">9+</div><div className="text-[11px] text-slate-500">Years</div></div>
-                    <div className="p-3 rounded-xl bg-slate-50 border"><div className="font-bold text-navy-900">15 Acres</div><div className="text-[11px] text-slate-500">Campus</div></div>
-                    <div className="p-3 rounded-xl bg-slate-50 border"><div className="font-bold text-navy-900">4.7★</div><div className="text-[11px] text-slate-500">Reviews</div></div>
-                  </div>
-                  <div className="mt-3 flex gap-2">
-                    <a href="tel:+918886667222" className="flex-1 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium grid place-items-center">Call Advisor</a>
-                    <a href="https://api.whatsapp.com/send?phone=918886667222" target="_blank" className="px-4 py-2.5 rounded-full bg-[#25D366] text-white text-sm grid place-items-center">WhatsApp</a>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         ))}

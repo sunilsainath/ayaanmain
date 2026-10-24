@@ -69,7 +69,7 @@ export default function Footer() {
 
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row gap-3 items-center justify-between text-xs text-slate-400">
           <span>© 2026 Ayaan Police Academy. All rights reserved.</span>
-          <span className="flex gap-4"><a className="hover:text-white" href="#">Privacy</a><a className="hover:text-white" href="#">Terms</a><span>Designed for International Standards</span></span>
+          <span className="flex flex-wrap gap-4 items-center justify-center md:justify-end"><Link className="hover:text-white" href="/privacy">Privacy</Link><Link className="hover:text-white" href="/terms">Terms</Link><span>Developed by DREP Software Solutions</span></span>
         </div>
       </div>
     </footer>
