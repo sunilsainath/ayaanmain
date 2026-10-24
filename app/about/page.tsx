@@ -1,4 +1,5 @@
 "use client";
+import PageHero from "@/components/PageHero";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -20,13 +21,12 @@ export default function AboutPage() {
   }, []);
   return (
     <div className="bg-[#fcfcfd]">
-      <section className="bg-navy-900 text-white">
-        <div className="container-soft py-10">
-          <div className="text-xs tracking-widest text-white/60">ABOUT • ESTD. 2016</div>
-          <h1 className="mt-2 font-display font-bold text-3xl lg:text-4xl">Ayaan Foundation & Group of Competitive Institutions</h1>
-          <p className="mt-3 text-white/70 max-w-2xl">Built for the aspirant who has desire but needs the right guidance — written + physical, discipline + care.</p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="About • Estd. 2016"
+        title="Ayaan Foundation & Group of Competitive Institutions"
+        crumbs={[{ label: "About Us" }]}
+        subtitle="Built for the aspirant who has desire but needs the right guidance — written + physical, discipline + care."
+      />
 
       <section className="container-soft mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

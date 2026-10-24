@@ -1,12 +1,13 @@
+import PageHero from "@/components/PageHero";
 export default function ContactPage(){
   return (
     <div className="bg-[#fcfcfd]">
-      <section className="bg-navy-900 text-white">
-        <div className="container-soft py-10">
-          <h1 className="font-display font-bold text-3xl">Contact & Admissions</h1>
-          <p className="text-white/70 mt-2">We reply within 2 hours • 9am – 8pm • +91 88866 67222</p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Contact"
+        title="Contact & Admissions"
+        crumbs={[{ label: "Contact" }]}
+        subtitle="We reply within 2 hours • 9am – 8pm • +91 88866 67222"
+      />
 
       <section className="container-soft mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">

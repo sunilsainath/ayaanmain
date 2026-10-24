@@ -4,7 +4,7 @@
 // The admin console has its own header, nav and logout, so stacking the public
 // navbar on top of it is both redundant and confusing.
 import { usePathname } from "next/navigation";
-import Navbar from "@/components/Navbar";
+import SiteHeader from "@/components/SiteHeader";
 import Footer from "@/components/Footer";
 import RagBot from "@/components/RagBot";
 import Banner from "@/components/Banner";
@@ -26,7 +26,7 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
   return (
     <>
       <Banner />
-      <Navbar />
+      <SiteHeader />
       <main>{children}</main>
       <Footer />
       {!hideChat && <RagBot />}

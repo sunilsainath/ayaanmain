@@ -1,4 +1,5 @@
 "use client";
+import PageHero from "@/components/PageHero";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { courseDetails as fallbackDetails } from "@/data/courseDetails";
@@ -106,27 +107,25 @@ export default function CoursesPage() {
 
   return (
     <div className="bg-[#fcfcfd] pb-10">
-      <section className="bg-navy-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-sky-600/10 via-transparent to-amber-500/5" />
-        <div className="container-soft py-10 relative">
-          <h1 className="font-display font-bold text-3xl">Courses for Every Uniform</h1>
-          <p className="text-white/70 mt-2 max-w-2xl">
-            SI PC • Groups 1/2/3/4 • SSC GD • Army/Navy/Airforce • UPSC • Online. Offline • Residential • Online. Telugu & English.
-          </p>
-          <div className="mt-4 flex gap-2">
-            <div className="relative">
-              <input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="Search SI PC, Army, UPSC…"
-                className="w-[280px] pl-9 pr-3 py-2.5 rounded-full bg-white text-navy-900 text-sm placeholder:text-slate-400 focus:outline-none"
-              />
-              <span className="absolute left-3 top-2.5 text-slate-400">⌕</span>
-            </div>
-            <span className="hidden sm:inline-flex px-3 py-2 rounded-full bg-white/10 border border-white/20 text-xs">{filtered.length} courses</span>
+      <PageHero
+        eyebrow="Courses"
+        title="Courses for Every Uniform"
+        crumbs={[{ label: "Courses" }]}
+        subtitle="SI PC • Groups 1/2/3/4 • SSC GD • Army/Navy/Airforce • UPSC • Online. Offline • Residential • Online. Telugu & English."
+      >
+        <div className="mt-5 flex flex-wrap gap-2">
+          <div className="relative flex-1 min-w-0 sm:flex-none">
+            <input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Search SI PC, Army, UPSC…"
+              className="w-full sm:w-[280px] pl-9 pr-3 py-2.5 rounded-full bg-white text-navy-900 text-sm placeholder:text-slate-400 focus:outline-none"
+            />
+            <span className="absolute left-3 top-2.5 text-slate-400" aria-hidden>⌕</span>
           </div>
+          <span className="inline-flex items-center px-3 py-2 rounded-full bg-white/10 border border-white/20 text-xs">{filtered.length} courses</span>
         </div>
-      </section>
+      </PageHero>
 
       {/* Active course detail drawer */}
       {activeCourse && (

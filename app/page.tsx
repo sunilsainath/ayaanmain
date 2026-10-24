@@ -197,6 +197,112 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Welcome + director quote — institutional template block */}
+      <section className="container-soft mt-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
+          <div className="lg:col-span-7">
+            <div className="text-xs font-bold tracking-widest text-sky-700">WELCOME TO AYAN</div>
+            <h2 className="mt-3 font-display font-bold text-2xl sm:text-3xl text-navy-900 leading-tight">
+              A campus built for one outcome — selection.
+            </h2>
+            <p className="mt-4 text-sm sm:text-[15px] leading-relaxed text-slate-600">
+              Ayan Group of Competitive Institutions has trained aspirants for the uniform services since 2016.
+              Written classes, daily testing and physical ground training run inside one 15-acre campus at
+              Bollikunta, Warangal — so preparation never depends on what happens outside the gate.
+            </p>
+            <p className="mt-3 text-sm sm:text-[15px] leading-relaxed text-slate-600">
+              Every batch follows the same rhythm: morning study, faculty-led classes, an evening test with
+              explanation, and a physical session on the track. Progress is measured weekly, not at the end.
+            </p>
+            <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { k: "2016", v: "Established" },
+                { k: "15", v: "Acre campus" },
+                { k: "3", v: "Ground levels" },
+                { k: "5000+", v: "Selections" },
+              ].map((x) => (
+                <div key={x.k} className="rounded-xl border border-slate-200 bg-white px-3 py-3">
+                  <div className="font-display font-bold text-navy-900 text-lg leading-none">{x.k}</div>
+                  <div className="text-[11px] text-slate-500 mt-1">{x.v}</div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <Link href="/about" className="btn-primary !py-2.5">About the institute</Link>
+              <Link href="/academy" className="btn-ghost !py-2.5">Visit the campus</Link>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5">
+            <div className="card p-6 border-slate-200">
+              <div className="text-3xl leading-none text-sky-600 font-display" aria-hidden>&ldquo;</div>
+              <blockquote className="mt-2 text-[15px] leading-relaxed text-slate-700">
+                Education breeds confidence. Confidence breeds hope. Hope breeds peace. Our job is to give
+                every aspirant the discipline to earn that confidence — not to sell them a dream.
+              </blockquote>
+              <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
+                <div className="w-10 h-10 rounded-full bg-navy-900 text-white grid place-items-center font-bold">A</div>
+                <div>
+                  <div className="text-sm font-semibold text-navy-900">Mohd. Anwar Sir</div>
+                  <div className="text-xs text-slate-500">Founder &amp; Director — Ex-SI, State Topper, International Athlete</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* News & achievements — template card row */}
+      <section className="container-soft mt-10">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <div className="text-xs font-bold tracking-widest text-sky-700">NEWS &amp; ACHIEVEMENTS</div>
+            <h2 className="mt-2 font-display font-bold text-2xl text-navy-900">What is happening at Ayan</h2>
+          </div>
+          <Link href="/about" className="text-sm font-medium text-navy-800 hover:underline">View all updates →</Link>
+        </div>
+
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {[
+            {
+              tag: "Courses",
+              date: "Updated this term",
+              title: "SI and Constable now run as one SI PC track",
+              desc: "Sub-Inspector and Police Constable syllabus are taught together, with eligibility for both targets at the end of the course.",
+              href: "/courses",
+            },
+            {
+              tag: "Campus",
+              date: "Bollikunta, Warangal",
+              title: "15-acre residential campus with three ground levels",
+              desc: "Track events, strength training and field events sit inside the same campus as classrooms, library and hostel.",
+              href: "/academy",
+            },
+            {
+              tag: "Defence",
+              date: "Admissions open",
+              title: "Army, Navy and Airforce entries added",
+              desc: "Agniveer, GD, Navy SSR/MR and Airforce X/Y preparation with the physical and medical standards built into the timetable.",
+              href: "/courses",
+            },
+          ].map((n) => (
+            <Link key={n.title} href={n.href} className="card overflow-hidden interactive-card group flex flex-col">
+              <div className="p-5 flex-1 flex flex-col">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-bold tracking-widest px-2 py-1 rounded-full bg-sky-50 border border-sky-100 text-sky-700">{n.tag.toUpperCase()}</span>
+                  <span className="text-[11px] text-slate-400">{n.date}</span>
+                </div>
+                <div className="mt-3 font-display font-bold text-navy-900 leading-snug group-hover:text-navy-800">{n.title}</div>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600 flex-1">{n.desc}</p>
+                <div className="mt-4 text-sm font-medium text-navy-800 inline-flex items-center gap-1">
+                  Read more <span className="group-hover:translate-x-1 transition" aria-hidden>→</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <SectionDivider variant="wave" />
       <section className="container-soft mt-2">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

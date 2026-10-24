@@ -1,4 +1,5 @@
 "use client";
+import PageHero from "@/components/PageHero";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import RazorpayCheckout from "@/components/payment/RazorpayCheckout";
@@ -156,17 +157,17 @@ export default function StorePage() {
 
   return (
     <div className="bg-[#fcfcfd] pb-10">
-      <section className="bg-navy-900 text-white">
-        <div className="container-soft py-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <h1 className="font-display font-bold text-3xl">Store</h1>
-            <p className="text-white/70 mt-2">Kit for preparation — shoes, spikes, apparel, gear. Stock updated live from admin.</p>
-          </div>
-          <button onClick={() => setCartOpen(true)} className="px-5 py-2.5 rounded-full bg-white text-navy-900 text-sm font-semibold hover:bg-slate-100 shrink-0">
+      <PageHero
+        eyebrow="Store"
+        title="Store"
+        crumbs={[{ label: "Store" }]}
+        subtitle="Kit for preparation — shoes, spikes, apparel, gear. Stock updated live from admin."
+        actions={
+          <button onClick={() => setCartOpen(true)} className="px-5 py-2.5 rounded-full bg-white text-navy-900 text-sm font-semibold hover:bg-slate-100">
             🛒 Cart {cartCount > 0 ? `(${cartCount})` : ""}
           </button>
-        </div>
-      </section>
+        }
+      />
 
       <section className="container-soft mt-8">
         {msg && <div className={`mb-4 text-sm px-4 py-3 rounded-xl border ${msg.type === "error" ? "bg-red-50 border-red-200 text-red-700" : "bg-emerald-50 border-emerald-200 text-emerald-700"}`}>{msg.text}</div>}
