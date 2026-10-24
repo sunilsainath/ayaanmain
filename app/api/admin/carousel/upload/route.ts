@@ -17,8 +17,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid upload (expect multipart file)" }, { status: 400 });
   }
   if (!file || file.size === 0) return NextResponse.json({ error: "No file provided" }, { status: 400 });
-  if (!(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)) return NextResponse.json({ error: "Only JPG, PNG or WEBP images allowed" }, { status: 400 });
-  if (file.size > MAX_IMAGE_BYTES) return NextResponse.json({ error: "Image must be under 2MB" }, { status: 400 });
+  if (!(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type)) return NextResponse.json({ error: `Only JPG, PNG or WEBP images allowed (got ${file.type || "unknown type"})` }, { status: 400 });
+  if (file.size > MAX_IMAGE_BYTES) {
+    const mb = (file.size / 1024 / 1024).toFixed(1);
+    return NextResponse.json({ error: `Image is ${mb}MB — the limit is 2MB. The browser should have compressed it; try again or export a smaller file.` }, { status: 400 });
+  }
 
   const buf = Buffer.from(await file.arrayBuffer());
   const isJpeg = buf[0] === 0xff && buf[1] === 0xd8;

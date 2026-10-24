@@ -6,6 +6,7 @@ import { DonutChart, GroupedBarChart, CHART_COLORS } from "@/components/Charts";
 import ReceiptView from "@/components/ReceiptView";
 import { FALLBACK_FEE as FEE_FALLBACK } from "@/lib/fees";
 import { LOGO_SVG_INLINE, BRAND } from "@/lib/brand";
+import { compressImage, formatBytes } from "@/lib/image-client";
 
 type Tab = "dashboard" | "rag" | "batches" | "banner" | "admissions" | "payments" | "students" | "finance" | "leads" | "alumni" | "store" | "fees" | "expenses" | "orders" | "dues" | "masters" | "admins" | "carousel" | "email" | "activity" | "complaints" | "store-orders";
 type Role = "super_admin" | "finance" | "admissions";
@@ -2028,15 +2029,21 @@ function AlumniTab() {
     if (!f) return;
     setUploadErr("");
     if (!["image/jpeg", "image/png", "image/webp"].includes(f.type)) return setUploadErr("Only JPG, PNG or WEBP allowed");
-    if (f.size > 2 * 1024 * 1024) return setUploadErr("Image must be under 2MB");
     setUploading(true);
-    const fd = new FormData();
-    fd.append("file", f);
-    const r = await fetch("/api/admin/alumni/upload", { credentials: "same-origin",  method: "POST", body: fd });
-    const d = await r.json().catch(() => ({}));
-    setUploading(false);
-    if (r.ok && d.url) setForm({ ...form, image: d.url });
-    else setUploadErr(d.error || "Upload failed");
+    try {
+      // Downscale in the browser so a multi-MB phone photo still uploads.
+      const shrunk = await compressImage(f, { maxWidth: 1200, maxHeight: 1200, quality: 0.85, maxBytes: 900 * 1024 });
+      const fd = new FormData();
+      fd.append("file", shrunk);
+      const r = await fetch("/api/admin/alumni/upload", { credentials: "same-origin",  method: "POST", body: fd });
+      const d = await r.json().catch(() => ({}));
+      setUploading(false);
+      if (r.ok && d.url) setForm({ ...form, image: d.url });
+      else setUploadErr(d.error || "Upload failed");
+    } catch (e: any) {
+      setUploading(false);
+      setUploadErr(e?.message || "Upload failed");
+    }
   };
   const save = async () => {
     if (!form.name.trim() || !form.quote.trim()) return alert("Name and quote required");
@@ -4255,17 +4262,29 @@ function CarouselTab() {
 
   const upload = async (file?: File) => {
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) return setMsg({ type: "err", text: "Image must be under 2MB" });
     setUploading(true);
-    const fd = new FormData();
-    fd.append("file", file);
-    const r = await fetch("/api/admin/carousel/upload", { credentials: "same-origin",  method: "POST", body: fd });
-    const d = await r.json().catch(() => ({}));
-    setUploading(false);
-    if (r.ok && d.url) {
-      setForm({ ...form, image: d.url });
-      setMsg({ type: "ok", text: "Image uploaded — preview below" });
-    } else setMsg({ type: "err", text: d.error || "Upload failed" });
+    try {
+      const original = file.size;
+      // The hero is full-bleed at up to ~2.6:1, so 2400px wide is ample.
+      const shrunk = await compressImage(file, { maxWidth: 2400, maxHeight: 1400, quality: 0.85, maxBytes: 1.8 * 1024 * 1024 });
+      if (shrunk.size > 2 * 1024 * 1024) {
+        setUploading(false);
+        return setMsg({ type: "err", text: `Still ${formatBytes(shrunk.size)} after compression — please export it smaller` });
+      }
+      const fd = new FormData();
+      fd.append("file", shrunk);
+      const r = await fetch("/api/admin/carousel/upload", { credentials: "same-origin",  method: "POST", body: fd });
+      const d = await r.json().catch(() => ({}));
+      setUploading(false);
+      if (r.ok && d.url) {
+        setForm({ ...form, image: d.url });
+        const note = shrunk.size < original ? ` — optimised ${formatBytes(original)} → ${formatBytes(shrunk.size)}` : "";
+        setMsg({ type: "ok", text: `Image uploaded${note}` });
+      } else setMsg({ type: "err", text: d.error || "Upload failed" });
+    } catch (e: any) {
+      setUploading(false);
+      setMsg({ type: "err", text: e?.message || "Upload failed" });
+    }
   };
 
   const save = async () => {
