@@ -18,7 +18,8 @@ const NAV: NavGroup[] = [
     label: "About",
     children: [
       { label: "Our Institute", href: "/about", desc: "Director, method and results" },
-      { label: "Aspirant Corner", href: "/academy", desc: "Campus, grounds and hostel" },
+      { label: "Aspirant Corner", href: "/academy", desc: "Campus, academics and hostels" },
+      { label: "Gallery", href: "/gallery", desc: "Campus life, awards and toppers" },
       { label: "Alumni", href: "/alumni", desc: "Where our students are now" },
     ],
   },

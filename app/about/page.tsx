@@ -3,6 +3,7 @@ import PageHero from "@/components/PageHero";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FALLBACK_BRANCHES, detailsFor, type Branch } from "@/lib/branchInfo";
+import { GALLERY } from "@/lib/gallery";
 
 const DIRECTOR_CREDENTIALS = [
   "PC — 2004",
@@ -133,13 +134,18 @@ export default function AboutPage() {
             </ul>
           </div>
           <div className="card p-6">
-            <div className="font-semibold text-navy-900">Gallery & Awards</div>
+            <div className="flex items-center justify-between gap-3">
+              <div className="font-semibold text-navy-900">Gallery & Awards</div>
+              <Link href="/gallery" className="text-xs font-medium text-navy-800 hover:underline">View gallery →</Link>
+            </div>
             <div className="mt-3 grid grid-cols-3 gap-2">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-20 rounded-xl bg-slate-100 border border-slate-200 grid place-items-center text-xs text-slate-500">Photo {i + 1}</div>
+              {GALLERY.filter((g) => g.category === "Campus Life").slice(0, 6).map((g) => (
+                <Link key={g.src} href="/gallery" className="relative aspect-square rounded-xl overflow-hidden border border-slate-200 group">
+                  <img src={g.src} alt={g.alt} loading="lazy" className="w-full h-full object-cover transition duration-500 group-hover:scale-105" />
+                </Link>
               ))}
             </div>
-            <div className="mt-4 text-xs text-slate-500">Police Medals • NSG Championship • National Awards — displayed at campus.</div>
+            <div className="mt-4 text-xs text-slate-500">Police Medals • NSG Championship • National Awards — displayed at campus. Tap a photo to see the full gallery.</div>
           </div>
         </div>
 

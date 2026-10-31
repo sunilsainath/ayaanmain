@@ -9,6 +9,7 @@ const QUICK = [
   { label: "Register Now", href: "/admission" },
   { label: "Find Your Batch", href: "/#find-batch" },
   { label: "Aspirant Corner", href: "/academy" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Alumni", href: "/alumni" },
   { label: "Store", href: "/store" },
   { label: "Contact", href: "/contact" },

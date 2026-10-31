@@ -8,6 +8,8 @@ import { PoliceSilhouetteLarge } from "@/components/deco/PoliceSilhouette";
 import { ArmySilhouetteLarge } from "@/components/deco/ArmySilhouette";
 import { GovtSilhouetteLarge } from "@/components/deco/GovtSilhouette";
 import HeroCarousel from "@/components/HeroCarousel";
+import GalleryGrid from "@/components/GalleryGrid";
+import { FEATURED_GALLERY } from "@/lib/gallery";
 
 const coursesData = [
   { id: 1, title: "SI PC", tag: "SI PC", meta: "Sub-Inspector + Constable • One Track", langs: ["Telugu", "English"], desc: "SI Sub-Inspector and Police Constable (PC) together — full written syllabus, daily tests and ground physical training.", points: ["Both SI & PC syllabus", "1600m, long jump, high jump", "Weekly grands + explanation", "Director-led ground training"], popular: true, image: DUMMY.course.si },
@@ -300,6 +302,21 @@ export default function Home() {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      <SectionDivider variant="zigzag" />
+      <section className="container-soft mt-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div>
+            <div className="text-xs font-bold tracking-widest text-sky-700">GALLERY</div>
+            <h2 className="mt-2 font-display font-bold text-2xl text-navy-900">Inside Ayaan — campus, toppers and events</h2>
+            <p className="mt-1 text-sm text-slate-600 max-w-2xl">Real photographs from the residential campus, daily academic and ground training, and our TS Constable 2023 achievers.</p>
+          </div>
+          <Link href="/gallery" className="text-sm font-medium text-navy-800 hover:underline">View full gallery →</Link>
+        </div>
+        <div className="mt-5">
+          <GalleryGrid items={FEATURED_GALLERY} limit={6} showFilters={false} />
         </div>
       </section>
 
