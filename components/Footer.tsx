@@ -6,7 +6,7 @@ const QUICK = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "All Courses", href: "/courses" },
-  { label: "Register Now", href: "/admission" },
+  { label: "Register Online", href: "/admission" },
   { label: "Find Your Batch", href: "/#find-batch" },
   { label: "Aspirant Corner", href: "/academy" },
   { label: "Gallery", href: "/gallery" },
@@ -42,8 +42,8 @@ export default function Footer() {
             <div className="text-sm text-slate-400 mt-0.5">Free counselling, demo class and campus visit.</div>
           </div>
           <div className="flex gap-2 shrink-0">
-            <Link href="/admission" className="px-5 py-2.5 rounded-full bg-white text-navy-900 text-sm font-semibold hover:bg-slate-100">
-              Register Now
+            <Link href="/admission" className="btn-green !px-5 !py-2.5">
+              Register Online
             </Link>
             <a href="tel:+918886667222" className="px-5 py-2.5 rounded-full border border-white/25 text-white text-sm font-medium hover:bg-white/10">
               Call us

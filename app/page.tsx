@@ -9,7 +9,7 @@ import { ArmySilhouetteLarge } from "@/components/deco/ArmySilhouette";
 import { GovtSilhouetteLarge } from "@/components/deco/GovtSilhouette";
 import HeroCarousel from "@/components/HeroCarousel";
 import GalleryGrid from "@/components/GalleryGrid";
-import { FEATURED_GALLERY } from "@/lib/gallery";
+import { HOME_GALLERY } from "@/lib/gallery";
 
 const coursesData = [
   { id: 1, title: "SI PC", tag: "SI PC", meta: "Sub-Inspector + Constable • One Track", langs: ["Telugu", "English"], desc: "SI Sub-Inspector and Police Constable (PC) together — full written syllabus, daily tests and ground physical training.", points: ["Both SI & PC syllabus", "1600m, long jump, high jump", "Weekly grands + explanation", "Director-led ground training"], popular: true, image: DUMMY.course.si },
@@ -134,14 +134,14 @@ export default function Home() {
   };
 
     return (
-    <div className="bg-[#fcfcfd] pb-20 lg:pb-0">
+    <div className="bg-[#ebe1cb] pb-20 lg:pb-0">
       {/* Full-screen carousel — fits viewport with police & course imagery */}
       <HeroCarousel />
 
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-50 to-white" />
-        <div className="absolute -top-32 -right-32 w-[680px] h-[680px] rounded-full bg-sky-50 blur-3xl opacity-70 pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-[560px] h-[560px] rounded-full bg-amber-50 blur-3xl opacity-60 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#f2e9d6] via-white to-white" />
+        <div className="absolute -top-32 -right-32 w-[680px] h-[680px] rounded-full bg-[#ecd9b4] blur-3xl opacity-50 pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 w-[560px] h-[560px] rounded-full bg-[#e7cfa4] blur-3xl opacity-40 pointer-events-none" />
         <FloatingParticles count={8} />
         <div className="absolute top-1/4 -right-20 opacity-5 pointer-events-none hidden lg:block"><PoliceSilhouetteLarge color="#0ea5e9" /></div>
         <div className="absolute bottom-1/4 -left-20 opacity-5 pointer-events-none hidden lg:block"><ArmySilhouetteLarge color="#f59e0b" /></div>
@@ -243,7 +243,7 @@ export default function Home() {
                 every aspirant the discipline to earn that confidence — not to sell them a dream.
               </blockquote>
               <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
-                <div className="w-10 h-10 rounded-full bg-navy-900 text-white grid place-items-center font-bold">A</div>
+                <img src="/team/director-avatar.jpg" alt="Dr. Md Anwar" className="w-10 h-10 rounded-full object-cover border border-slate-200" />
                 <div>
                   <div className="text-sm font-semibold text-navy-900">Dr. Md Anwar</div>
                   <div className="text-xs text-slate-500">Director, Ayaan Police Academy — Ex-Police • SI State Topper ’09 • NSG 2013 • Indian Navy Officer • International Athlete</div>
@@ -310,13 +310,13 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <div className="text-xs font-bold tracking-widest text-sky-700">GALLERY</div>
-            <h2 className="mt-2 font-display font-bold text-2xl text-navy-900">Inside Ayaan — campus, toppers and events</h2>
-            <p className="mt-1 text-sm text-slate-600 max-w-2xl">Real photographs from the residential campus, daily academic and ground training, and our TS Constable 2023 achievers.</p>
+            <h2 className="mt-2 font-display font-bold text-2xl text-navy-900">Inside Ayaan — campus life</h2>
+            <p className="mt-1 text-sm text-slate-600 max-w-2xl">Classrooms, daily tests, morning assembly and ground training. Results, awards and events are in the full gallery.</p>
           </div>
           <Link href="/gallery" className="text-sm font-medium text-navy-800 hover:underline">View full gallery →</Link>
         </div>
         <div className="mt-5">
-          <GalleryGrid items={FEATURED_GALLERY} limit={6} showFilters={false} />
+          <GalleryGrid items={HOME_GALLERY} limit={6} showFilters={false} layout="grid" showBadges={false} />
         </div>
       </section>
 

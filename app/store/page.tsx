@@ -156,7 +156,7 @@ export default function StorePage() {
   };
 
   return (
-    <div className="bg-[#fcfcfd] pb-10">
+    <div className="bg-[#ebe1cb] pb-10">
       <PageHero
         eyebrow="Store"
         title="Store"

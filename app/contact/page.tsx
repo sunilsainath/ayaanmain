@@ -14,7 +14,7 @@ export default function ContactPage() {
   }, []);
 
   return (
-    <div className="bg-[#fcfcfd]">
+    <div className="bg-[#ebe1cb]">
       <PageHero
         eyebrow="Contact"
         title="Visit an Ayaan Institute near you"
@@ -22,7 +22,7 @@ export default function ContactPage() {
         subtitle="Get directions, branch details and timings • Open daily 9am – 8pm • +91 88866 67222"
         actions={
           <>
-            <Link href="/admission" className="px-6 py-3 rounded-full bg-white text-navy-900 text-sm font-semibold">Register Now</Link>
+            <Link href="/admission" className="btn-green">Register Online</Link>
             <a href="https://api.whatsapp.com/send?phone=918886667222" target="_blank" rel="noreferrer" className="px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold">WhatsApp us</a>
           </>
         }

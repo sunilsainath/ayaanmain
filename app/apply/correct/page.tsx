@@ -68,7 +68,7 @@ function CorrectForm() {
   }
 
   return (
-    <div className="bg-[#fcfcfd] py-8">
+    <div className="bg-[#ebe1cb] py-8">
       <div className="container-soft max-w-2xl mx-auto">
         <h1 className="font-display font-bold text-2xl text-navy-900 text-center">Correct Application</h1>
         {err ? (

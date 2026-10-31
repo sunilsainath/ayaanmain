@@ -1,6 +1,8 @@
 "use client";
-// Masonry photo gallery with category filters and a keyboard-friendly lightbox.
-// Images use their natural aspect ratio so result posters are never cropped.
+// Photo gallery with category filters and a keyboard-friendly lightbox.
+// `masonry` (default) preserves each image's natural ratio, which suits the
+// full gallery of posters and photos. `grid` uses uniform 4:3 tiles for the
+// home page so the section always reads as ordered rows.
 import { useEffect, useMemo, useState } from "react";
 import { GALLERY, GALLERY_CATEGORIES, type GalleryCategory, type GalleryItem } from "@/lib/gallery";
 
@@ -8,11 +10,18 @@ type Props = {
   items?: GalleryItem[];
   limit?: number;
   showFilters?: boolean;
+  layout?: "masonry" | "grid";
+  showBadges?: boolean;
+  tileAspect?: "video" | "square";
+  gridCols?: 3 | 4;
 };
 
-export default function GalleryGrid({ items = GALLERY, limit, showFilters = true }: Props) {
+export default function GalleryGrid({ items = GALLERY, limit, showFilters = true, layout = "masonry", showBadges = true, tileAspect = "video", gridCols = 3 }: Props) {
   const [active, setActive] = useState<"All" | GalleryCategory>("All");
   const [open, setOpen] = useState<number | null>(null);
+  const isGrid = layout === "grid";
+  const aspectClass = tileAspect === "square" ? "aspect-square" : "aspect-[4/3]";
+  const gridColsClass = gridCols === 4 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
 
   const categories = useMemo(
     () => GALLERY_CATEGORIES.filter((c) => items.some((i) => i.category === c)),
@@ -67,13 +76,13 @@ export default function GalleryGrid({ items = GALLERY, limit, showFilters = true
         </div>
       )}
 
-      <div className={`columns-1 sm:columns-2 lg:columns-3 gap-4 ${showFilters ? "mt-5" : ""}`}>
+      <div className={isGrid ? `grid ${gridColsClass} gap-4 ${showFilters ? "mt-5" : ""}` : `columns-1 sm:columns-2 lg:columns-3 gap-4 ${showFilters ? "mt-5" : ""}`}>
         {shown.map((item, idx) => (
-          <figure key={item.src} className="mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-slate-200 bg-white">
+          <figure key={item.src} className={isGrid ? "flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white" : "mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-slate-200 bg-white"}>
             <button
               type="button"
               onClick={() => setOpen(idx)}
-              className="relative block w-full text-left focus-ring group"
+              className={`relative block w-full text-left focus-ring group ${isGrid ? `${aspectClass} overflow-hidden` : ""}`}
               aria-label={`Open photo: ${item.title}`}
             >
               <img
@@ -82,15 +91,17 @@ export default function GalleryGrid({ items = GALLERY, limit, showFilters = true
                 width={item.width}
                 height={item.height}
                 loading="lazy"
-                className="w-full h-auto bg-slate-100 transition duration-500 group-hover:scale-[1.02]"
+                className={isGrid ? "w-full h-full object-cover bg-slate-100 transition duration-500 group-hover:scale-[1.02]" : "w-full h-auto bg-slate-100 transition duration-500 group-hover:scale-[1.02]"}
               />
-              <span className="absolute left-3 top-3 px-2.5 py-1 rounded-full bg-navy-900/85 text-white text-[10px] font-semibold tracking-wide uppercase">
-                {item.category}
-              </span>
+              {showBadges && (
+                <span className="absolute left-3 top-3 px-2.5 py-1 rounded-full bg-navy-900/85 text-white text-[10px] font-semibold tracking-wide uppercase">
+                  {item.category}
+                </span>
+              )}
             </button>
-            <figcaption className="p-4">
-              <div className="font-semibold text-navy-900 text-sm">{item.title}</div>
-              <div className="mt-1 text-xs text-slate-600 leading-relaxed">{item.caption}</div>
+            <figcaption className={isGrid ? "p-4 flex-1 min-h-[96px]" : "p-4"}>
+              <div className={`font-semibold text-navy-900 text-sm ${isGrid ? "line-clamp-1" : ""}`}>{item.title}</div>
+              <div className={`mt-1 text-xs text-slate-600 leading-relaxed ${isGrid ? "line-clamp-2" : ""}`}>{item.caption}</div>
             </figcaption>
           </figure>
         ))}

@@ -8,6 +8,8 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        white: '#f6efdc',
+        slate: { 50: '#f3ecdd' },
         navy: {
           800: '#0f2447',
           900: '#0b1d3a',

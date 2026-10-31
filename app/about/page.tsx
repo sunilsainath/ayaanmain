@@ -50,7 +50,7 @@ export default function AboutPage() {
       .catch(() => {});
   }, []);
   return (
-    <div className="bg-[#fcfcfd]">
+    <div className="bg-[#ebe1cb]">
       <PageHero
         eyebrow="About • Estd. 2016"
         title="Ayaan Group of Institutions"
@@ -73,22 +73,13 @@ export default function AboutPage() {
 
         <div className="card mt-6 overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12">
-            <div className="lg:col-span-5 relative bg-gradient-to-br from-navy-900 via-navy-800 to-slate-900 text-white p-8 min-h-[380px] flex flex-col justify-between overflow-hidden">
-              <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-white/5" aria-hidden />
-              <div className="absolute -bottom-20 -left-10 w-64 h-64 rounded-full bg-white/5" aria-hidden />
-              <div className="relative">
-                <div className="text-[11px] tracking-[0.2em] font-semibold text-sky-300 uppercase">Director — Ayaan Police Academy</div>
-                <div className="mt-6 w-28 h-28 rounded-full bg-white/10 border border-white/20 grid place-items-center">
-                  <span className="font-display text-3xl font-bold tracking-wide">MA</span>
-                </div>
-                <div className="mt-5 font-display text-2xl font-bold">Dr. Md Anwar</div>
-                <div className="text-sm text-white/70">Director, Ayaan Police Academy</div>
-              </div>
-              <div className="relative mt-6 flex flex-wrap gap-1.5 text-[11px]">
-                {DIRECTOR_CREDENTIALS.map((c) => (
-                  <span key={c} className="px-2.5 py-1 rounded-full bg-white/10 border border-white/20 text-white/90">{c}</span>
-                ))}
-              </div>
+            <div className="lg:col-span-5 relative bg-navy-900 p-4 sm:p-6 flex items-center justify-center overflow-hidden">
+              <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle at 50% 30%, #38bdf8 0, transparent 55%)" }} aria-hidden />
+              <img
+                src="/team/director.jpg"
+                alt="Dr. Md Anwar, Director of Ayaan Police Academy, in police uniform"
+                className="relative w-full max-w-[400px] h-auto rounded-xl shadow-2xl"
+              />
             </div>
             <div className="lg:col-span-7 p-8">
               <div className="badge bg-slate-50 border-slate-200 text-slate-700">DIRECTOR MESSAGE</div>

@@ -230,7 +230,7 @@ export default function AdmissionPage() {
   }
 
   return (
-    <div className="bg-[#fcfcfd] py-8">
+    <div className="bg-[#ebe1cb] py-8">
       <div className="container-soft">
         <div className="max-w-3xl mx-auto">
           <div className="text-center">

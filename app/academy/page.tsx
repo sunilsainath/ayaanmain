@@ -23,7 +23,7 @@ const ACADEMIC_TRAINING = [
 
 export default function AcademyPage() {
   return (
-    <div className="bg-[#fcfcfd]">
+    <div className="bg-[#ebe1cb]">
       <PageHero
         eyebrow="Aspirant Corner • Residential • India's First"
         title="Aspirant Corner — Ayaan Police Academy"
@@ -31,7 +31,7 @@ export default function AcademyPage() {
         subtitle="Own campus — classroom, grounds and hostel within 100m. Academic classes by senior faculty. Physical training by the Director himself. Your dedicated space for preparation strategy, facilities & hostel life."
         actions={
           <>
-            <Link href="/admission" className="px-6 py-3 rounded-full bg-white text-navy-900 text-sm font-semibold">Register Now</Link>
+            <Link href="/admission" className="btn-green">Register Online</Link>
             <Link href="/courses" className="px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold">View Day-Scholar Option</Link>
           </>
         }

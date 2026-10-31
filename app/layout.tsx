@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="font-sans bg-[#fcfcfd]">
+      <body className="font-sans bg-[#ebe1cb]">
         <MetaMaskGuard />
         <SiteChrome>{children}</SiteChrome>
       </body>

@@ -11,7 +11,7 @@ export default function TestsPage() {
   }, []);
 
   return (
-    <div className="bg-[#fcfcfd] min-h-[70vh] grid place-items-center p-4">
+    <div className="bg-[#ebe1cb] min-h-[70vh] grid place-items-center p-4">
       <div className="card p-8 w-full max-w-md text-center">
         <div className="w-12 h-12 rounded-2xl bg-navy-900 text-white grid place-items-center mx-auto text-xl">◍</div>
         <h1 className="mt-4 font-display font-bold text-xl text-navy-900">Tests have moved to the Ayaan App</h1>

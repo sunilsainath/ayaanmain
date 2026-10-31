@@ -12,7 +12,7 @@
 html { font-size: 17px; scroll-behavior: smooth; }
 
 body {
-  background: #fcfcfd;
+  background: #ebe1cb;
   color: #0f172a;
   font-feature-settings: "ss01" on, "ss02" on, "cv01" on;
 }
@@ -31,6 +31,12 @@ body {
 }
 .btn-ghost {
   @apply inline-flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 px-6 py-3 rounded-full text-sm font-medium hover:bg-slate-50 transition active:scale-[0.98];
+}
+.btn-green {
+  @apply inline-flex items-center justify-center gap-2 bg-emerald-600 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-emerald-700 transition active:scale-[0.98];
+}
+.btn-red {
+  @apply inline-flex items-center justify-center gap-2 bg-red-600 text-white px-6 py-3 rounded-full text-sm font-medium hover:bg-red-700 transition active:scale-[0.98];
 }
 .badge {
   @apply inline-flex items-center gap-2 text-xs font-medium tracking-wide px-3 py-1.5 rounded-full border;
@@ -100,7 +106,7 @@ img, video, canvas { max-width: 100%; }
   textarea { font-size: 16px !important; }
 
   /* comfortable touch targets on the primary actions */
-  .btn-primary, .btn-ghost { min-height: 44px; }
+  .btn-primary, .btn-ghost, .btn-green, .btn-red { min-height: 44px; }
 }
 
 /* Momentum horizontal scroll for wide data tables */

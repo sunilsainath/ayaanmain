@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function GalleryPage() {
   return (
-    <div className="bg-[#fcfcfd]">
+    <div className="bg-[#ebe1cb]">
       <PageHero
         eyebrow="Gallery • Campus • Results • Events"
         title="Inside Ayaan — campus, toppers and events"
@@ -28,7 +28,7 @@ export default function GalleryPage() {
           </div>
         </div>
         <div className="mt-5">
-          <GalleryGrid items={GALLERY} />
+          <GalleryGrid items={GALLERY} layout="grid" tileAspect="square" gridCols={4} />
         </div>
       </section>
     </div>

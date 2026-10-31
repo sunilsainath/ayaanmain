@@ -5,7 +5,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AYAAN_APP_URL } from "@/lib/appConfig";
 import BrandLogo from "@/components/BrandLogo";
 import { BRAND } from "@/lib/brand";
 
@@ -33,24 +32,12 @@ const NAV: NavGroup[] = [
     ],
   },
   {
-    label: "Admissions",
-    children: [
-      { label: "Register Now", href: "/admission", desc: "Register in four steps" },
-      { label: "Find Your Batch", href: "/#find-batch", desc: "Match course + mode in 20s" },
-      { label: "Track Application", href: "/login", desc: "Check status and corrections" },
-      { label: "Fee & Payment", href: "/admission", desc: "Fee split and installments" },
-    ],
-  },
-  {
     label: "Campus Life",
     children: [
       { label: "Aspirant Corner", href: "/academy", desc: "Campus, academics and hostels" },
-      { label: "Store", href: "/store", desc: "Uniforms and training gear" },
       { label: "Contact", href: "/contact", desc: "Visit an Ayaan institute near you" },
     ],
   },
-  { label: "Store", href: "/store" },
-  { label: "Tests", href: AYAAN_APP_URL, external: true },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -129,7 +116,7 @@ export default function SiteHeader() {
             <span className="sm:hidden truncate text-white/70">{BRAND.tagline}</span>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <Link href="/login" className="hover:text-white/80">Student Login</Link>
+            <Link href="/login" className="px-2.5 py-1 rounded-full bg-red-600 text-white font-medium hover:bg-red-700">Student Login</Link>
             <span className="text-white/20">|</span>
             <Link href="/admin" className="hover:text-white/80">Admin</Link>
             <span className="hidden sm:inline text-white/20">|</span>
@@ -152,15 +139,17 @@ export default function SiteHeader() {
             <BrandLogo height={48} />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-0.5" onMouseLeave={() => setOpenGroup(null)}>
+          <nav className="hidden xl:flex items-center gap-1.5" onMouseLeave={() => setOpenGroup(null)}>
             {NAV.map((n) =>
               n.children ? (
                 <div key={n.label} className="relative" onMouseEnter={() => setOpenGroup(n.label)}>
                   <button
                     onClick={() => setOpenGroup(openGroup === n.label ? null : n.label)}
                     aria-expanded={openGroup === n.label}
-                    className={`px-3.5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition inline-flex items-center gap-1 ${
-                      openGroup === n.label ? "text-navy-900 bg-slate-50" : "text-slate-700 hover:text-navy-900 hover:bg-slate-50"
+                    className={`px-3 py-1.5 rounded-full border text-sm font-medium whitespace-nowrap transition inline-flex items-center gap-1 ${
+                      openGroup === n.label
+                        ? "bg-sky-100 border-sky-300 text-navy-900"
+                        : "bg-sky-50 border-sky-200 text-navy-900 hover:bg-sky-100 hover:border-sky-300"
                     }`}
                   >
                     {n.label}
@@ -190,7 +179,7 @@ export default function SiteHeader() {
                   href={n.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3.5 py-2 rounded-lg text-sm font-medium whitespace-nowrap text-slate-700 hover:text-navy-900 hover:bg-slate-50"
+                  className="px-3 py-1.5 rounded-full border border-sky-200 bg-sky-50 text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-sky-100 hover:border-sky-300"
                 >
                   {n.label} ↗
                 </a>
@@ -198,7 +187,7 @@ export default function SiteHeader() {
                 <Link
                   key={n.label}
                   href={n.href!}
-                  className="px-3.5 py-2 rounded-lg text-sm font-medium whitespace-nowrap text-slate-700 hover:text-navy-900 hover:bg-slate-50"
+                  className="px-3 py-1.5 rounded-full border border-sky-200 bg-sky-50 text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-sky-100 hover:border-sky-300"
                 >
                   {n.label}
                 </Link>
@@ -206,7 +195,7 @@ export default function SiteHeader() {
             )}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-2">
+          <div className="hidden xl:flex items-center gap-2">
             {auth ? (
               <>
                 <Link
@@ -221,14 +210,14 @@ export default function SiteHeader() {
                 <button onClick={logout} className="text-xs font-medium text-slate-600 hover:text-red-600 px-1">Logout</button>
               </>
             ) : (
-              <Link href="/login" className="text-sm font-medium text-slate-700 hover:text-navy-900 px-2">Login</Link>
+              <Link href="/login" className="btn-red !px-4 !py-2 text-sm whitespace-nowrap">Login</Link>
             )}
-            <Link href="/admission" className="btn-primary !px-5 !py-2.5 text-sm whitespace-nowrap">Register Now</Link>
+            <Link href="/admission" className="btn-green !px-5 !py-2.5 text-sm whitespace-nowrap">Register Online</Link>
           </div>
 
           <button
             onClick={() => setDrawer(!drawer)}
-            className="lg:hidden w-10 h-10 rounded-full border border-slate-200 grid place-items-center bg-white"
+            className="xl:hidden w-10 h-10 rounded-full border border-slate-200 grid place-items-center bg-white"
             aria-label="Menu"
             aria-expanded={drawer}
           >
@@ -239,27 +228,27 @@ export default function SiteHeader() {
 
       {/* mobile drawer */}
       {drawer && (
-        <div className="lg:hidden bg-white border-t border-slate-100 shadow-lg max-h-[calc(100vh-110px)] overflow-auto">
+        <div className="xl:hidden bg-white border-t border-slate-100 shadow-lg max-h-[calc(100vh-110px)] overflow-auto">
           <div className="container-soft py-3">
             {NAV.map((n) =>
               n.children ? (
-                <div key={n.label} className="border-b border-slate-100 last:border-0">
+                <div key={n.label} className="mb-2 rounded-xl border border-sky-200 bg-sky-50 overflow-hidden">
                   <button
                     onClick={() => setOpenDrawerGroup(openDrawerGroup === n.label ? null : n.label)}
                     aria-expanded={openDrawerGroup === n.label}
-                    className="w-full flex items-center justify-between px-1 py-3 text-sm font-medium text-navy-900"
+                    className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium text-navy-900"
                   >
                     {n.label}
                     <span className={`text-[10px] transition ${openDrawerGroup === n.label ? "rotate-180" : ""}`} aria-hidden>▼</span>
                   </button>
                   {openDrawerGroup === n.label && (
-                    <div className="pb-2 grid gap-0.5">
+                    <div className="px-2 pb-2 grid gap-1">
                       {n.children.map((c) => (
                         <Link
                           key={c.label}
                           href={c.href}
                           onClick={() => { setDrawer(false); setOpenDrawerGroup(null); }}
-                          className="px-3 py-2.5 rounded-lg text-sm text-slate-600 hover:bg-slate-50"
+                          className="px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-sky-100"
                         >
                           {c.label}
                         </Link>
@@ -274,7 +263,7 @@ export default function SiteHeader() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setDrawer(false)}
-                  className="flex items-center justify-between px-1 py-3 text-sm font-medium text-navy-900 border-b border-slate-100 last:border-0"
+                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border border-sky-200 bg-sky-50 text-sm font-medium text-navy-900"
                 >
                   {n.label} ↗
                 </a>
@@ -283,7 +272,7 @@ export default function SiteHeader() {
                   key={n.label}
                   href={n.href!}
                   onClick={() => setDrawer(false)}
-                  className="flex items-center justify-between px-1 py-3 text-sm font-medium text-navy-900 border-b border-slate-100 last:border-0"
+                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border border-sky-200 bg-sky-50 text-sm font-medium text-navy-900"
                 >
                   {n.label} <span className="text-slate-300" aria-hidden>→</span>
                 </Link>
@@ -291,7 +280,7 @@ export default function SiteHeader() {
             )}
 
             <div className="mt-3 grid gap-2">
-              <Link href="/admission" onClick={() => setDrawer(false)} className="btn-primary justify-center">Register Now</Link>
+              <Link href="/admission" onClick={() => setDrawer(false)} className="btn-green justify-center">Register Online</Link>
               {auth ? (
                 <>
                   <Link href={auth.isAdmin ? "/admin" : "/account"} onClick={() => setDrawer(false)} className="w-full py-3 rounded-xl bg-white border border-slate-200 grid place-items-center text-sm font-medium">
@@ -302,7 +291,7 @@ export default function SiteHeader() {
                   </button>
                 </>
               ) : (
-                <Link href="/login" onClick={() => setDrawer(false)} className="w-full py-3 rounded-xl border border-slate-200 bg-white grid place-items-center text-sm font-medium">
+                <Link href="/login" onClick={() => setDrawer(false)} className="btn-red w-full justify-center">
                   Login to Account
                 </Link>
               )}

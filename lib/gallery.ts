@@ -227,3 +227,19 @@ export const GALLERY: GalleryItem[] = [
 
 export const FEATURED_GALLERY = GALLERY.filter((g) => g.featured);
 export const GALLERY_CATEGORIES: GalleryCategory[] = ["Campus Life", "Achievements", "Awards & Events"];
+
+// Home page uses a small, uniform grid of campus photographs only. Result
+// posters and award shots stay in the full gallery, where their different
+// aspect ratios can be shown without cropping.
+const HOME_SRCS = [
+  "campus-assembly.jpg",
+  "morning-run.jpg",
+  "exam-hall.jpg",
+  "classroom-session.jpg",
+  "courtyard-assembly.jpg",
+  "assembly-ground.jpg",
+];
+
+export const HOME_GALLERY: GalleryItem[] = HOME_SRCS
+  .map((name) => GALLERY.find((g) => g.src === `/gallery/${name}`))
+  .filter((g): g is GalleryItem => Boolean(g));
