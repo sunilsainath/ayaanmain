@@ -1,5 +1,5 @@
 "use client";
-// The Ayan logo as a reusable inline SVG component.
+// The Ayaan logo as a reusable inline SVG component.
 //
 // Inline (not <img>) so it renders identically in the navbar, in print windows
 // and wherever a network fetch is unavailable. Set `plain` to drop the shield
@@ -82,24 +82,24 @@ export default function BrandLogo({
           </text>
         </g>
 
-        {/* AYAN */}
+        {/* AYAAN */}
         <text
           x="300"
           y="452"
           textAnchor="middle"
           fontFamily="Georgia, Times New Roman, serif"
-          fontSize="132"
+          fontSize="108"
           fontWeight="700"
-          letterSpacing="6"
+          letterSpacing="4"
           fill="#e11d2e"
           stroke="#ffffff"
           strokeWidth="7"
           style={{ paintOrder: "stroke" }}
         >
-          AYAN
+          AYAAN
         </text>
-        <text x="300" y="452" textAnchor="middle" fontFamily="Georgia, Times New Roman, serif" fontSize="132" fontWeight="700" letterSpacing="6" fill="none" stroke="#ffd21f" strokeWidth="1.5">
-          AYAN
+        <text x="300" y="452" textAnchor="middle" fontFamily="Georgia, Times New Roman, serif" fontSize="108" fontWeight="700" letterSpacing="4" fill="none" stroke="#ffd21f" strokeWidth="1.5">
+          AYAAN
         </text>
 
         <text x="300" y="502" textAnchor="middle" fontFamily="Inter, Arial, sans-serif" fontSize="34" fontWeight="800" fill="#0b1b73" stroke="#ffffff" strokeWidth="5" style={{ paintOrder: "stroke" }}>
@@ -141,7 +141,7 @@ export default function BrandLogo({
       {showWordmark && (
         <span className="leading-tight hidden sm:block" style={{ marginLeft: 10 }}>
           <span className="font-display font-bold text-[16px] tracking-tight text-navy-800" style={{ display: "block" }}>
-            AYAN INSTITUTE
+            AYAAN INSTITUTE
           </span>
           <span className="text-[11px] tracking-[0.12em] text-slate-500 font-medium" style={{ display: "block" }}>
             {BRAND.strapline.toUpperCase()}

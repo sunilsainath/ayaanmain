@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     default: `${BRAND.documentTitle} — ${BRAND.tagline} | Telangana`,
     template: `%s | ${BRAND.documentTitle}`,
   },
-  description: `${BRAND.claim}. India's first residential campus for uniform jobs. SI PC, Army, SSC GD & Group exams. Offline, Residential & Online coaching by Mohd. Anwar Sir.`,
+  description: `${BRAND.claim}. India's first residential campus for uniform jobs. SI PC, Army, SSC GD & Group exams. Offline, Residential & Online coaching by Dr. Md Anwar.`,
   applicationName: BRAND.fullName,
   icons: {
     icon: [{ url: LOGO_SVG_PATH, type: "image/svg+xml" }],

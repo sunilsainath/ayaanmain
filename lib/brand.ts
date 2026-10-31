@@ -1,4 +1,4 @@
-// Single source of truth for the Ayan logo and wordmark.
+// Single source of truth for the Ayaan logo and wordmark.
 //
 // Prefer the official raster when it exists in /public/brand (drop `ayan-logo.png`
 // next to the svg and it is picked up automatically). The inline SVG below is a
@@ -11,17 +11,17 @@ export const LOGO_SVG_PATH = "/brand/ayaan-logo.svg";
 export const LOGO_RASTER_PATH = "/brand/ayan-logo.png";
 
 export const BRAND = {
-  name: "Ayan",
-  fullName: "Ayan Group of Competitive Institutions",
+  name: "Ayaan",
+  fullName: "Ayaan Group of Competitive Institutions",
   tagline: "We Target Your Aim",
   strapline: "Group Of Competitive Institutions",
   // Used for <title>, meta and printed documents.
-  documentTitle: "Ayan Group Of Competitive Institutions",
+  documentTitle: "Ayaan Group Of Competitive Institutions",
   claim: "Most favourite institute of TS & AP Aspirants",
 } as const;
 
 // The SVG markup, inlined so print/email output never depends on a network fetch.
-export const LOGO_SVG_INLINE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 740" role="img" aria-label="Ayan Group of Competitive Institutions">
+export const LOGO_SVG_INLINE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 740" role="img" aria-label="Ayaan Group of Competitive Institutions">
 <defs>
 <path id="sh" d="M300 14 C205 14 112 40 64 98 C40 252 62 434 300 726 C538 434 560 252 536 98 C488 40 395 14 300 14 Z"/>
 <path id="arc" d="M104 250 A214 214 0 0 1 496 250"/>
@@ -44,8 +44,8 @@ export const LOGO_SVG_INLINE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox=
 <circle cx="30" cy="-50" r="8" fill="#ff5b4a" stroke="#d0131f" stroke-width="4"/>
 <text x="0" y="24" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="44" font-weight="700" fill="#ffd21f" stroke="#d0131f" stroke-width="1.5">A</text>
 </g>
-<text x="300" y="452" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="132" font-weight="700" letter-spacing="6" fill="#e11d2e" stroke="#ffffff" stroke-width="7" paint-order="stroke">AYAN</text>
-<text x="300" y="452" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="132" font-weight="700" letter-spacing="6" fill="none" stroke="#ffd21f" stroke-width="1.5">AYAN</text>
+<text x="300" y="452" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="108" font-weight="700" letter-spacing="4" fill="#e11d2e" stroke="#ffffff" stroke-width="7" paint-order="stroke">AYAAN</text>
+<text x="300" y="452" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="108" font-weight="700" letter-spacing="4" fill="none" stroke="#ffd21f" stroke-width="1.5">AYAAN</text>
 <text x="300" y="502" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#0b1b73" stroke="#ffffff" stroke-width="5" paint-order="stroke">Group Of Competitive Institutions</text>
 <rect x="118" y="522" width="364" height="7" fill="#0b1b73"/>
 <rect x="140" y="538" width="320" height="5" fill="#0b1b73"/>

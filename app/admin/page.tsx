@@ -2697,7 +2697,7 @@ function FeeConfigTab() {
         </div>
 
         <div className="mt-4 grid sm:grid-cols-3 gap-3 text-xs">
-          <div className="p-3 rounded-xl bg-sky-50 border border-sky-200 text-sky-800"><b>Residential:</b> Includes hostel + food + 24×7 study hall (Bollikunta 15 Acres).</div>
+          <div className="p-3 rounded-xl bg-sky-50 border border-sky-200 text-sky-800"><b>Residential:</b> Includes hostel + food + 24×7 study hall (Bollikunta 25 Acres).</div>
           <div className="p-3 rounded-xl bg-slate-50 border text-slate-600"><b>Offline:</b> Day-scholar — Warangal / Hyderabad / Hanamkonda.</div>
           <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800"><b>Online:</b> Live + recorded, unlimited rewatch (typically 60% of Offline).</div>
         </div>
@@ -2871,7 +2871,7 @@ function ExpenseTrackerTab({ campus = "" }: { campus?: string }) {
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="text-xs font-medium text-slate-700">Paid By *</label>
-                <input value={form.paidBy} onChange={(e) => setForm({ ...form, paidBy: e.target.value })} placeholder="e.g., Anwar Sir, Staff Name" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
+                <input value={form.paidBy} onChange={(e) => setForm({ ...form, paidBy: e.target.value })} placeholder="e.g., Dr. Md Anwar, Staff Name" className="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm" />
               </div>
               <div>
                 <label className="text-xs font-medium text-slate-700">Paid Via</label>

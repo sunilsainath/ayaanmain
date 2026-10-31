@@ -6,7 +6,8 @@ const QUICK = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
   { label: "All Courses", href: "/courses" },
-  { label: "Apply Online", href: "/admission" },
+  { label: "Register Now", href: "/admission" },
+  { label: "Find Your Batch", href: "/#find-batch" },
   { label: "Aspirant Corner", href: "/academy" },
   { label: "Alumni", href: "/alumni" },
   { label: "Store", href: "/store" },
@@ -41,7 +42,7 @@ export default function Footer() {
           </div>
           <div className="flex gap-2 shrink-0">
             <Link href="/admission" className="px-5 py-2.5 rounded-full bg-white text-navy-900 text-sm font-semibold hover:bg-slate-100">
-              Apply Online
+              Register Now
             </Link>
             <a href="tel:+918886667222" className="px-5 py-2.5 rounded-full border border-white/25 text-white text-sm font-medium hover:bg-white/10">
               Call us
@@ -64,7 +65,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-slate-400 max-w-sm">
-              {BRAND.claim}. India&apos;s first residential campus for uniform jobs — written and physical training under one roof, led by Mohd. Anwar Sir.
+              {BRAND.claim}. India&apos;s first residential campus for uniform jobs — written and physical training under one roof, led by Dr. Md Anwar.
             </p>
             <div className="mt-6 flex gap-2">
               <a aria-label="Facebook" className="w-9 h-9 rounded-full bg-white/10 grid place-items-center hover:bg-white/20" href="#">f</a>

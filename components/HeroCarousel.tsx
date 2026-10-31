@@ -31,7 +31,7 @@ const fallbackSlides: Slide[] = [
     badge: "DEFENCE • ARMY • NAVY • AIRFORCE",
     title: "Serve the Nation",
     highlight: "in Uniform.",
-    desc: "3-Level Grounds • L1 Track • L2 Strength • L3 Events. Trained by Mohd. Anwar Sir — International Athlete.",
+    desc: "3-Level Grounds • L1 Track • L2 Strength • L3 Events. Trained by Dr. Md Anwar — International Athlete.",
     cta: { label: "Defence Coaching →", href: "/courses" },
     cta2: { label: "Pro Fitness", href: "/academy" },
     image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?q=80&w=1600&auto=format&fit=crop",
@@ -49,7 +49,7 @@ const fallbackSlides: Slide[] = [
   },
   {
     id: 4,
-    badge: "RESIDENTIAL • INDIA'S FIRST • 15 ACRES",
+    badge: "RESIDENTIAL • INDIA'S FIRST • 25 ACRES",
     title: "Live. Learn.",
     highlight: "Conquer.",
     desc: "Bollikunta, Warangal — Classroom + Grounds + Hostel within 100m. 4am Study • Daily Tests • 24×7 Library.",

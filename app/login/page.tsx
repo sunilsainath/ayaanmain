@@ -43,7 +43,7 @@ export default function LoginPage() {
           <button type="button" onClick={() => setShowForgot(true)} className="text-xs text-sky-700 hover:underline text-center">Forgot password? Reset with OTP to email →</button>
         </form>
         <div className="mt-4 text-center text-xs text-slate-500">
-          No account yet? <Link href="/admission" className="text-sky-700 hover:underline">Apply for Admission</Link> • <Link href="/admin" className="text-slate-400">Admin</Link>
+          No account yet? <Link href="/admission" className="text-sky-700 hover:underline">Register Now</Link> • <Link href="/admin" className="text-slate-400">Admin</Link>
         </div>
         {showForgot && <AuthForgotPassword onClose={() => setShowForgot(false)} defaultEmail={id.includes("@") ? id : ""} />}
       </div>

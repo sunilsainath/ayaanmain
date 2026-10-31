@@ -105,7 +105,7 @@ export const ASPIRANT_GALLERY: AspirantImage[] = [
   {
     src: u("1562774053-701939374585"),
     title: "Our Own Campus",
-    caption: "15 acres at Bollikunta — classroom, hostel and grounds within 100 metres.",
+    caption: "25 acres at Bollikunta — classroom, hostel and grounds within 100 metres.",
     course: "All courses",
   },
   {

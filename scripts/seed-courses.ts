@@ -12,7 +12,7 @@ async function main() {
     { name: "Warangal", address: "Don Bosco School, Opp. Vaagdevi College, Bollikunta, Warangal 506005", phone: "+91 88866 67222" },
     { name: "Hanamkonda", address: "2nd Floor, Mayuri Mall, Kishanpura, Hanamkonda, Warangal 506001", phone: "+91 88866 67222" },
     { name: "Hyderabad", address: "Chenna Complex, Pillar 1542, Dilsukhnagar, Hyderabad", phone: "+91 88866 67222" },
-    { name: "Bollikunta (Residential)", address: "15 Acres Campus, Bollikunta, Warangal", phone: "+91 88866 67222" },
+    { name: "Bollikunta (Residential)", address: "25 Acres Campus, Bollikunta, Warangal", phone: "+91 88866 67222" },
   ];
   for (const b of branches) {
     await prisma.branch.upsert({

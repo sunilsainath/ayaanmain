@@ -73,8 +73,8 @@ export default function Home() {
   const [tIdx, setTIdx] = useState(0);
   const testimonials = [
     { name: "Sai Kumari", role: "Constable — 1st attempt", quote: "No pain, no gain. From day 1, physical + study. Top marks, got the job." },
-    { name: "Sai Prasanna", role: "SI Aspirant", quote: "Theory + ground practice both. Under Anwar Sir guidance most of us achieved our goal." },
-    { name: "T. Sai Charan", role: "Constable", quote: "Failure is stepping stone. Faculty + Anwar Sir relation is very cordial." },
+    { name: "Sai Prasanna", role: "SI Aspirant", quote: "Theory + ground practice both. Under Dr. Md Anwar guidance most of us achieved our goal." },
+    { name: "T. Sai Charan", role: "Constable", quote: "Failure is stepping stone. Faculty + Dr. Md Anwar relation is very cordial." },
     { name: "Naresh", role: "Auto driver → Constable", quote: "Desire is powerful. Economically low, got placed in 1st attempt." },
     { name: "Priya", role: "SSC GD", quote: "Online live + offline download saved me. Same faculty as offline." },
   ];
@@ -85,7 +85,7 @@ export default function Home() {
 
   const [campus, setCampus] = useState(0);
   const campuses = [
-    { title: "Warangal — Residential Academy", addr: "Don Bosco School, Opp. Vaagdevi College, Bollikunta, Warangal 506005", ph: "+91 88866 67222", note: "15 acres • Classroom + Grounds + Hostel within 100m" },
+    { title: "Warangal — Residential Academy", addr: "Don Bosco School, Opp. Vaagdevi College, Bollikunta, Warangal 506005", ph: "+91 88866 67222", note: "25 acres • Classroom + Grounds + Hostel within 100m" },
     { title: "Hanamkonda", addr: "2nd Floor, Kishanpura, Mayuri Mall, Hanamkonda, Warangal 506001", ph: "+91 88866 67222", note: "Day-scholar • Hostel available" },
     { title: "Hyderabad — Dilsukhnagar", addr: "Chenna Complex, Pillar 1542, Near Metro, Dilsukhnagar, Hyderabad", ph: "+91 88866 67222", note: "Heart of city • Telugu & English" },
   ];
@@ -157,7 +157,7 @@ export default function Home() {
                 <span className="block text-slate-400 font-light">dream uniform.</span>
                 <span className="block relative inline-block">We&apos;ll get you there.<span className="absolute left-0 -bottom-2 w-full h-2 bg-amber-200/60 -z-10 hidden lg:block" /></span>
               </h1>
-              <p className="mt-5 text-[16px] sm:text-[17px] leading-relaxed text-slate-600 max-w-[560px]">Written + Physical coaching under one roof. Senior faculty for written. Physical by <span className="font-semibold text-navy-800">Mohd. Anwar Sir</span> — Ex Sub-Inspector (State Topper ’09), International Athlete.</p>
+              <p className="mt-5 text-[16px] sm:text-[17px] leading-relaxed text-slate-600 max-w-[560px]">Written + Physical coaching under one roof. Senior faculty for written. Physical by <span className="font-semibold text-navy-800">Dr. Md Anwar</span> — Ex-Police, SI State Topper ’09, NSG 2013, Indian Navy Officer, International Athlete.</p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link href="/contact" className="btn-primary shadow-sm hover:shadow-md">Book Free Counselling →</Link>
                 <Link href="/academy" className="btn-ghost">Explore Residential Campus</Link>
@@ -170,14 +170,14 @@ export default function Home() {
               <div className="mt-6 grid grid-cols-3 gap-2 sm:gap-3 max-w-[520px]">
                 <div className="card p-3 sm:p-4 interactive-card"><div className="text-lg sm:text-xl font-bold text-navy-900">{years}+</div><div className="text-xs font-semibold tracking-wide text-slate-700">Years</div><div className="text-xs text-slate-500">Proven methods</div></div>
                 <div className="card p-3 sm:p-4 interactive-card"><div className="text-lg sm:text-xl font-bold text-navy-900">{selections.toLocaleString()}+</div><div className="text-xs font-semibold tracking-wide text-slate-700">Selections</div><div className="text-xs text-slate-500">SI • Constable • Army</div></div>
-                <div className="card p-3 sm:p-4 interactive-card"><div className="text-lg sm:text-xl font-bold text-navy-900">15 Acres</div><div className="text-xs font-semibold tracking-wide text-slate-700">Campus</div><div className="text-xs text-slate-500">Grounds + Hostel</div></div>
+                <div className="card p-3 sm:p-4 interactive-card"><div className="text-lg sm:text-xl font-bold text-navy-900">25 Acres</div><div className="text-xs font-semibold tracking-wide text-slate-700">Campus</div><div className="text-xs text-slate-500">Grounds + Hostel</div></div>
               </div>
             </div>
             <div className="lg:col-span-5">
-              <div className="card overflow-hidden p-2 shadow-soft">
+              <div id="find-batch" className="card overflow-hidden p-2 shadow-soft scroll-mt-24">
                 <div className="rounded-2xl bg-slate-900 text-white p-1">
                   <div className="rounded-[14px] bg-white text-slate-900 p-5">
-                    <div className="flex items-center justify-between"><div className="text-sm font-semibold text-navy-900">Find your batch in 20s</div><span className="text-xs px-2 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800">Interactive</span></div>
+                    <div className="flex items-center justify-between"><div className="text-sm font-semibold text-navy-900">Find your batch</div><span className="text-xs px-2 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800">Interactive</span></div>
                     <div className="mt-4 grid gap-3">
                       <div><label className="text-xs font-medium text-slate-600">Goal</label><div className="mt-1 grid grid-cols-3 gap-2">{["SI PC", "Groups", "SSC GD", "Army", "UPSC"].map((g) => (<button key={g} onClick={() => setGoal(g)} className={`px-3 py-2.5 rounded-xl border text-sm font-medium transition ${goal === g ? "bg-navy-900 text-white border-navy-900 shadow-sm" : "bg-white border-slate-200 hover:bg-slate-50 text-slate-700"}`}>{g}</button>))}</div></div>
                       <div className="grid grid-cols-1 gap-3"><div><label className="text-xs font-medium text-slate-600">Mode</label><select value={mode} onChange={(e) => setMode(e.target.value)} className="mt-1 w-full py-2.5 px-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"><option>Residential</option><option>Offline</option><option>Online</option></select></div></div>
@@ -201,13 +201,13 @@ export default function Home() {
       <section className="container-soft mt-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
           <div className="lg:col-span-7">
-            <div className="text-xs font-bold tracking-widest text-sky-700">WELCOME TO AYAN</div>
+            <div className="text-xs font-bold tracking-widest text-sky-700">WELCOME TO AYAAN</div>
             <h2 className="mt-3 font-display font-bold text-2xl sm:text-3xl text-navy-900 leading-tight">
               A campus built for one outcome — selection.
             </h2>
             <p className="mt-4 text-sm sm:text-[15px] leading-relaxed text-slate-600">
-              Ayan Group of Competitive Institutions has trained aspirants for the uniform services since 2016.
-              Written classes, daily testing and physical ground training run inside one 15-acre campus at
+              Ayaan Group of Competitive Institutions has trained aspirants for the uniform services since 2016.
+              Written classes, daily testing and physical ground training run inside one 25-acre campus at
               Bollikunta, Warangal — so preparation never depends on what happens outside the gate.
             </p>
             <p className="mt-3 text-sm sm:text-[15px] leading-relaxed text-slate-600">
@@ -243,8 +243,8 @@ export default function Home() {
               <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
                 <div className="w-10 h-10 rounded-full bg-navy-900 text-white grid place-items-center font-bold">A</div>
                 <div>
-                  <div className="text-sm font-semibold text-navy-900">Mohd. Anwar Sir</div>
-                  <div className="text-xs text-slate-500">Founder &amp; Director — Ex-SI, State Topper, International Athlete</div>
+                  <div className="text-sm font-semibold text-navy-900">Dr. Md Anwar</div>
+                  <div className="text-xs text-slate-500">Director, Ayaan Police Academy — Ex-Police • SI State Topper ’09 • NSG 2013 • Indian Navy Officer • International Athlete</div>
                 </div>
               </div>
             </div>
@@ -257,7 +257,7 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <div className="text-xs font-bold tracking-widest text-sky-700">NEWS &amp; ACHIEVEMENTS</div>
-            <h2 className="mt-2 font-display font-bold text-2xl text-navy-900">What is happening at Ayan</h2>
+            <h2 className="mt-2 font-display font-bold text-2xl text-navy-900">What is happening at Ayaan</h2>
           </div>
           <Link href="/about" className="text-sm font-medium text-navy-800 hover:underline">View all updates →</Link>
         </div>
@@ -274,7 +274,7 @@ export default function Home() {
             {
               tag: "Campus",
               date: "Bollikunta, Warangal",
-              title: "15-acre residential campus with three ground levels",
+              title: "25-acre residential campus with three ground levels",
               desc: "Track events, strength training and field events sit inside the same campus as classrooms, library and hostel.",
               href: "/academy",
             },
@@ -306,7 +306,7 @@ export default function Home() {
       <SectionDivider variant="wave" />
       <section className="container-soft mt-2">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[{ title: "Residential Academy", desc: "Stay + Study + Train within 100m. 15-acre campus.", tag: "Most Popular", href: "/academy", icon: "◆" },{ title: "Offline Institutes", desc: "Favourite in TS & AP. Same faculty, hostel option.", tag: "Hyderabad • Warangal", href: "/courses", icon: "◎" },{ title: "Online Coaching", desc: "Live, unlimited rewatch, offline download.", tag: "Since 2018", href: "/courses", icon: "▶" },{ title: "Pro Fitness", desc: "Police events, strength, ABS — by Anwar Sir.", tag: "India’s First", href: "#", icon: "⚡" }].map((c) => (
+          {[{ title: "Residential Academy", desc: "Stay + Study + Train within 100m. 25-acre campus.", tag: "Most Popular", href: "/academy", icon: "◆" },{ title: "Offline Institutes", desc: "Favourite in TS & AP. Same faculty, hostel option.", tag: "Hyderabad • Warangal", href: "/courses", icon: "◎" },{ title: "Online Coaching", desc: "Live, unlimited rewatch, offline download.", tag: "Since 2018", href: "/courses", icon: "▶" },{ title: "Pro Fitness", desc: "Police events, strength, ABS — by Dr. Md Anwar.", tag: "India’s First", href: "#", icon: "⚡" }].map((c) => (
             <Link key={c.title} href={c.href} className="card p-6 interactive-card group flex flex-col focus-ring">
               <div className="w-9 h-9 rounded-xl bg-slate-50 border border-slate-200 grid place-items-center group-hover:bg-navy-900 group-hover:text-white group-hover:border-navy-900 transition">{c.icon}</div>
               <div className="mt-3 text-[11px] tracking-widest font-semibold text-sky-700">{c.tag}</div>
@@ -323,17 +323,22 @@ export default function Home() {
         <div className="card overflow-hidden relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="lg:col-span-5 p-6 lg:p-8">
-              <div className="badge bg-sky-50 border-sky-100 text-sky-700">WHY RESIDENTIAL WORKS</div>
-              <h2 className="mt-4 font-display font-bold text-[26px] leading-tight text-navy-900">A system that makes you compete — every day.</h2>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">Class is step 1. Preparation is step 2. We engineered both — one campus, one schedule.</p>
+              <div className="badge bg-sky-50 border-sky-100 text-sky-700">ACADEMICS + PHYSICAL</div>
+              <h2 className="mt-4 font-display font-bold text-[26px] leading-tight text-navy-900">A system that makes you complete — in class and on the ground.</h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-600">Academic classes, daily tests and doubt sessions run alongside three levels of physical training — one campus, one timetable.</p>
               <div className="mt-6 flex gap-2 p-1 rounded-full bg-slate-100 border border-slate-200 w-fit">{[1, 2, 3].map((n) => (<button key={n} onClick={() => setLevel(n as 1 | 2 | 3)} className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${level === n ? "bg-navy-900 text-white shadow-sm" : "text-slate-600 hover:bg-white"}`}>Level {n}</button>))}</div>
               <div className="mt-5">{level === 1 && (<div><div className="font-semibold text-navy-900">Level 1 — Daily Practice</div><div className="text-sm text-slate-600 mt-1">100m / 200m / 400m track. Speed & endurance, everyday.</div></div>)}{level === 2 && (<div><div className="font-semibold text-navy-900">Level 2 — Strength</div><div className="text-sm text-slate-600 mt-1">Gym, functional, core. Build the engine for events.</div></div>)}{level === 3 && (<div><div className="font-semibold text-navy-900">Level 3 — Events</div><div className="text-sm text-slate-600 mt-1">High Jump, Long Jump, Shot-put. Sand & Mud tracks.</div></div>)}</div>
-              <div className="mt-6 grid gap-2">{[{ t: "Written by senior faculty", d: "Current competition level, Telugu & English." },{ t: "Physical by Director himself", d: "International athlete, NSG champion." },{ t: "Preparation by design", d: "4am study • Daily test • Night doubts • Grands" }].map((r) => (<div key={r.t} className="flex gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-200 transition cursor-default"><span className="mt-0.5 w-6 h-6 rounded-full bg-navy-900 text-white grid place-items-center text-xs shrink-0">✓</span><div><div className="text-sm font-semibold text-navy-900">{r.t}</div><div className="text-sm text-slate-600">{r.d}</div></div></div>))}</div>
+              <div className="mt-6 grid gap-2">{[{ t: "Academics by senior faculty", d: "Subject-wise classes, Telugu & English, current competition level." },{ t: "Daily tests & doubt sessions", d: "Evening test with explanation, night doubts, monthly model tests." },{ t: "Physical by Director himself", d: "International athlete, NSG champion — leads every ground session." },{ t: "Preparation by design", d: "4am study • Daily test • Night doubts • Grands" }].map((r) => (<div key={r.t} className="flex gap-3 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-200 transition cursor-default"><span className="mt-0.5 w-6 h-6 rounded-full bg-navy-900 text-white grid place-items-center text-xs shrink-0">✓</span><div><div className="text-sm font-semibold text-navy-900">{r.t}</div><div className="text-sm text-slate-600">{r.d}</div></div></div>))}</div>
               <div className="mt-6 flex gap-3"><Link href="/academy" className="btn-primary !py-2.5">See Facilities</Link><Link href="/contact" className="btn-ghost !py-2.5">Check Fees</Link></div>
             </div>
             <div className="lg:col-span-7 bg-slate-50 p-6 lg:p-8">
               <div className="card p-2"><div className={`rounded-2xl h-[220px] grid place-items-center border text-sm transition ${level === 1 ? "bg-sky-50 border-sky-200 text-sky-800" : level === 2 ? "bg-amber-50 border-amber-200 text-amber-800" : "bg-emerald-50 border-emerald-200 text-emerald-800"}`}>{level === 1 ? "▶ Track View — 400m loop, daily sprints" : level === 2 ? "◆ Strength Zone — Gym & functional area" : "◍ Event Arena — Sand & Mud pits for jumps"}</div><div className="mt-3 grid grid-cols-3 gap-2 text-center"><div className={`p-3 rounded-xl border ${level === 1 ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}><div className="text-xs font-bold">Level 1</div><div className="text-xs opacity-80">Track</div></div><div className={`p-3 rounded-xl border ${level === 2 ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}><div className="text-xs font-bold">Level 2</div><div className="text-xs opacity-80">Strength</div></div><div className={`p-3 rounded-xl border ${level === 3 ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}><div className="text-xs font-bold">Level 3</div><div className="text-xs opacity-80">Events</div></div></div></div>
-              <div className="mt-4 grid sm:grid-cols-2 gap-4"><div className="card p-5 interactive-card"><div className="text-sm font-semibold text-navy-900">24×7 Study & Library</div><div className="text-sm text-slate-600 mt-1">Study hall + doubts always open. Dietary hostel: eggs, milk, ragi malt.</div></div><div className="card p-5 bg-navy-900 text-white border-navy-900"><div className="text-sm font-semibold">Separate Hostels</div><div className="text-sm text-white/70 mt-1">Boys & Girls blocks. Canteen, hygiene, discipline.</div><div className="mt-3 inline-flex px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs">Bollikunta • 15 Acres</div></div></div>
+              <div className="mt-4 grid sm:grid-cols-2 gap-4"><div className="card p-5 interactive-card"><div className="text-sm font-semibold text-navy-900">24×7 Study & Library</div><div className="text-sm text-slate-600 mt-1">Study hall + doubts always open. Dietary hostel: eggs, milk, ragi malt.</div></div><div className="card p-5 bg-navy-900 text-white border-navy-900"><div className="text-sm font-semibold">Separate Hostels</div><div className="text-sm text-white/70 mt-1">Boys & Girls blocks. Canteen, hygiene, discipline.</div><div className="mt-3 inline-flex px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs">Bollikunta • 25 Acres</div></div></div>
+              <div className="mt-4 card p-5 border-sky-100 bg-sky-50/60">
+                <div className="text-sm font-semibold text-navy-900">Academic training — the other half of the system</div>
+                <div className="text-sm text-slate-600 mt-1">Subject-wise classes by senior faculty, chapter tests, study material and individual mentoring. Low scorers get extra sessions instead of being left behind.</div>
+                <div className="mt-3 flex flex-wrap gap-1.5 text-xs"><span className="px-2 py-1 rounded-full bg-white border border-slate-200">Daily classes</span><span className="px-2 py-1 rounded-full bg-white border border-slate-200">Weekly grand tests</span><span className="px-2 py-1 rounded-full bg-white border border-slate-200">Doubt clearing</span><span className="px-2 py-1 rounded-full bg-white border border-slate-200">Telugu & English</span></div>
+              </div>
             </div>
           </div>
         </div>
@@ -394,9 +399,9 @@ export default function Home() {
 
       <SectionDivider variant="wave" />
       <section className="container-soft mt-8 mb-8">
-        <div className="flex items-center justify-between"><h3 className="font-display font-bold text-xl text-navy-900">Visit a campus</h3><span className="text-xs px-3 py-1.5 rounded-full bg-white border border-slate-200">3 locations • 9am – 8pm</span></div>
+        <div className="flex items-center justify-between"><h3 className="font-display font-bold text-xl text-navy-900">Visit an Ayaan Institute near you</h3><span className="text-xs px-3 py-1.5 rounded-full bg-white border border-slate-200">3 institutes • Open 9am – 8pm</span></div>
         <div className="mt-4 flex gap-2 overflow-auto scrollbar-none pb-2">{campuses.map((c, idx) => (<button key={c.title} onClick={() => setCampus(idx)} className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${campus === idx ? "bg-navy-900 text-white border-navy-900 shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}>{c.title.split("—")[0].trim()}</button>))}</div>
-        <div className="card overflow-hidden"><div className="grid grid-cols-1 lg:grid-cols-12"><div className="lg:col-span-5 p-6"><div className="text-sm font-semibold text-navy-900">{campuses[campus].title}</div><div className="mt-2 text-sm leading-relaxed text-slate-600">{campuses[campus].addr}</div><div className="mt-3 inline-flex px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs text-slate-700">{campuses[campus].note}</div><div className="mt-4 flex gap-2"><a href="tel:+918886667222" className="flex-1 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium grid place-items-center hover:bg-navy-800">{campuses[campus].ph} →</a><a href="https://api.whatsapp.com/send?phone=918886667222" target="_blank" className="px-5 py-2.5 rounded-full border border-slate-200 text-sm font-medium hover:bg-slate-50 grid place-items-center">WhatsApp</a></div><div className="mt-4 flex gap-2 text-xs text-slate-500"><span className="px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800">Open today</span><span className="px-3 py-1.5 rounded-full bg-white border border-slate-200">Free parking</span></div></div><div className="lg:col-span-7 bg-slate-100 min-h-[260px] border-t lg:border-t-0 lg:border-l border-slate-200 grid place-items-center p-4"><div className="w-full h-[220px] rounded-2xl bg-white border border-slate-200 grid place-items-center text-sm text-slate-500 relative overflow-hidden"><div className="absolute inset-0 opacity-40" style={{ backgroundImage: `linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px)`, backgroundSize: "20px 20px" }} /><div className="relative text-center"><div className="w-12 h-12 rounded-full bg-navy-900 text-white grid place-items-center mx-auto">📍</div><div className="mt-2 font-medium text-navy-900">{campuses[campus].title}</div><div className="text-xs text-slate-500">Map Preview • Tap to open in Google Maps</div></div></div></div></div></div>
+        <div className="card overflow-hidden"><div className="grid grid-cols-1 lg:grid-cols-12"><div className="lg:col-span-5 p-6"><div className="text-sm font-semibold text-navy-900">{campuses[campus].title}</div><div className="mt-2 text-sm leading-relaxed text-slate-600">{campuses[campus].addr}</div><div className="mt-3 inline-flex px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs text-slate-700">{campuses[campus].note}</div><div className="mt-4 flex gap-2"><a href="tel:+918886667222" className="flex-1 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium grid place-items-center hover:bg-navy-800">{campuses[campus].ph} →</a><a href="https://api.whatsapp.com/send?phone=918886667222" target="_blank" className="px-5 py-2.5 rounded-full border border-slate-200 text-sm font-medium hover:bg-slate-50 grid place-items-center">WhatsApp</a></div><div className="mt-3"><a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${campuses[campus].title}, ${campuses[campus].addr}`)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-medium text-navy-800 hover:underline">Get Directions →</a></div><div className="mt-4 flex flex-wrap gap-2 text-xs text-slate-500"><span className="px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800">Open daily 9am – 8pm</span><span className="px-3 py-1.5 rounded-full bg-white border border-slate-200">Free parking</span></div></div><div className="lg:col-span-7 bg-slate-100 min-h-[260px] border-t lg:border-t-0 lg:border-l border-slate-200 grid place-items-center p-4"><div className="w-full h-[220px] rounded-2xl bg-white border border-slate-200 grid place-items-center text-sm text-slate-500 relative overflow-hidden"><div className="absolute inset-0 opacity-40" style={{ backgroundImage: `linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px)`, backgroundSize: "20px 20px" }} /><div className="relative text-center"><div className="w-12 h-12 rounded-full bg-navy-900 text-white grid place-items-center mx-auto">📍</div><div className="mt-2 font-medium text-navy-900">{campuses[campus].title}</div><div className="text-xs text-slate-500">Map Preview • Tap to open in Google Maps</div></div></div></div></div></div>
       </section>
 
       {showJoin && (

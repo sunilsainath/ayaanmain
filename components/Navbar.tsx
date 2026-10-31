@@ -84,7 +84,7 @@ export default function Navbar() {
 
         <div className="container-soft">
           <div className="h-[72px] flex items-center justify-between gap-4">
-            <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="Ayan Institute — home">
+            <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="Ayaan Institute — home">
               <BrandLogo height={46} />
               
             </Link>

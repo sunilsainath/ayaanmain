@@ -34,7 +34,8 @@ const NAV: NavGroup[] = [
   {
     label: "Admissions",
     children: [
-      { label: "Apply Online", href: "/admission", desc: "Register in four steps" },
+      { label: "Register Now", href: "/admission", desc: "Register in four steps" },
+      { label: "Find Your Batch", href: "/#find-batch", desc: "Match course + mode in 20s" },
       { label: "Track Application", href: "/login", desc: "Check status and corrections" },
       { label: "Fee & Payment", href: "/admission", desc: "Fee split and installments" },
     ],
@@ -42,9 +43,9 @@ const NAV: NavGroup[] = [
   {
     label: "Campus Life",
     children: [
-      { label: "Aspirant Corner", href: "/academy", desc: "Inside the 15-acre campus" },
+      { label: "Aspirant Corner", href: "/academy", desc: "Campus, academics and hostels" },
       { label: "Store", href: "/store", desc: "Uniforms and training gear" },
-      { label: "Contact", href: "/contact", desc: "Visit or call a campus" },
+      { label: "Contact", href: "/contact", desc: "Visit an Ayaan institute near you" },
     ],
   },
   { label: "Store", href: "/store" },
@@ -221,7 +222,7 @@ export default function SiteHeader() {
             ) : (
               <Link href="/login" className="text-sm font-medium text-slate-700 hover:text-navy-900 px-2">Login</Link>
             )}
-            <Link href="/admission" className="btn-primary !px-5 !py-2.5 text-sm whitespace-nowrap">Apply Online</Link>
+            <Link href="/admission" className="btn-primary !px-5 !py-2.5 text-sm whitespace-nowrap">Register Now</Link>
           </div>
 
           <button
@@ -289,7 +290,7 @@ export default function SiteHeader() {
             )}
 
             <div className="mt-3 grid gap-2">
-              <Link href="/admission" onClick={() => setDrawer(false)} className="btn-primary justify-center">Apply Online</Link>
+              <Link href="/admission" onClick={() => setDrawer(false)} className="btn-primary justify-center">Register Now</Link>
               {auth ? (
                 <>
                   <Link href={auth.isAdmin ? "/admin" : "/account"} onClick={() => setDrawer(false)} className="w-full py-3 rounded-xl bg-white border border-slate-200 grid place-items-center text-sm font-medium">
