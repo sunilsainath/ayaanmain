@@ -1,7 +1,8 @@
 // Central SMTP email — env-driven, safe to call even when SMTP not configured (logs and returns ok:false)
 import nodemailer from "nodemailer";
 import { appOrigin, appUrl } from "@/lib/site";
-import { LOGO_SVG_INLINE, BRAND } from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
+import { LOGO_SVG_INLINE } from "@/lib/logoInline";
 
 type SendOpts = {
   to: string;

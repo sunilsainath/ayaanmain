@@ -5,7 +5,8 @@ import AuthForgotPassword from "@/components/AuthForgotPassword";
 import { DonutChart, GroupedBarChart, CHART_COLORS } from "@/components/Charts";
 import ReceiptView from "@/components/ReceiptView";
 import { FALLBACK_FEE as FEE_FALLBACK } from "@/lib/fees";
-import { LOGO_SVG_INLINE, BRAND } from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
+import { LOGO_SVG_INLINE } from "@/lib/logoInline";
 import { compressImage, formatBytes } from "@/lib/image-client";
 
 type Tab = "dashboard" | "rag" | "batches" | "banner" | "admissions" | "payments" | "students" | "finance" | "leads" | "alumni" | "store" | "fees" | "expenses" | "orders" | "dues" | "masters" | "admins" | "carousel" | "email" | "activity" | "complaints";

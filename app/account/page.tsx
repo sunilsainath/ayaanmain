@@ -2,7 +2,8 @@
 import BrandLogo from "@/components/BrandLogo";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LOGO_SVG_INLINE, BRAND } from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
+import { LOGO_SVG_INLINE } from "@/lib/logoInline";
 import { useRouter } from "next/navigation";
 import PaymentModal from "@/components/payment/PaymentModal";
 import RazorpayCheckout from "@/components/payment/RazorpayCheckout";
