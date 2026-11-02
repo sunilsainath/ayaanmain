@@ -35,7 +35,7 @@ export default function Footer() {
   return (
     <footer className="mt-16 bg-navy-900 text-slate-300">
       {/* top strip */}
-      <div className="border-b border-white/10">
+      <div className="border-b-2 border-white/15">
         <div className="container-soft py-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="font-display font-bold text-white text-lg">Admissions open for the next batch</div>
@@ -45,7 +45,7 @@ export default function Footer() {
             <Link href="/admission" className="btn-green !px-5 !py-2.5">
               Register Online
             </Link>
-            <a href="tel:+918886667222" className="px-5 py-2.5 rounded-full border border-white/25 text-white text-sm font-medium hover:bg-white/10">
+            <a href="tel:+918886667222" className="px-5 py-2.5 rounded-full border-2 border-white/30 shadow-sm text-white text-sm font-medium hover:bg-white/10">
               Call us
             </a>
           </div>
@@ -118,7 +118,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="mt-5 rounded-2xl bg-white/5 border border-white/10 p-4">
+            <div className="mt-5 rounded-2xl bg-white/5 border-2 border-white/15 shadow-sm p-4">
               <div className="text-xs font-semibold text-white tracking-wide">PORTALS</div>
               <div className="mt-2 grid grid-cols-2 gap-1.5 text-xs">
                 {PORTALS.map((p) => (
@@ -131,7 +131,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col md:flex-row gap-3 items-center justify-between text-xs text-slate-400">
+        <div className="mt-10 pt-6 border-t-2 border-white/15 flex flex-col md:flex-row gap-3 items-center justify-between text-xs text-slate-400">
           <span>© {new Date().getFullYear()} {BRAND.fullName}. All rights reserved.</span>
           <span className="flex flex-wrap gap-4 items-center justify-center md:justify-end">
             <Link className="hover:text-white" href="/privacy">Privacy Policy</Link>

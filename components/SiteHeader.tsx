@@ -116,7 +116,7 @@ export default function SiteHeader() {
             <span className="sm:hidden truncate text-white/70">{BRAND.tagline}</span>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <Link href="/login" className="px-2.5 py-1 rounded-full bg-red-600 text-white font-medium hover:bg-red-700">Student Login</Link>
+            <Link href="/login" className="px-2.5 py-1 rounded-full bg-red-600 border-2 border-red-700 text-white font-medium shadow-sm hover:bg-red-700">Student Login</Link>
             <span className="text-white/20">|</span>
             <Link href="/admin" className="hover:text-white/80">Admin</Link>
             <span className="hidden sm:inline text-white/20">|</span>
@@ -133,7 +133,7 @@ export default function SiteHeader() {
       </div>
 
       {/* main bar */}
-      <div className={`bg-white transition ${scrolled ? "shadow-sm" : "border-b border-slate-100"}`}>
+      <div className={`bg-white border-b-2 border-slate-200 transition ${scrolled ? "shadow-md" : ""}`}>
         <div className="container-soft flex h-[70px] items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-3 shrink-0" aria-label={`${BRAND.fullName} — home`}>
             <BrandLogo height={48} />
@@ -146,9 +146,9 @@ export default function SiteHeader() {
                   <button
                     onClick={() => setOpenGroup(openGroup === n.label ? null : n.label)}
                     aria-expanded={openGroup === n.label}
-                    className={`px-3 py-1.5 rounded-full border text-sm font-medium whitespace-nowrap transition inline-flex items-center gap-1 ${
+                    className={`px-3 py-1.5 rounded-full border-2 shadow-sm text-sm font-medium whitespace-nowrap transition inline-flex items-center gap-1 ${
                       openGroup === n.label
-                        ? "bg-sky-100 border-sky-300 text-navy-900"
+                        ? "bg-sky-100 border-sky-300 text-navy-900 shadow-md"
                         : "bg-sky-50 border-sky-200 text-navy-900 hover:bg-sky-100 hover:border-sky-300"
                     }`}
                   >
@@ -157,7 +157,7 @@ export default function SiteHeader() {
                   </button>
                   {openGroup === n.label && (
                     <div className="absolute left-0 top-full pt-1 w-[320px]">
-                      <div className="rounded-2xl border border-slate-100 bg-white shadow-xl overflow-hidden">
+                      <div className="rounded-2xl border-2 border-slate-200 bg-white shadow-2xl overflow-hidden">
                         {n.children.map((c) => (
                           <Link
                             key={c.label}
@@ -179,7 +179,7 @@ export default function SiteHeader() {
                   href={n.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-full border border-sky-200 bg-sky-50 text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-sky-100 hover:border-sky-300"
+                  className="px-3 py-1.5 rounded-full border-2 border-sky-200 bg-sky-50 shadow-sm text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-sky-100 hover:border-sky-300"
                 >
                   {n.label} ↗
                 </a>
@@ -187,7 +187,7 @@ export default function SiteHeader() {
                 <Link
                   key={n.label}
                   href={n.href!}
-                  className="px-3 py-1.5 rounded-full border border-sky-200 bg-sky-50 text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-sky-100 hover:border-sky-300"
+                  className="px-3 py-1.5 rounded-full border-2 border-sky-200 bg-sky-50 shadow-sm text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-sky-100 hover:border-sky-300"
                 >
                   {n.label}
                 </Link>
@@ -217,7 +217,7 @@ export default function SiteHeader() {
 
           <button
             onClick={() => setDrawer(!drawer)}
-            className="xl:hidden w-10 h-10 rounded-full border border-slate-200 grid place-items-center bg-white"
+            className="xl:hidden w-10 h-10 rounded-full border-2 border-slate-300 shadow-sm grid place-items-center bg-white"
             aria-label="Menu"
             aria-expanded={drawer}
           >
@@ -228,11 +228,11 @@ export default function SiteHeader() {
 
       {/* mobile drawer */}
       {drawer && (
-        <div className="xl:hidden bg-white border-t border-slate-100 shadow-lg max-h-[calc(100vh-110px)] overflow-auto">
+        <div className="xl:hidden bg-white border-t-2 border-slate-200 shadow-2xl max-h-[calc(100vh-110px)] overflow-auto">
           <div className="container-soft py-3">
             {NAV.map((n) =>
               n.children ? (
-                <div key={n.label} className="mb-2 rounded-xl border border-sky-200 bg-sky-50 overflow-hidden">
+                <div key={n.label} className="mb-2 rounded-xl border-2 border-sky-200 bg-sky-50 shadow-sm overflow-hidden">
                   <button
                     onClick={() => setOpenDrawerGroup(openDrawerGroup === n.label ? null : n.label)}
                     aria-expanded={openDrawerGroup === n.label}
@@ -263,7 +263,7 @@ export default function SiteHeader() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setDrawer(false)}
-                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border border-sky-200 bg-sky-50 text-sm font-medium text-navy-900"
+                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border-2 border-sky-200 bg-sky-50 shadow-sm text-sm font-medium text-navy-900"
                 >
                   {n.label} ↗
                 </a>
@@ -272,7 +272,7 @@ export default function SiteHeader() {
                   key={n.label}
                   href={n.href!}
                   onClick={() => setDrawer(false)}
-                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border border-sky-200 bg-sky-50 text-sm font-medium text-navy-900"
+                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border-2 border-sky-200 bg-sky-50 shadow-sm text-sm font-medium text-navy-900"
                 >
                   {n.label} <span className="text-slate-300" aria-hidden>→</span>
                 </Link>
@@ -283,10 +283,10 @@ export default function SiteHeader() {
               <Link href="/admission" onClick={() => setDrawer(false)} className="btn-green justify-center">Register Online</Link>
               {auth ? (
                 <>
-                  <Link href={auth.isAdmin ? "/admin" : "/account"} onClick={() => setDrawer(false)} className="w-full py-3 rounded-xl bg-white border border-slate-200 grid place-items-center text-sm font-medium">
+                  <Link href={auth.isAdmin ? "/admin" : "/account"} onClick={() => setDrawer(false)} className="w-full py-3 rounded-xl bg-white border-2 border-slate-300 shadow-sm grid place-items-center text-sm font-medium">
                     {auth.name} • {auth.isAdmin ? "Admin" : "My Account"}
                   </Link>
-                  <button onClick={() => { setDrawer(false); logout(); }} className="w-full py-3 rounded-xl border border-slate-200 bg-white text-sm font-medium text-red-600">
+                  <button onClick={() => { setDrawer(false); logout(); }} className="w-full py-3 rounded-xl border-2 border-slate-300 bg-white shadow-sm text-sm font-medium text-red-600">
                     Logout
                   </button>
                 </>
@@ -296,8 +296,8 @@ export default function SiteHeader() {
                 </Link>
               )}
               <div className="flex gap-2 text-xs">
-                <a href="tel:+918886667222" className="flex-1 py-3 rounded-xl border border-slate-200 grid place-items-center font-medium">Call</a>
-                <a href="https://api.whatsapp.com/send?phone=918886667222" target="_blank" rel="noreferrer" className="flex-1 py-3 rounded-xl bg-[#25D366] text-white grid place-items-center font-medium">WhatsApp</a>
+                <a href="tel:+918886667222" className="flex-1 py-3 rounded-xl border-2 border-slate-300 shadow-sm grid place-items-center font-medium">Call</a>
+                <a href="https://api.whatsapp.com/send?phone=918886667222" target="_blank" rel="noreferrer" className="flex-1 py-3 rounded-xl bg-[#25D366] border-2 border-[#1ba94f] shadow-sm text-white grid place-items-center font-medium">WhatsApp</a>
               </div>
             </div>
           </div>

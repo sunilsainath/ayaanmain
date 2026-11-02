@@ -21,8 +21,8 @@ const config: Config = {
         display: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
-        soft: '0 8px 30px rgba(15, 36, 71, 0.08)',
-        card: '0 4px 24px rgba(15, 36, 71, 0.06)',
+        soft: '0 14px 40px rgba(15, 36, 71, 0.14)',
+        card: '0 2px 0 rgba(15, 36, 71, 0.06), 0 10px 24px rgba(15, 36, 71, 0.12)',
       },
       borderRadius: {
         '2xl': '1rem',

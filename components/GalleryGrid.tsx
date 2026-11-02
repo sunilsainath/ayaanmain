@@ -64,10 +64,10 @@ export default function GalleryGrid({ items = GALLERY, limit, showFilters = true
               key={c}
               type="button"
               onClick={() => setActive(c as "All" | GalleryCategory)}
-              className={`px-4 py-2 rounded-full border text-sm font-medium transition ${
+              className={`px-4 py-2 rounded-full border-2 shadow-sm text-sm font-medium transition ${
                 active === c
-                  ? "bg-navy-900 text-white border-navy-900 shadow-sm"
-                  : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
+                  ? "bg-navy-900 text-white border-navy-900 shadow-md"
+                  : "bg-white text-slate-600 border-slate-300 hover:bg-slate-50"
               }`}
             >
               {c}
@@ -78,7 +78,7 @@ export default function GalleryGrid({ items = GALLERY, limit, showFilters = true
 
       <div className={isGrid ? `grid ${gridColsClass} gap-4 ${showFilters ? "mt-5" : ""}` : `columns-1 sm:columns-2 lg:columns-3 gap-4 ${showFilters ? "mt-5" : ""}`}>
         {shown.map((item, idx) => (
-          <figure key={item.src} className={isGrid ? "flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white" : "mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-slate-200 bg-white"}>
+          <figure key={item.src} className={isGrid ? "flex flex-col overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-sm" : "mb-4 break-inside-avoid overflow-hidden rounded-2xl border-2 border-slate-200 bg-white shadow-sm"}>
             <button
               type="button"
               onClick={() => setOpen(idx)}
@@ -126,7 +126,7 @@ export default function GalleryGrid({ items = GALLERY, limit, showFilters = true
             <button
               type="button"
               onClick={() => setOpen(null)}
-              className="px-4 py-2 rounded-full bg-white/10 border border-white/20 text-sm font-medium hover:bg-white/20"
+              className="px-4 py-2 rounded-full bg-white/10 border-2 border-white/30 shadow-md text-sm font-medium hover:bg-white/20"
             >
               ✕ Close
             </button>
@@ -136,7 +136,7 @@ export default function GalleryGrid({ items = GALLERY, limit, showFilters = true
             <button
               type="button"
               onClick={() => setOpen((i) => (i === null ? null : (i - 1 + shown.length) % shown.length))}
-              className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 grid place-items-center"
+              className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 border-2 border-white/30 shadow-md text-white text-xl hover:bg-white/20 grid place-items-center"
               aria-label="Previous photo"
             >
               ←
@@ -149,7 +149,7 @@ export default function GalleryGrid({ items = GALLERY, limit, showFilters = true
             <button
               type="button"
               onClick={() => setOpen((i) => (i === null ? null : (i + 1) % shown.length))}
-              className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 border border-white/20 text-white text-xl hover:bg-white/20 grid place-items-center"
+              className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 border-2 border-white/30 shadow-md text-white text-xl hover:bg-white/20 grid place-items-center"
               aria-label="Next photo"
             >
               →
