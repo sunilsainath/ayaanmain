@@ -14,6 +14,10 @@ const config: Config = {
           800: '#0f2447',
           900: '#0b1d3a',
         },
+        maroon: {
+          800: '#7a1c2b',
+          900: '#5f1622',
+        },
         amber: '#f59e0b',
       },
       fontFamily: {
