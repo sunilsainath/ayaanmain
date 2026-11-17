@@ -51,7 +51,7 @@ export default function ReceiptView({ r }: { r: ReceiptData }) {
         <span>₹{Number(r.amount).toLocaleString("en-IN")}</span>
       </div>
       <div className="mt-3 text-center text-[11px] text-slate-400">Computer-generated receipt • Ayaan Institute • +91 88866 67222</div>
-      <button onClick={() => window.print()} className="mt-4 w-full py-2.5 rounded-full bg-navy-900 text-white text-sm print:hidden">Print / Save PDF</button>
+      <button onClick={() => window.print()} className="mt-4 w-full py-2.5 rounded-full bg-[#3e2723] text-white text-sm print:hidden">Print / Save PDF</button>
     </div>
   );
 }

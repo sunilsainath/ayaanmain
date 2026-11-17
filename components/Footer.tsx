@@ -20,7 +20,6 @@ const COURSES = [
   { label: "Groups 1 – 4", href: "/courses" },
   { label: "SSC GD", href: "/courses" },
   { label: "Army / Navy / Airforce", href: "/courses" },
-  { label: "UPSC Civil Services", href: "/courses" },
   { label: "Online Coaching", href: "/courses" },
 ];
 
@@ -42,7 +41,7 @@ export default function Footer() {
             <div className="text-sm text-slate-400 mt-0.5">Free counselling, demo class and campus visit.</div>
           </div>
           <div className="flex gap-2 shrink-0">
-            <Link href="/admission" className="btn-green !px-5 !py-2.5">
+            <Link href="/admission" className="btn-violet !px-5 !py-2.5">
               Register Online
             </Link>
             <a href="tel:+918886667222" className="px-5 py-2.5 rounded-full border-2 border-white/30 shadow-sm text-white text-sm font-medium hover:bg-white/10">

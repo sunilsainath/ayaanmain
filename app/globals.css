@@ -12,7 +12,7 @@
 html { font-size: 18px; scroll-behavior: smooth; }
 
 body {
-  background: #ebe1cb;
+  background: #fcfcfd;
   color: #0f172a;
   font-feature-settings: "ss01" on, "ss02" on, "cv01" on;
   overflow-x: hidden;
@@ -28,16 +28,16 @@ body {
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center gap-2 bg-navy-800 text-white border-2 border-navy-900 shadow-md px-6 py-3 rounded-full text-sm font-medium hover:bg-navy-900 hover:shadow-lg transition active:scale-[0.98];
+  @apply inline-flex items-center justify-center gap-2 bg-[#3e2723] text-white border-2 border-[#2b1b18] shadow-md px-6 py-3 rounded-full text-sm font-medium hover:bg-[#4a2f2a] hover:shadow-lg transition active:scale-[0.98];
 }
 .btn-ghost {
   @apply inline-flex items-center justify-center gap-2 bg-white border-2 border-slate-300 shadow-sm text-slate-700 px-6 py-3 rounded-full text-sm font-medium hover:bg-slate-50 hover:shadow-md transition active:scale-[0.98];
 }
-.btn-green {
-  @apply inline-flex items-center justify-center gap-2 bg-emerald-600 text-white border-2 border-emerald-700 shadow-md px-6 py-3 rounded-full text-sm font-medium hover:bg-emerald-700 hover:shadow-lg transition active:scale-[0.98];
+.btn-violet {
+  @apply inline-flex items-center justify-center gap-2 bg-[#6b1def] text-white border-2 border-[#5617c4] shadow-md px-6 py-3 rounded-full text-sm font-medium hover:bg-[#5b18bd] hover:shadow-lg transition active:scale-[0.98];
 }
-.btn-red {
-  @apply inline-flex items-center justify-center gap-2 bg-red-600 text-white border-2 border-red-700 shadow-md px-6 py-3 rounded-full text-sm font-medium hover:bg-red-700 hover:shadow-lg transition active:scale-[0.98];
+.btn-brown {
+  @apply inline-flex items-center justify-center gap-2 bg-[#8d775f] text-white border-2 border-[#6f5c48] shadow-md px-6 py-3 rounded-full text-sm font-medium hover:bg-[#7d6851] hover:shadow-lg transition active:scale-[0.98];
 }
 .badge {
   @apply inline-flex items-center gap-2 text-xs font-medium tracking-wide px-3 py-1.5 rounded-full border-2 shadow-sm;
@@ -120,7 +120,7 @@ a, button { -webkit-tap-highlight-color: transparent; }
   select { min-height: 48px; }
 
   /* comfortable touch targets on the primary actions */
-  .btn-primary, .btn-ghost, .btn-green, .btn-red { min-height: 48px; }
+  .btn-primary, .btn-ghost, .btn-violet, .btn-brown { min-height: 48px; }
 }
 
 /* Momentum horizontal scroll for wide data tables */

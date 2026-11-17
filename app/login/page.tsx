@@ -39,7 +39,7 @@ export default function LoginPage() {
           <input value={id} onChange={(e) => setId(e.target.value)} placeholder="Email or Phone" required className="px-4 py-3 rounded-xl border border-slate-200 text-sm" />
           <input value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Password" type="password" required className="px-4 py-3 rounded-xl border border-slate-200 text-sm" />
           {err && <div className="text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-xl">{err}</div>}
-          <button type="submit" disabled={loading} className="btn-red justify-center disabled:opacity-50">{loading ? "Signing in…" : "Login →"}</button>
+          <button type="submit" disabled={loading} className="btn-brown justify-center disabled:opacity-50">{loading ? "Signing in…" : "Login →"}</button>
           <button type="button" onClick={() => setShowForgot(true)} className="text-xs text-sky-700 hover:underline text-center">Forgot password? Reset with OTP to email →</button>
         </form>
         <div className="mt-4 text-center text-xs text-slate-500">

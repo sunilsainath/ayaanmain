@@ -16,7 +16,6 @@ export const FALLBACK_FEE: Record<string, Record<string, number>> = {
   Groups: { Residential: 32000, Offline: 22000, Online: 13200 },
   "SSC GD": { Residential: 25000, Offline: 15000, Online: 9000 },
   Army: { Residential: 30000, Offline: 20000, Online: 12000 },
-  UPSC: { Residential: 75000, Offline: 45000, Online: 27000 },
 };
 
 const BASE_MAP: Record<string, number> = {
@@ -26,7 +25,6 @@ const BASE_MAP: Record<string, number> = {
   Groups: 22000,
   "SSC GD": 15000,
   Army: 20000,
-  UPSC: 45000,
 };
 
 // Normalised index so lookups never miss on letter case or spacing.

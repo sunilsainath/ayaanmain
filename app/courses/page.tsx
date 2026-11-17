@@ -42,7 +42,7 @@ export default function CoursesPage() {
   // Live fees from Admin → Fee Config (no hard-coding). Maps course slug to FeeConfig course key.
   // Lookup order per course + mode: selected duration → Base ("") → none ("Fee on request").
   const feeKeyFor = (slug: string): string | null => {
-    const map: Record<string, string> = { "si-pc": "SI PC", si: "SI PC", constable: "SI PC", groups: "Groups", "ssc-gd": "SSC GD", army: "Army", upsc: "UPSC" };
+    const map: Record<string, string> = { "si-pc": "SI PC", si: "SI PC", constable: "SI PC", groups: "Groups", "ssc-gd": "SSC GD", army: "Army" };
     return map[slug] || null;
   };
   const liveFeesFor = (slug: string) => {
@@ -106,19 +106,19 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="bg-[#ebe1cb] pb-10">
+    <div className="bg-[#fcfcfd] pb-10">
       <PageHero
         eyebrow="Courses"
         title="Courses for Every Uniform"
         crumbs={[{ label: "Courses" }]}
-        subtitle="SI PC • Groups 1/2/3/4 • SSC GD • Army/Navy/Airforce • UPSC • Online. Offline • Residential • Online. Telugu & English."
+        subtitle="SI PC • Groups 1/2/3/4 • SSC GD • Army/Navy/Airforce • Online. Offline • Residential • Online."
       >
         <div className="mt-5 flex flex-wrap gap-2">
           <div className="relative flex-1 min-w-0 sm:flex-none">
             <input
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search SI PC, Army, UPSC…"
+              placeholder="Search SI PC, Army…"
               className="w-full sm:w-[280px] pl-9 pr-3 py-2.5 rounded-full bg-white text-navy-900 text-sm placeholder:text-slate-400 focus:outline-none"
             />
             <span className="absolute left-3 top-2.5 text-slate-400" aria-hidden>⌕</span>
@@ -253,7 +253,7 @@ export default function CoursesPage() {
                     <div>
                       <div className="text-xs tracking-widest font-bold text-sky-700">NOTIFICATION DATE</div>
                       <div className="font-semibold text-navy-900">{activeCourse.notificationDate}</div>
-                      <div className="text-sm text-slate-600 mt-1">We update this within 24h of official release. Join leads get SMS/WhatsApp alert. Check <span className="font-semibold">TSLPRB / SSC / UPSC</span> official site for PDF.</div>
+                      <div className="text-sm text-slate-600 mt-1">We update this within 24h of official release. Join leads get SMS/WhatsApp alert. Check <span className="font-semibold">TSLPRB / SSC</span> official site for PDF.</div>
                     </div>
                   </div>
                   <div className="mt-3 p-3 rounded-xl bg-white border text-sm text-slate-600">Tip: Apply early — hostel seats fill in first 10 days. Fee locks on admission date, discount valid till notification +7 days.</div>
@@ -294,7 +294,7 @@ export default function CoursesPage() {
                 })()}
               </div>
               <div className="mt-4 flex gap-2">
-                <button onClick={() => open(c.slug)} className={`flex-1 py-2.5 rounded-full text-sm font-medium ${activeSlug === c.slug ? "bg-navy-900 text-white" : "bg-navy-900 text-white hover:bg-navy-800"}`}>View Details</button>
+                <button onClick={() => open(c.slug)} className={`flex-1 py-2.5 rounded-full text-sm font-medium ${activeSlug === c.slug ? "bg-[#3e2723] text-white" : "bg-[#3e2723] text-white hover:bg-[#4a2f2a]"}`}>View Details</button>
                 <Link href="/admission" className="px-4 py-2.5 rounded-full border border-slate-200 text-sm font-medium hover:bg-slate-50 grid place-items-center">Enquire</Link>
               </div>
               <div className="mt-2 text-xs text-slate-500">Tap View Details → Prerequisites • Notification • Syllabus</div>
@@ -310,7 +310,7 @@ export default function CoursesPage() {
           </div>
           <div className="lg:col-span-4 rounded-xl bg-slate-50 border border-slate-200 p-4">
             <div className="text-sm font-semibold text-navy-900">Need help choosing?</div>
-            <div className="text-sm text-slate-600 mt-1">Tell us your qualification & target year — we&apos;ll recommend the right track for you vs Groups vs UPSC.</div>
+            <div className="text-sm text-slate-600 mt-1">Tell us your qualification & target year — we&apos;ll recommend the right track for you vs Groups.</div>
             <Link href="/contact" className="mt-3 inline-flex btn-primary !py-2.5">Get Recommendation →</Link>
           </div>
         </div>

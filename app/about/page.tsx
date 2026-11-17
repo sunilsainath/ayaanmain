@@ -50,7 +50,7 @@ export default function AboutPage() {
       .catch(() => {});
   }, []);
   return (
-    <div className="bg-[#ebe1cb]">
+    <div className="bg-[#fcfcfd]">
       <PageHero
         eyebrow="About • Estd. 2016"
         title="Ayaan Group of Institutions"
@@ -167,7 +167,7 @@ export default function AboutPage() {
                     </div>
                     {b.phone && <a href={`tel:${b.phone.replace(/\s/g, "")}`} className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-navy-900">☎ {b.phone}</a>}
                     <div className="mt-3 flex flex-wrap gap-2">
-                      <a href={`https://www.google.com/maps/search/?api=1&query=${q}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs font-medium hover:bg-navy-800">Get Directions →</a>
+                      <a href={`https://www.google.com/maps/search/?api=1&query=${q}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-xs font-medium hover:bg-[#4a2f2a]">Get Directions →</a>
                       {b.phone && <a href={`https://api.whatsapp.com/send?phone=918886667222&text=${encodeURIComponent(`Hi, I want details about the ${b.name} institute`)}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full border border-slate-200 text-xs font-medium hover:bg-slate-50">WhatsApp</a>}
                     </div>
                   </div>

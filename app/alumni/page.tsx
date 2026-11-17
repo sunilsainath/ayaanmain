@@ -4,6 +4,7 @@
 // quotes, plus the numbers that back them up.
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import AnimatedNumber from "@/components/AnimatedNumber";
 
 type Alumni = { id: string; name: string; role: string; batch: string; course: string; quote: string; video: string; image: string; featured: boolean; createdAt: string };
 
@@ -32,10 +33,10 @@ function ytId(url: string) {
 }
 
 const NUMBERS = [
-  { k: "5000+", v: "Selections" },
-  { k: "183+", v: "TS Constable 2023" },
-  { k: "9+", v: "Years of coaching" },
-  { k: "25", v: "Acre campus" },
+  { v: 5000, suffix: "+", label: "Selections" },
+  { v: 183, suffix: "+", label: "TS Constable 2023" },
+  { v: 9, suffix: "+", label: "Years of coaching" },
+  { v: 25, suffix: "", label: "Acre campus" },
 ];
 
 export default function AlumniPage() {
@@ -65,7 +66,7 @@ export default function AlumniPage() {
   const thumbFor = (a: Alumni) => a.image || (a.video ? `https://img.youtube.com/vi/${ytId(a.video)}/hqdefault.jpg` : "");
 
   return (
-    <div className="bg-[#ebe1cb]">
+    <div className="bg-[#fcfcfd]">
       <section className="bg-navy-900 text-white">
         <div className="container-soft py-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border-2 border-white/20 text-xs">ALUMNI • A LEGACY OF SUCCESS</div>
@@ -78,9 +79,9 @@ export default function AlumniPage() {
         <div className="card p-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {NUMBERS.map((n) => (
-              <div key={n.k} className="text-center">
-                <div className="font-display font-bold text-2xl text-navy-900 leading-none">{n.k}</div>
-                <div className="text-xs text-slate-600 mt-1.5">{n.v}</div>
+              <div key={n.label} className="text-center">
+                <div className="font-display font-bold text-2xl text-navy-900 leading-none"><AnimatedNumber value={n.v} suffix={n.suffix} /></div>
+                <div className="text-xs text-slate-600 mt-1.5">{n.label}</div>
               </div>
             ))}
           </div>
@@ -140,7 +141,7 @@ export default function AlumniPage() {
           <div className="flex gap-2 w-full sm:w-auto">
             <div className="flex gap-2 overflow-auto scrollbar-none">
               {courses.map((c) => (
-                <button key={c} onClick={() => setCourse(c)} className={`shrink-0 px-4 py-2 rounded-full border-2 shadow-sm text-sm font-medium transition ${course === c ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-300 text-slate-600 hover:bg-slate-50"}`}>{c}</button>
+                <button key={c} onClick={() => setCourse(c)} className={`shrink-0 px-4 py-2 rounded-full border-2 shadow-sm text-sm font-medium transition ${course === c ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-300 text-slate-600 hover:bg-slate-50"}`}>{c}</button>
               ))}
             </div>
           </div>
@@ -215,7 +216,7 @@ export default function AlumniPage() {
           <div className="font-semibold text-navy-900">Your story next?</div>
           <div className="text-sm text-slate-600 mt-1">Join a batch, get your uniform, share your journey.</div>
           <div className="mt-4 flex gap-2 justify-center">
-            <Link href="/admission" className="btn-green">Register Online</Link>
+            <Link href="/admission" className="btn-violet">Register Online</Link>
             <Link href="/contact" className="btn-ghost">Visit Campus</Link>
           </div>
         </div>

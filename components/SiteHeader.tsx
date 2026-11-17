@@ -25,7 +25,7 @@ const NAV: NavGroup[] = [
   {
     label: "Courses",
     children: [
-      { label: "All Courses", href: "/courses", desc: "SI PC, Groups, SSC GD, Defence, UPSC" },
+      { label: "All Courses", href: "/courses", desc: "SI PC, Groups, SSC GD, Defence" },
       { label: "SI PC", href: "/courses", desc: "Sub-Inspector and Constable" },
       { label: "Groups 1–4", href: "/courses", desc: "State services" },
       { label: "Army / Navy / Airforce", href: "/courses", desc: "Defence entries" },
@@ -116,7 +116,7 @@ export default function SiteHeader() {
             <span className="sm:hidden truncate text-white/70">{BRAND.tagline}</span>
           </div>
           <div className="flex items-center gap-3 shrink-0">
-            <Link href="/login" className="px-2.5 py-1 rounded-full bg-red-600 border-2 border-red-700 text-white font-medium shadow-sm hover:bg-red-700">Student Login</Link>
+            <Link href="/login" className="px-2.5 py-1 rounded-full bg-[#8d775f] border-2 border-[#6f5c48] text-white font-medium shadow-sm hover:bg-[#7d6851]">Student Login</Link>
             <span className="text-white/20">|</span>
             <Link href="/admin" className="hover:text-white/80">Admin</Link>
             <span className="hidden sm:inline text-white/20">|</span>
@@ -148,8 +148,8 @@ export default function SiteHeader() {
                     aria-expanded={openGroup === n.label}
                     className={`px-3 py-1.5 rounded-full border-2 shadow-sm text-sm font-medium whitespace-nowrap transition inline-flex items-center gap-1 ${
                       openGroup === n.label
-                        ? "bg-sky-100 border-sky-300 text-navy-900 shadow-md"
-                        : "bg-sky-50 border-sky-200 text-navy-900 hover:bg-sky-100 hover:border-sky-300"
+                        ? "bg-slate-50 border-slate-400 text-navy-900 shadow-md"
+                        : "bg-white border-slate-300 text-navy-900 hover:bg-slate-50 hover:border-slate-400"
                     }`}
                   >
                     {n.label}
@@ -179,7 +179,7 @@ export default function SiteHeader() {
                   href={n.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1.5 rounded-full border-2 border-sky-200 bg-sky-50 shadow-sm text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-sky-100 hover:border-sky-300"
+                  className="px-3 py-1.5 rounded-full border-2 border-slate-300 bg-white shadow-sm text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-slate-50 hover:border-slate-400"
                 >
                   {n.label} ↗
                 </a>
@@ -187,7 +187,7 @@ export default function SiteHeader() {
                 <Link
                   key={n.label}
                   href={n.href!}
-                  className="px-3 py-1.5 rounded-full border-2 border-sky-200 bg-sky-50 shadow-sm text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-sky-100 hover:border-sky-300"
+                  className="px-3 py-1.5 rounded-full border-2 border-slate-300 bg-white shadow-sm text-sm font-medium whitespace-nowrap text-navy-900 hover:bg-slate-50 hover:border-slate-400"
                 >
                   {n.label}
                 </Link>
@@ -200,7 +200,7 @@ export default function SiteHeader() {
               <>
                 <Link
                   href={auth.isAdmin ? "/admin" : "/account"}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-navy-900 text-white text-sm font-medium hover:bg-navy-800"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#3e2723] text-white text-sm font-medium hover:bg-[#4a2f2a]"
                 >
                   <span className="w-6 h-6 rounded-full bg-white/20 grid place-items-center text-xs font-bold">
                     {auth.name.trim().charAt(0).toUpperCase()}
@@ -210,9 +210,9 @@ export default function SiteHeader() {
                 <button onClick={logout} className="text-xs font-medium text-slate-600 hover:text-red-600 px-1">Logout</button>
               </>
             ) : (
-              <Link href="/login" className="btn-red !px-4 !py-2 text-sm whitespace-nowrap">Login</Link>
+              <Link href="/login" className="btn-brown !px-4 !py-2 text-sm whitespace-nowrap">Login</Link>
             )}
-            <Link href="/admission" className="btn-green !px-5 !py-2.5 text-sm whitespace-nowrap">Register Online</Link>
+            <Link href="/admission" className="btn-violet !px-5 !py-2.5 text-sm whitespace-nowrap">Register Online</Link>
           </div>
 
           <button
@@ -232,7 +232,7 @@ export default function SiteHeader() {
           <div className="container-soft py-3">
             {NAV.map((n) =>
               n.children ? (
-                <div key={n.label} className="mb-2 rounded-xl border-2 border-sky-200 bg-sky-50 shadow-sm overflow-hidden">
+                <div key={n.label} className="mb-2 rounded-xl border-2 border-slate-300 bg-white shadow-sm overflow-hidden">
                   <button
                     onClick={() => setOpenDrawerGroup(openDrawerGroup === n.label ? null : n.label)}
                     aria-expanded={openDrawerGroup === n.label}
@@ -248,7 +248,7 @@ export default function SiteHeader() {
                           key={c.label}
                           href={c.href}
                           onClick={() => { setDrawer(false); setOpenDrawerGroup(null); }}
-                          className="px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-sky-100"
+                          className="px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:bg-slate-100"
                         >
                           {c.label}
                         </Link>
@@ -263,7 +263,7 @@ export default function SiteHeader() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setDrawer(false)}
-                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border-2 border-sky-200 bg-sky-50 shadow-sm text-sm font-medium text-navy-900"
+                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border-2 border-slate-300 bg-white shadow-sm text-sm font-medium text-navy-900"
                 >
                   {n.label} ↗
                 </a>
@@ -272,7 +272,7 @@ export default function SiteHeader() {
                   key={n.label}
                   href={n.href!}
                   onClick={() => setDrawer(false)}
-                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border-2 border-sky-200 bg-sky-50 shadow-sm text-sm font-medium text-navy-900"
+                  className="mb-2 flex items-center justify-between px-4 py-3 rounded-xl border-2 border-slate-300 bg-white shadow-sm text-sm font-medium text-navy-900"
                 >
                   {n.label} <span className="text-slate-300" aria-hidden>→</span>
                 </Link>
@@ -280,7 +280,7 @@ export default function SiteHeader() {
             )}
 
             <div className="mt-3 grid gap-2">
-              <Link href="/admission" onClick={() => setDrawer(false)} className="btn-green justify-center">Register Online</Link>
+              <Link href="/admission" onClick={() => setDrawer(false)} className="btn-violet justify-center">Register Online</Link>
               {auth ? (
                 <>
                   <Link href={auth.isAdmin ? "/admin" : "/account"} onClick={() => setDrawer(false)} className="w-full py-3 rounded-xl bg-white border-2 border-slate-300 shadow-sm grid place-items-center text-sm font-medium">
@@ -291,7 +291,7 @@ export default function SiteHeader() {
                   </button>
                 </>
               ) : (
-                <Link href="/login" onClick={() => setDrawer(false)} className="btn-red w-full justify-center">
+                <Link href="/login" onClick={() => setDrawer(false)} className="btn-brown w-full justify-center">
                   Login to Account
                 </Link>
               )}

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function GalleryPage() {
   return (
-    <div className="bg-[#ebe1cb]">
+    <div className="bg-[#fcfcfd]">
       <PageHero
         eyebrow="Gallery • Campus • Results • Events"
         title="Inside Ayaan — campus, toppers and events"

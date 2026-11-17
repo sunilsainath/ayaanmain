@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 type Slide = {
   id: string | number;
@@ -58,16 +57,6 @@ const fallbackSlides: Slide[] = [
     image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1600&auto=format&fit=crop",
     accent: "from-violet-600 to-indigo-800",
   },
-  {
-    id: 5,
-    badge: "UPSC • CIVIL SERVICES • PRELIMS + MAINS",
-    title: "Dream UPSC.",
-    highlight: "We Guide.",
-    desc: "GS 1-4 • Essay • CSAT • Optional • Daily Answer Writing • Mock Interviews by Ex-Bureaucrats.",
-    cta: { label: "UPSC Batches →", href: "/courses" },
-    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1600&auto=format&fit=crop",
-    accent: "from-slate-800 to-navy-900",
-  },
 ];
 
 export default function HeroCarousel() {
@@ -88,7 +77,9 @@ export default function HeroCarousel() {
       })
       .then((d) => {
         if (cancelled) return;
-        const mapped: Slide[] = (Array.isArray(d) ? d : []).map((s: any) => ({
+        const mapped: Slide[] = (Array.isArray(d) ? d : [])
+          .filter((s: any) => !/upsc/i.test(`${s.badge || ""} ${s.title || ""} ${s.desc || ""}`))
+          .map((s: any) => ({
           id: s.id,
           badge: s.badge || "",
           title: s.title || "",
@@ -116,7 +107,9 @@ export default function HeroCarousel() {
         .then((r) => (r.ok ? r.json() : null))
         .then((d) => {
           if (!Array.isArray(d)) return;
-          const mapped: Slide[] = d.map((s: any) => ({
+          const mapped: Slide[] = d
+            .filter((s: any) => !/upsc/i.test(`${s.badge || ""} ${s.title || ""} ${s.desc || ""}`))
+            .map((s: any) => ({
             id: s.id,
             badge: s.badge || "",
             title: s.title || "",
@@ -178,42 +171,10 @@ export default function HeroCarousel() {
             key={s.id}
             className={`absolute inset-0 transition-opacity duration-700 ease-out ${idx === active ? "opacity-100 z-10" : "opacity-0 z-0"}`}
           >
-            {/* image */}
-            <img src={s.image} alt={s.title} className="absolute inset-0 w-full h-full object-cover" />
-            {/* gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-slate-900/10" />
-            <div className={`absolute inset-0 bg-gradient-to-t ${s.accent} opacity-20 mix-blend-multiply`} />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent" />
-
-            {/* content */}
-            <div className="container-soft relative h-full flex items-center">
-              <div className="w-full lg:w-[58%] py-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur text-xs font-semibold tracking-widest text-white">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  {s.badge}
-                </div>
-                <h2 className="mt-4 font-display font-bold tracking-tight text-white leading-[0.9] text-[36px] sm:text-[48px] lg:text-[56px]">
-                  {s.title}
-                  <span className="block font-light text-white/90">{s.highlight}</span>
-                </h2>
-                <p className="mt-4 text-[15px] sm:text-[17px] leading-relaxed text-white/80 max-w-[560px]">{s.desc}</p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link href={s.cta.href} className="px-6 py-3 rounded-full bg-white text-navy-900 text-sm font-bold hover:bg-slate-100 shadow-lg active:scale-[0.98] transition">
-                    {s.cta.label}
-                  </Link>
-                  {s.cta2 && (
-                    <Link href={s.cta2.href} className="px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold backdrop-blur hover:bg-white/15 transition">
-                      {s.cta2.label}
-                    </Link>
-                  )}
-                </div>
-                <div className="mt-6 flex flex-wrap gap-2 text-xs text-white/70">
-                  <span className="px-3 py-1.5 rounded-full bg-white/10 border border-white/10">✓ Telugu & English</span>
-                  <span className="px-3 py-1.5 rounded-full bg-white/10 border border-white/10">✓ Offline • Residential • Online</span>
-                  <span className="px-3 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/20 text-emerald-200">✓ 5000+ Selections</span>
-                </div>
-              </div>
-            </div>
+            {/* image — slides are direct uploads, shown in admin order with no text overlay */}
+            <img src={s.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            {/* subtle gradient so the dots/arrows stay readable */}
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-900/50 to-transparent" />
           </div>
         ))}
       </div>
@@ -230,9 +191,8 @@ export default function HeroCarousel() {
                 className={`transition-all rounded-full ${i === active ? "w-8 h-2 bg-white" : "w-2 h-2 bg-white/40 hover:bg-white/70"}`}
               />
             ))}
-            <span className="ml-3 text-xs text-white/60 hidden sm:inline">{String(active + 1).padStart(2, "0")} / {String(list.length).padStart(2, "0")}</span>
-          </div>
-          <div className="flex items-center gap-2">
+            </div>
+            <div className="flex items-center gap-2">
             <button onClick={() => go(active - 1)} className="w-9 h-9 rounded-full bg-white/10 border border-white/20 text-white backdrop-blur grid place-items-center hover:bg-white/15" aria-label="Previous">‹</button>
             <button onClick={() => go(active + 1)} className="w-9 h-9 rounded-full bg-white text-navy-900 grid place-items-center hover:bg-slate-100" aria-label="Next">›</button>
           </div>

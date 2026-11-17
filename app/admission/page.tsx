@@ -31,7 +31,7 @@ export default function AdmissionPage() {
   const [feeConfigs, setFeeConfigs] = useState<{ course: string; mode: string; duration: string; branch: string; amount: number }[]>([]);
   
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
-  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army"]);
   const [submitting, setSubmitting] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; id?: string; applicationId?: string; correctionToken?: string; error?: string } | null>(null);
 
@@ -230,7 +230,7 @@ export default function AdmissionPage() {
   }
 
   return (
-    <div className="bg-[#ebe1cb] py-8">
+    <div className="bg-[#fcfcfd] py-8">
       <div className="container-soft">
         <div className="max-w-3xl mx-auto">
           <div className="text-center">
@@ -342,7 +342,7 @@ export default function AdmissionPage() {
                           key={b.id}
                           type="button"
                           onClick={() => setForm({ ...form, batchId: b.id })}
-                          className={`p-3 rounded-xl border text-left transition ${form.batchId === b.id ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200 hover:bg-slate-50"}`}
+                          className={`p-3 rounded-xl border text-left transition ${form.batchId === b.id ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200 hover:bg-slate-50"}`}
                         >
                           <div className="text-sm font-semibold">{b.name || `${b.course} Batch`}</div>
                           <div className={`text-xs mt-1 ${form.batchId === b.id ? "text-white/70" : "text-slate-500"}`}>

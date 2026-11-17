@@ -367,7 +367,7 @@ if (d.mustChangePassword) setMustChange(true);
               <div className="font-display font-bold text-navy-900 leading-none truncate">AYAAN ADMIN</div>
               <div className="text-xs text-slate-500 capitalize truncate hidden sm:block">{role.replace("_", " ")} • {authUser}</div>
             </div>
-            <span className={`ml-1 px-2.5 py-1 rounded-full text-xs font-semibold border capitalize hidden sm:inline ${role === "super_admin" ? "bg-navy-900 text-white border-navy-900" : role === "finance" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-sky-50 border-sky-200 text-sky-700"}`}>{role.replace("_", " ")}</span>
+            <span className={`ml-1 px-2.5 py-1 rounded-full text-xs font-semibold border capitalize hidden sm:inline ${role === "super_admin" ? "bg-[#3e2723] text-white border-[#2b1b18]" : role === "finance" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-sky-50 border-sky-200 text-sky-700"}`}>{role.replace("_", " ")}</span>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <button
@@ -379,7 +379,7 @@ if (d.mustChangePassword) setMustChange(true);
               <kbd className="text-[10px] px-1.5 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-500">Ctrl K</kbd>
             </button>
             <a href="/" className="hidden sm:inline-flex px-4 py-2 rounded-full border border-slate-200 text-sm hover:bg-slate-50">View Site →</a>
-            <button onClick={doLogout} className="px-4 py-2 rounded-full bg-navy-900 text-white text-sm">Logout</button>
+            <button onClick={doLogout} className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-sm">Logout</button>
           </div>
         </div>
 
@@ -390,7 +390,7 @@ if (d.mustChangePassword) setMustChange(true);
               <button
                 key={t.id}
                 onClick={() => selectTab(t.id)}
-                className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition relative ${tab === t.id ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200 text-slate-600"}`}
+                className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium border transition relative ${tab === t.id ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200 text-slate-600"}`}
               >
                 {t.label}
                 {badgeFor(t) > 0 && (
@@ -429,7 +429,7 @@ if (d.mustChangePassword) setMustChange(true);
                           key={t.id}
                           onClick={() => selectTab(t.id)}
                           aria-current={active ? "page" : undefined}
-                          className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-left text-sm transition ${active ? "bg-navy-900 text-white font-medium" : "text-slate-600 hover:bg-slate-50"}`}
+                          className={`w-full flex items-center gap-2 px-2.5 py-2 rounded-xl text-left text-sm transition ${active ? "bg-[#3e2723] text-white font-medium" : "text-slate-600 hover:bg-slate-50"}`}
                         >
                           <span className="flex-1 min-w-0 truncate">{t.label}</span>
                           {count > 0 && (
@@ -602,7 +602,7 @@ function BatchesTab({ campus = "" }: { campus?: string }) {
   const [q, setQ] = useState("");
   const [form, setForm] = useState({ ...EMPTY_BATCH });
   const [editing, setEditing] = useState<string | null>(null);
-  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army"]);
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
 
   const load = () => fetch(`/api/admin/batches${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setList(d)).catch(() => {});
@@ -937,7 +937,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
           <h2 className="font-semibold text-navy-900">Applications & Admissions • {filtered.length}/{list.length}</h2>
           <div className="flex gap-1 flex-wrap">
             {(["all", "pending", "clarification_required", "discount_pending", "approved", "rejected"] as const).map((f) => (
-              <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded-full text-xs border ${filter === f ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>{f === "all" ? `All (${list.length})` : `${f.replace(/_/g, " ")} (${list.filter((x) => x.status === f).length})`}</button>
+              <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded-full text-xs border ${filter === f ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200"}`}>{f === "all" ? `All (${list.length})` : `${f.replace(/_/g, " ")} (${list.filter((x) => x.status === f).length})`}</button>
             ))}
           </div>
         </div>
@@ -958,7 +958,7 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
                 <div className="text-xs text-slate-700 mt-1">🪪 Aadhar: <span className="font-mono tracking-widest">{a.aadharCardNumber ? String(a.aadharCardNumber).replace(/(.{4})/g, "$1 ").trim() : <span className="text-slate-400">— not provided (legacy)</span>}</span></div>
                 {a.address && <div className="text-xs text-slate-500 mt-1">📍 {a.address} {a.reference ? `• Ref: ${a.reference}` : ""}</div>}
                 <div className="text-xs mt-1 flex gap-2 items-center flex-wrap">
-                  {a.applicationId && <span className="px-2 py-1 rounded-full bg-navy-900 text-white text-xs font-semibold">{a.applicationId}</span>}
+                  {a.applicationId && <span className="px-2 py-1 rounded-full bg-[#3e2723] text-white text-xs font-semibold">{a.applicationId}</span>}
                   {a.applicantStudentId && <span className="px-2 py-1 rounded-full bg-emerald-600 text-white text-xs font-semibold">{a.applicantStudentId}</span>}
                   <span className="capitalize px-2 py-1 rounded-full bg-white border text-xs">{a.paymentMethod}</span>
                   {a.amount && <span className="px-2 py-1 rounded-full bg-white border text-xs">₹{a.amount.toLocaleString("en-IN")}</span>}
@@ -987,8 +987,8 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
                 )}
               </div>
               <div className="shrink-0 flex flex-col gap-2 items-end">
-                <button onClick={() => setViewAdmissions(a.id)} className="px-3 py-1.5 rounded-full bg-white border border-navy-900 text-navy-900 text-xs font-medium hover:bg-navy-900 hover:text-white">View Admission</button>
-                <button onClick={() => printForm(a, aadharUrls[a.id] || null)} className="px-3 py-1.5 rounded-full bg-navy-900 text-white text-xs font-medium hover:bg-navy-800">🖨️ Print / PDF</button>
+                <button onClick={() => setViewAdmissions(a.id)} className="px-3 py-1.5 rounded-full bg-white border border-[#2b1b18] text-navy-900 text-xs font-medium hover:bg-navy-900 hover:text-white">View Admission</button>
+                <button onClick={() => printForm(a, aadharUrls[a.id] || null)} className="px-3 py-1.5 rounded-full bg-[#3e2723] text-white text-xs font-medium hover:bg-[#4a2f2a]">🖨️ Print / PDF</button>
                 {a.screenshot && <a href={a.screenshot} target="_blank" className="text-xs text-sky-700 hover:underline"><img src={a.screenshot} alt="proof" className="w-20 h-14 object-cover rounded-lg border border-slate-200" /><div>View Proof</div></a>}
               </div>
             </div>
@@ -1048,11 +1048,11 @@ function AdmissionsTab({ campus = "" }: { campus?: string }) {
             {a.status === "rejected" && <button onClick={() => act(a.id, "pending")} className="mt-2 text-xs px-3 py-1 rounded-full bg-white border">Mark Pending</button>}
 
             {viewId === a.id && (
-              <div className="mt-3 p-4 rounded-2xl border border-navy-900/20 bg-white">
+              <div className="mt-3 p-4 rounded-2xl border border-[#2b1b18]/20 bg-white">
                 <div className="flex items-center justify-between gap-2">
                   <h4 className="font-semibold text-navy-900">Full admission — {a.applicationId || a.id}</h4>
                   <div className="flex gap-1.5">
-                    <button onClick={() => printForm(a, aadharUrls[a.id] || null)} className="px-3 py-1.5 rounded-full bg-navy-900 text-white text-xs">🖨️ Print / PDF</button>
+                    <button onClick={() => printForm(a, aadharUrls[a.id] || null)} className="px-3 py-1.5 rounded-full bg-[#3e2723] text-white text-xs">🖨️ Print / PDF</button>
                     <button onClick={() => setViewAdmissions(a.id)} className="px-3 py-1.5 rounded-full border border-slate-200 text-xs">Close</button>
                   </div>
                 </div>
@@ -1465,7 +1465,7 @@ function PaymentsTab({ campus = "" }: { campus?: string }) {
     <div className="card p-6">
       <div className="flex gap-2 mb-4 border-b border-slate-200">
         {([["payments", `Payments (${data.payments.length})`], ["receipts", "Receipts"]] as const).map(([v, l]) => (
-          <button key={v} onClick={() => setSub(v)} className={`px-4 py-2 text-sm font-medium -mb-px border-b-2 ${sub === v ? "border-navy-900 text-navy-900" : "border-transparent text-slate-500 hover:text-navy-900"}`}>{l}</button>
+          <button key={v} onClick={() => setSub(v)} className={`px-4 py-2 text-sm font-medium -mb-px border-b-2 ${sub === v ? "border-[#2b1b18] text-navy-900" : "border-transparent text-slate-500 hover:text-navy-900"}`}>{l}</button>
         ))}
       </div>
       {sub === "receipts" ? (
@@ -1477,7 +1477,7 @@ function PaymentsTab({ campus = "" }: { campus?: string }) {
         <div className="flex flex-wrap gap-2">
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search student, txn…" className="px-3 py-2 rounded-full border border-slate-200 text-sm flex-1 min-w-0 sm:flex-none sm:w-32" />
           <select value={filter} onChange={(e) => setFilter(e.target.value as any)} className="px-3 py-2 rounded-full border border-slate-200 text-sm"><option value="all">All</option><option value="collected">Collected</option><option value="pending">Pending</option></select>
-          <button onClick={() => setShowAdd(!showAdd)} className="px-4 py-2 rounded-full bg-navy-900 text-white text-sm">{showAdd ? "Close" : "+ Add Payment"}</button>
+          <button onClick={() => setShowAdd(!showAdd)} className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-sm">{showAdd ? "Close" : "+ Add Payment"}</button>
         </div>
       </div>
       {showAdd && (
@@ -1683,7 +1683,7 @@ function ReceiptsPanel({ campus = "" }: { campus?: string }) {
                 <div><div className="border-t border-slate-400 pt-1">Authorised Signatory — Ayaan Institute</div></div>
               </div>
               <div className="mt-4 flex gap-2 justify-end">
-                <button onClick={() => window.print()} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">Print / Save PDF</button>
+                <button onClick={() => window.print()} className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-xs">Print / Save PDF</button>
               </div>
             </div>
           </div>
@@ -1700,7 +1700,7 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
   const [showAdd, setShowAdd] = useState(false);
   const [newStu, setNewStu] = useState({ name: "", fatherName: "", email: "", phone: "", address: "", branch: "Warangal", course: "SI PC", courseType: "Regular", mode: "Residential", password: "" });
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
-  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army"]);
   const load = () => fetch(`/api/admin/students${campus ? `?branch=${encodeURIComponent(campus)}` : ""}`, { credentials: "same-origin" }).then((r) => r.json()).then((d) => Array.isArray(d) && setList(d)).catch(() => {});
   useEffect(() => {
     load();
@@ -1737,7 +1737,7 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
         <h2 className="font-semibold text-navy-900">Students • {list.length} accounts</h2>
         <div className="flex gap-2">
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, email…" className="px-3 py-2 rounded-full border border-slate-200 text-sm w-40" />
-          <button onClick={() => setShowAdd(!showAdd)} className="px-4 py-2 rounded-full bg-navy-900 text-white text-sm">{showAdd ? "Close" : "+ Add Student"}</button>
+          <button onClick={() => setShowAdd(!showAdd)} className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-sm">{showAdd ? "Close" : "+ Add Student"}</button>
         </div>
       </div>
       {showAdd && (
@@ -1779,7 +1779,7 @@ function StudentsTab({ campus = "" }: { campus?: string }) {
             </div>
             <div className="mt-3 flex gap-2">
               <input value={pw[u.id] || ""} onChange={(e) => setPw({ ...pw, [u.id]: e.target.value })} placeholder="New password (min 6)" className="flex-1 min-w-0 px-3 py-2 rounded-xl border border-slate-200 text-sm" />
-              <button onClick={() => act(u.id, "resetPassword", { password: pw[u.id] })} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">Reset PW</button>
+              <button onClick={() => act(u.id, "resetPassword", { password: pw[u.id] })} className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-xs">Reset PW</button>
             </div>
           </div>
         ))}
@@ -2061,13 +2061,13 @@ function LeadsTab({ campus = "" }: { campus?: string }) {
           {(q || courseFilter !== "all" || overdueOnly) && <button onClick={() => { setQ(""); setCourseFilter("all"); setOverdueOnly(false); }} className="text-xs text-slate-500 hover:underline">Clear</button>}
           <label className="px-3 py-2 rounded-full bg-white border border-slate-200 text-xs hover:bg-slate-50 cursor-pointer">Import CSV/Excel<input type="file" accept=".csv,.xls,.xlsx" onChange={onImport} className="hidden" /></label>
           <button onClick={exportCsv} className="px-3 py-2 rounded-full bg-white border border-slate-200 text-xs hover:bg-slate-50">Export CSV</button>
-          <button onClick={exportXlsx} className="px-3 py-2 rounded-full bg-navy-900 text-white text-xs">Export Excel</button>
+          <button onClick={exportXlsx} className="px-3 py-2 rounded-full bg-[#3e2723] text-white text-xs">Export Excel</button>
         </div>
       </div>
 
       <div className="mt-3 flex gap-1 flex-wrap">
         {(["all", "new", "contacted", "converted"] as const).map((f) => (
-          <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded-full text-xs border capitalize ${filter === f ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>{f} ({f === "all" ? list.length : list.filter((x) => x.status === f).length})</button>
+          <button key={f} onClick={() => setFilter(f)} className={`px-3 py-1.5 rounded-full text-xs border capitalize ${filter === f ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200"}`}>{f} ({f === "all" ? list.length : list.filter((x) => x.status === f).length})</button>
         ))}
         <span className="ml-2 text-xs text-slate-500 self-center">Showing {filtered.length}/{list.length}</span>
       </div>
@@ -2166,7 +2166,7 @@ function LeadsTab({ campus = "" }: { campus?: string }) {
 function AlumniTab() {
   const [list, setList] = useState<any[]>([]);
   const [q, setQ] = useState("");
-  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC", "General"]);
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "General"]);
   const [form, setForm] = useState({ id: "", name: "", role: "", batch: "", course: "SI PC", quote: "", video: "", image: "", featured: false });
   const [editing, setEditing] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -2485,7 +2485,7 @@ function FeeConfigTab() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [courses, setCourses] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
+  const [courses, setCourses] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army"]);
   const modes = ["Residential", "Offline", "Online"] as const;
 
   const load = async () => {
@@ -2603,7 +2603,7 @@ function FeeConfigTab() {
           </div>
           <div className="flex gap-2">
             <button onClick={resetFallback} className="px-4 py-2 rounded-full border border-slate-200 text-sm hover:bg-slate-50">Reset Base Defaults</button>
-            <button onClick={saveAll} disabled={saving} className="px-6 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium disabled:opacity-50 hover:bg-navy-800">{saving ? "Saving…" : "Save All →"}</button>
+            <button onClick={saveAll} disabled={saving} className="px-6 py-2.5 rounded-full bg-[#3e2723] text-white text-sm font-medium disabled:opacity-50 hover:bg-[#4a2f2a]">{saving ? "Saving…" : "Save All →"}</button>
           </div>
         </div>
         {saved && <div className="mt-3 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-xl text-center">✓ Saved! Admission form now uses new fees.</div>}
@@ -2611,7 +2611,7 @@ function FeeConfigTab() {
         <div className="mt-4 flex gap-2 overflow-auto scrollbar-none pb-1">
           <button
             onClick={() => setDurKey("")}
-            className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${durKey === "" ? "bg-navy-900 text-white border-navy-900 shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+            className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${durKey === "" ? "bg-[#3e2723] text-white border-[#2b1b18] shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
           >
             Base (all durations)
           </button>
@@ -2619,7 +2619,7 @@ function FeeConfigTab() {
             <button
               key={d.id}
               onClick={() => setDurKey(d.name)}
-              className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${durKey === d.name ? "bg-navy-900 text-white border-navy-900 shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+              className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${durKey === d.name ? "bg-[#3e2723] text-white border-[#2b1b18] shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
             >
               {d.name}
             </button>
@@ -2630,7 +2630,7 @@ function FeeConfigTab() {
             <span className="text-xs font-semibold text-slate-500 w-16 shrink-0">Branch</span>
             <button
               onClick={() => setBrKey("")}
-              className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${brKey === "" ? "bg-navy-900 text-white border-navy-900 shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+              className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${brKey === "" ? "bg-[#3e2723] text-white border-[#2b1b18] shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
             >
               Base (all branches)
             </button>
@@ -2638,7 +2638,7 @@ function FeeConfigTab() {
               <button
                 key={b.id || b.name}
                 onClick={() => setBrKey(b.name)}
-                className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${brKey === b.name ? "bg-navy-900 text-white border-navy-900 shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+                className={`shrink-0 px-4 py-2 rounded-full border text-sm font-medium transition ${brKey === b.name ? "bg-[#3e2723] text-white border-[#2b1b18] shadow-sm" : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"}`}
               >
                 {b.name}
               </button>
@@ -2827,7 +2827,7 @@ function ExpenseTrackerTab({ campus = "" }: { campus?: string }) {
                             <button onClick={() => act(e.id, "reject")} className="px-2 py-1 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs">Reject</button>
                           </>
                         ) : e.status === "approved" && isSuper ? (
-                          <button onClick={() => act(e.id, "markPaid")} className="px-2 py-1 rounded-full bg-navy-900 text-white text-xs">Mark Paid</button>
+                          <button onClick={() => act(e.id, "markPaid")} className="px-2 py-1 rounded-full bg-[#3e2723] text-white text-xs">Mark Paid</button>
                         ) : null}
                         <button onClick={() => del(e.id)} className="px-2 py-1 rounded-full bg-white border text-xs">✕</button>
                       </div>
@@ -2974,7 +2974,7 @@ function MastersTab() {
           <div className="flex flex-wrap gap-2">
             <input type="number" min={1} value={dForm.months} onChange={(e) => setDForm({ ...dForm, months: e.target.value })} placeholder="Months" className="flex-1 min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
             <label className="flex items-center gap-1 text-xs px-2"><input type="checkbox" checked={dForm.active} onChange={(e) => setDForm({ ...dForm, active: e.target.checked })} /> Active</label>
-            <button onClick={saveD} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{dForm.id ? "Update" : "Add"}</button>
+            <button onClick={saveD} className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-xs">{dForm.id ? "Update" : "Add"}</button>
             {dForm.id && <button onClick={() => setDForm({ id: "", name: "", months: "", active: true })} className="text-xs text-slate-500">Clear</button>}
           </div>
         </div>
@@ -3002,7 +3002,7 @@ function MastersTab() {
           </div>
           <div className="flex flex-wrap gap-2 items-center">
             <label className="flex items-center gap-1 text-xs px-2"><input type="checkbox" checked={aForm.active} onChange={(e) => setAForm({ ...aForm, active: e.target.checked })} /> Active</label>
-            <button onClick={saveA} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{aForm.id ? "Update" : "Add"}</button>
+            <button onClick={saveA} className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-xs">{aForm.id ? "Update" : "Add"}</button>
             {aForm.id && <button onClick={() => setAForm({ id: "", name: "", fee: "", courses: "", active: true })} className="text-xs text-slate-500">Clear</button>}
           </div>
         </div>
@@ -3031,7 +3031,7 @@ function MastersTab() {
           <input value={bForm.phone} onChange={(e) => setBForm({ ...bForm, phone: e.target.value })} placeholder="Phone (optional)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
           <div className="flex flex-wrap gap-2 items-center">
             <label className="flex items-center gap-1 text-xs px-2"><input type="checkbox" checked={bForm.active} onChange={(e) => setBForm({ ...bForm, active: e.target.checked })} /> Active</label>
-            <button onClick={saveB} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{bForm.id ? "Update" : "Add"}</button>
+            <button onClick={saveB} className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-xs">{bForm.id ? "Update" : "Add"}</button>
             {bForm.id && <button onClick={() => setBForm({ id: "", name: "", address: "", phone: "", active: true })} className="text-xs text-slate-500">Clear</button>}
           </div>
         </div>
@@ -3056,13 +3056,13 @@ function MastersTab() {
           ))}
         </div>
         <div className="mt-4 grid gap-2 p-3 rounded-xl bg-slate-50 border">
-          <input value={cForm.slug} onChange={(e) => setCForm({ ...cForm, slug: e.target.value })} placeholder="Slug (e.g., si-pc, groups, upsc)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
+          <input value={cForm.slug} onChange={(e) => setCForm({ ...cForm, slug: e.target.value })} placeholder="Slug (e.g., si-pc, groups, ssc-gd)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
           <input value={cForm.title} onChange={(e) => setCForm({ ...cForm, title: e.target.value })} placeholder="Title (e.g., Sub-Inspector (SI))" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
           <input value={cForm.fee} onChange={(e) => setCForm({ ...cForm, fee: e.target.value })} placeholder="Fee (e.g., ₹35,000 Residential)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
           <input value={cForm.duration} onChange={(e) => setCForm({ ...cForm, duration: e.target.value })} placeholder="Duration (e.g., 3-4 Months)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
           <input value={cForm.eligibility} onChange={(e) => setCForm({ ...cForm, eligibility: e.target.value })} placeholder="Eligibility (e.g., Graduation)" className="w-full min-w-0 px-3 py-2 rounded-xl border text-sm bg-white" />
           <div className="flex flex-wrap gap-2 items-center">
-            <button onClick={saveC} className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs">{cForm.id ? "Update" : "Add"}</button>
+            <button onClick={saveC} className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-xs">{cForm.id ? "Update" : "Add"}</button>
             {cForm.id && <button onClick={() => setCForm({ id: "", slug: "", title: "", fee: "", duration: "", eligibility: "" })} className="text-xs text-slate-500">Clear</button>}
           </div>
         </div>
@@ -3249,7 +3249,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
     <div className="grid grid-cols-1 gap-4">
       <div className="card p-4 flex gap-2 flex-wrap">
         {([["queue", "Verify Queue"], ["workspace", "Student Workspace"], ["dues", "Due Payments"]] as const).map(([v, l]) => (
-          <button key={v} onClick={() => { setView(v); if (v === "dues" && !duesLoaded) loadDues(); }} className={`px-4 py-2 rounded-full text-sm font-medium border ${view === v ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>{l}{v === "queue" && queue.length > 0 ? ` (${queue.length})` : ""}</button>
+          <button key={v} onClick={() => { setView(v); if (v === "dues" && !duesLoaded) loadDues(); }} className={`px-4 py-2 rounded-full text-sm font-medium border ${view === v ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200"}`}>{l}{v === "queue" && queue.length > 0 ? ` (${queue.length})` : ""}</button>
         ))}
       </div>
       {(() => {
@@ -3302,7 +3302,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
                       <button onClick={() => setAllocRows([...allocRows, { installmentId: "", amount: "" }])} className="text-xs px-3 py-1.5 rounded-full bg-white border">+ Split row</button>
                       <button onClick={() => autoOldest(p.amount)} className="text-xs px-3 py-1.5 rounded-full bg-white border">Auto: oldest-first</button>
                       <span className={`text-xs font-semibold ${allocTotal === p.amount ? "text-emerald-700" : "text-red-600"}`}>Total ₹{allocTotal.toLocaleString("en-IN")} / ₹{Number(p.amount).toLocaleString("en-IN")}</span>
-                      <button onClick={() => acknowledge(p.id)} disabled={allocTotal !== p.amount} className="ml-auto px-4 py-1.5 rounded-full bg-navy-900 text-white text-xs disabled:opacity-40">Confirm → Receipt</button>
+                      <button onClick={() => acknowledge(p.id)} disabled={allocTotal !== p.amount} className="ml-auto px-4 py-1.5 rounded-full bg-[#3e2723] text-white text-xs disabled:opacity-40">Confirm → Receipt</button>
                     </div>
                   </div>
                 )}
@@ -3320,7 +3320,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, email, Application ID, Student ID…" className="mt-2 w-full px-3 py-2.5 rounded-xl border text-sm" />
             <div className="mt-2 grid gap-1 max-h-48 overflow-auto">
               {filteredAdm.map((a) => (
-                <button key={a.id} onClick={() => openWorkspace(a)} className={`text-left px-3 py-2 rounded-xl border text-sm ${sel?.id === a.id ? "bg-navy-900 text-white border-navy-900" : "bg-white hover:bg-slate-50"}`}>
+                <button key={a.id} onClick={() => openWorkspace(a)} className={`text-left px-3 py-2 rounded-xl border text-sm ${sel?.id === a.id ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white hover:bg-slate-50"}`}>
                   <b>{a.name}</b> • {a.applicationId || a.id} {a.applicantStudentId ? `• ${a.applicantStudentId}` : ""} • {a.course}
                 </button>
               ))}
@@ -3356,7 +3356,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
                         <div className="mt-2 flex gap-2 flex-wrap">
                           <input type="date" value={dueEdit[i.id]?.date || ""} onChange={(e) => setDueEdit({ ...dueEdit, [i.id]: { ...(dueEdit[i.id] || { date: "", reason: "" }), date: e.target.value } })} className="px-2 py-1.5 rounded-lg border text-xs" />
                           <input value={dueEdit[i.id]?.reason || ""} onChange={(e) => setDueEdit({ ...dueEdit, [i.id]: { ...(dueEdit[i.id] || { date: "", reason: "" }), reason: e.target.value } })} placeholder="Reason (kept in history)" className="flex-1 min-w-0 min-w-[160px] px-2 py-1.5 rounded-lg border text-xs" />
-                          <button onClick={() => saveDue(i.id)} className="px-3 py-1.5 rounded-full bg-navy-900 text-white text-xs">Update due date</button>
+                          <button onClick={() => saveDue(i.id)} className="px-3 py-1.5 rounded-full bg-[#3e2723] text-white text-xs">Update due date</button>
                         </div>
                         {dueHist[i.id] && (
                           <div className="mt-2 grid gap-1">
@@ -3374,7 +3374,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
                     <input value={newInst.label} onChange={(e) => setNewInst({ ...newInst, label: e.target.value })} placeholder={`Installment ${installments.length + 1}`} className="px-2 py-2 rounded-lg border text-xs bg-white" />
                     <input type="number" value={newInst.amount} onChange={(e) => setNewInst({ ...newInst, amount: e.target.value })} placeholder="Amount ₹" className="px-2 py-2 rounded-lg border text-xs bg-white" />
                     <input type="date" value={newInst.dueDate} onChange={(e) => setNewInst({ ...newInst, dueDate: e.target.value })} className="px-2 py-2 rounded-lg border text-xs bg-white" />
-                    <button onClick={addInst} className="px-3 py-2 rounded-full bg-navy-900 text-white text-xs">+ Add</button>
+                    <button onClick={addInst} className="px-3 py-2 rounded-full bg-[#3e2723] text-white text-xs">+ Add</button>
                   </div>
                 </div>
               </div>
@@ -3438,7 +3438,7 @@ function DuesTab({ campus = "" }: { campus?: string }) {
             <input value={f.q} onChange={(e) => setF({ ...f, q: e.target.value })} placeholder="Search name, phone, IDs…" className="px-2 py-2 rounded-lg border bg-white" />
           </div>
           <div className="mt-3 flex gap-2 items-center flex-wrap">
-            <button onClick={loadDues} className="px-5 py-2 rounded-full bg-navy-900 text-white text-xs">Apply Filters →</button>
+            <button onClick={loadDues} className="px-5 py-2 rounded-full bg-[#3e2723] text-white text-xs">Apply Filters →</button>
             {(f.due !== "all" || f.status !== "all" || f.scope !== "outstanding" || f.branch || f.course || f.batch || f.from || f.to || f.q) && <button onClick={() => { setF({ due: "all", status: "all", scope: "outstanding", branch: "", course: "", batch: "", from: "", to: "", q: "" }); }} className="text-xs text-slate-500 hover:underline">Clear filters</button>}
           </div>
 
@@ -3661,7 +3661,7 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
         </div>
         <div className="flex gap-1 flex-wrap">
           {(["all", "placed", "payment_confirmed", "processing", "ready_for_handover", "handed_over", "completed", "cancelled"] as const).map((f) => (
-            <button key={f} onClick={() => setFilter(f)} className={`px-2.5 py-1.5 rounded-full text-xs border ${filter === f ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>
+            <button key={f} onClick={() => setFilter(f)} className={`px-2.5 py-1.5 rounded-full text-xs border ${filter === f ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200"}`}>
               {f === "all" ? `All (${orders.length})` : `${ORDER_LABEL[f] || f} (${orders.filter((x) => x.status === f).length})`}
             </button>
           ))}
@@ -3671,7 +3671,7 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
         <div className="text-xs text-slate-500">
           Counter sales must be raised against an existing student so the order lands on their account and in campus AR/AP.
         </div>
-        <button onClick={() => setShowManual((v) => !v)} className="px-4 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium hover:bg-navy-800 shrink-0">
+        <button onClick={() => setShowManual((v) => !v)} className="px-4 py-2.5 rounded-full bg-[#3e2723] text-white text-sm font-medium hover:bg-[#4a2f2a] shrink-0">
           {showManual ? "Close counter sale" : "+ New counter sale"}
         </button>
       </div>
@@ -3757,7 +3757,7 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
               <span className="text-slate-500">Order total: </span>
               <span className="font-bold text-navy-900">₹{manualTotal.toLocaleString("en-IN")}</span>
             </div>
-            <button onClick={createManual} disabled={mSaving || manualTotal <= 0} className="px-6 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium disabled:opacity-50 hover:bg-navy-800">
+            <button onClick={createManual} disabled={mSaving || manualTotal <= 0} className="px-6 py-2.5 rounded-full bg-[#3e2723] text-white text-sm font-medium disabled:opacity-50 hover:bg-[#4a2f2a]">
               {mSaving ? "Saving…" : "Create counter sale"}
             </button>
           </div>
@@ -3806,7 +3806,7 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
                     const reached = ORDER_FLOW.indexOf(o.status as any) >= i;
                     return (
                       <span key={s} className="flex items-center gap-1">
-                        <span className={`px-2 py-1 rounded-full border ${reached ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200 text-slate-400"}`}>{ORDER_LABEL[s]}</span>
+                        <span className={`px-2 py-1 rounded-full border ${reached ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200 text-slate-400"}`}>{ORDER_LABEL[s]}</span>
                         {i < ORDER_FLOW.length - 1 && <span className="text-slate-300">→</span>}
                       </span>
                     );
@@ -3829,7 +3829,7 @@ function OrdersTab({ campus = "" }: { campus?: string }) {
                   <div className="mt-3">
                     <input value={note[o.id] || ""} onChange={(e) => setNote({ ...note, [o.id]: e.target.value })} placeholder="Note for handover/cancel (optional)" className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs" />
                     <div className="mt-2 flex flex-wrap gap-1.5">
-                      {(o.status === "placed" || o.status === "payment_confirmed") && <button onClick={() => act(o.id, "start_processing")} className="px-3 py-1.5 rounded-full bg-navy-900 text-white text-xs">Start Processing</button>}
+                      {(o.status === "placed" || o.status === "payment_confirmed") && <button onClick={() => act(o.id, "start_processing")} className="px-3 py-1.5 rounded-full bg-[#3e2723] text-white text-xs">Start Processing</button>}
                       {["placed", "payment_confirmed", "processing"].includes(o.status) && <button onClick={() => act(o.id, "mark_ready")} className="px-3 py-1.5 rounded-full bg-sky-600 text-white text-xs">Ready for Handover</button>}
                       {["ready_for_handover", "processing", "payment_confirmed"].includes(o.status) && <button onClick={() => { if (confirm(`Confirm handover of ${o.orderNo} to customer?`)) act(o.id, "handover"); }} className="px-3 py-1.5 rounded-full bg-emerald-600 text-white text-xs font-semibold">✓ Confirm Handover</button>}
                       {o.status === "handed_over" && <button onClick={() => act(o.id, "complete")} className="px-3 py-1.5 rounded-full bg-emerald-600 text-white text-xs">Complete Order</button>}
@@ -3867,7 +3867,7 @@ function ActivityTab({ campus = "" }: { campus?: string }) {
   useEffect(() => { const t = setTimeout(load, 400); return () => clearTimeout(t); }, [f.q, f.actor]);
 
   const rows: any[] = d?.rows || [];
-  const badge = (t: string) => t === "admin" ? "bg-navy-900 text-white border-navy-900" : t === "student" ? "bg-sky-50 border-sky-200 text-sky-700" : "bg-slate-100 border-slate-200 text-slate-600";
+  const badge = (t: string) => t === "admin" ? "bg-[#3e2723] text-white border-[#2b1b18]" : t === "student" ? "bg-sky-50 border-sky-200 text-sky-700" : "bg-slate-100 border-slate-200 text-slate-600";
   const actionTone = (a: string) => {
     const v = String(a || "");
     if (/delete|reject|remove/.test(v)) return "bg-red-50 border-red-200 text-red-700";
@@ -4163,7 +4163,7 @@ function AdminsTab() {
 
   const filtered = admins.filter((a) => !q || `${a.name} ${a.email} ${a.role} ${a.username}`.toLowerCase().includes(q.toLowerCase()));
 
-  const roleBadge = (r: string) => r === "super_admin" ? "bg-navy-900 text-white border-navy-900" : r === "finance" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-sky-50 border-sky-200 text-sky-700";
+  const roleBadge = (r: string) => r === "super_admin" ? "bg-[#3e2723] text-white border-[#2b1b18]" : r === "finance" ? "bg-emerald-50 border-emerald-200 text-emerald-700" : "bg-sky-50 border-sky-200 text-sky-700";
 
   return (
     <div className="grid grid-cols-1 gap-4">
@@ -4270,7 +4270,7 @@ function AdminsTab() {
                 <div className="mt-2 flex flex-wrap gap-1.5 p-3 rounded-xl bg-slate-50 border">
                   {branchOptions.length === 0 && <div className="text-xs text-slate-400">No campuses configured</div>}
                   {branchOptions.map((b) => (
-                    <label key={b} className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-full border cursor-pointer ${form.branchIds.includes(b) ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>
+                    <label key={b} className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-full border cursor-pointer ${form.branchIds.includes(b) ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200"}`}>
                       <input type="checkbox" checked={form.branchIds.includes(b)} onChange={() => togglePerm(b, form.branchIds, (v) => setForm({ ...form, branchIds: v }))} className="accent-navy-900" />
                       {b}
                     </label>
@@ -4331,7 +4331,7 @@ function AdminsTab() {
                 <div className="text-[11px] text-slate-500">Restrict what this admin can see and act on. Empty = all campuses.</div>
                 <div className="mt-2 flex flex-wrap gap-1.5 p-3 rounded-xl bg-slate-50 border">
                   {branchOptions.map((b) => (
-                    <label key={b} className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-full border cursor-pointer ${(editing.branchIds || []).includes(b) ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>
+                    <label key={b} className={`flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-full border cursor-pointer ${(editing.branchIds || []).includes(b) ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200"}`}>
                       <input type="checkbox" checked={(editing.branchIds || []).includes(b)} onChange={() => togglePerm(b, editing.branchIds || [], (v) => setEditing({ ...editing, branchIds: v }))} className="accent-navy-900" />
                       {b}
                     </label>
@@ -4623,8 +4623,8 @@ function EmailTab() {
           <button onClick={sendTest} className="ml-auto px-3 py-1 rounded-full bg-white border text-xs">Send test</button>
         </div>
         <div className="mt-3 flex gap-2">
-          <button onClick={() => setTab("single")} className={`px-4 py-2 rounded-full text-xs font-medium border ${tab === "single" ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>Single / Comma-separated</button>
-          <button onClick={() => setTab("bulk")} className={`px-4 py-2 rounded-full text-xs font-medium border ${tab === "bulk" ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}>Bulk by filter</button>
+          <button onClick={() => setTab("single")} className={`px-4 py-2 rounded-full text-xs font-medium border ${tab === "single" ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200"}`}>Single / Comma-separated</button>
+          <button onClick={() => setTab("bulk")} className={`px-4 py-2 rounded-full text-xs font-medium border ${tab === "bulk" ? "bg-[#3e2723] text-white border-[#2b1b18]" : "bg-white border-slate-200"}`}>Bulk by filter</button>
         </div>
       </div>
 

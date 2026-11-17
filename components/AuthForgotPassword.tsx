@@ -83,7 +83,7 @@ export default function AuthForgotPassword({ onClose, defaultEmail = "" }: { onC
             {msg && <div className={`text-sm px-3 py-2 rounded-xl border ${msg.type === "error" ? "bg-red-50 border-red-200 text-red-700" : "bg-emerald-50 border-emerald-200 text-emerald-700"}`}>{msg.text}</div>}
             <div className="flex gap-2">
               <button onClick={() => setStep(1)} className="flex-1 py-2.5 rounded-full border border-slate-200 bg-white text-sm">Back</button>
-              <button onClick={verifyAndReset} disabled={loading} className="flex-1 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium disabled:opacity-50">{loading ? "Verifying…" : "Reset Password →"}</button>
+              <button onClick={verifyAndReset} disabled={loading} className="flex-1 py-2.5 rounded-full bg-[#3e2723] text-white text-sm font-medium disabled:opacity-50">{loading ? "Verifying…" : "Reset Password →"}</button>
             </div>
             <button onClick={sendOtp} disabled={loading} className="text-xs text-sky-700 hover:underline text-center">Resend OTP</button>
           </div>

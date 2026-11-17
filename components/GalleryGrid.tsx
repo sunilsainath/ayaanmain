@@ -66,7 +66,7 @@ export default function GalleryGrid({ items = GALLERY, limit, showFilters = true
               onClick={() => setActive(c as "All" | GalleryCategory)}
               className={`px-4 py-2 rounded-full border-2 shadow-sm text-sm font-medium transition ${
                 active === c
-                  ? "bg-navy-900 text-white border-navy-900 shadow-md"
+                  ? "bg-[#3e2723] text-white border-[#2b1b18] shadow-md"
                   : "bg-white text-slate-600 border-slate-300 hover:bg-slate-50"
               }`}
             >

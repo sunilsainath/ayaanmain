@@ -18,12 +18,12 @@ const ACADEMIC_TRAINING = [
   { t: "Test cycle", d: "Daily practice test, weekly grand test and monthly model test — every paper followed by explanation." },
   { t: "Doubt clearing & mentoring", d: "Night doubt sessions, individual score reviews and extra classes for low scorers." },
   { t: "Current affairs & revision", d: "Daily current affairs, monthly compilations and structured revision before the exam." },
-  { t: "Answer writing", d: "Descriptive answer practice for Groups and UPSC, reviewed by faculty." },
+  { t: "Answer writing", d: "Descriptive answer practice for Groups, reviewed by faculty." },
 ];
 
 export default function AcademyPage() {
   return (
-    <div className="bg-[#ebe1cb]">
+    <div className="bg-[#fcfcfd]">
       <PageHero
         eyebrow="Aspirant Corner • Residential • India's First"
         title="Aspirant Corner — Ayaan Police Academy"
@@ -31,7 +31,7 @@ export default function AcademyPage() {
         subtitle="Own campus — classroom, grounds and hostel within 100m. Academic classes by senior faculty. Physical training by the Director himself. Your dedicated space for preparation strategy, facilities & hostel life."
         actions={
           <>
-            <Link href="/admission" className="btn-green">Register Online</Link>
+            <Link href="/admission" className="btn-violet">Register Online</Link>
             <Link href="/courses" className="px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold">View Day-Scholar Option</Link>
           </>
         }
@@ -58,7 +58,7 @@ export default function AcademyPage() {
                 <div className="text-sm font-semibold text-navy-900">Talk to admissions</div>
                 <div className="text-sm text-slate-600 mt-1">Free counselling, demo class and campus visit. Open daily 9am – 8pm.</div>
                 <div className="mt-3 flex flex-col gap-2">
-                  <a href="tel:+918886667222" className="px-4 py-2.5 rounded-full bg-navy-900 text-white text-sm font-medium text-center">Call +91 88866 67222</a>
+                  <a href="tel:+918886667222" className="px-4 py-2.5 rounded-full bg-[#3e2723] text-white text-sm font-medium text-center">Call +91 88866 67222</a>
                   <a href="https://api.whatsapp.com/send?phone=918886667222" target="_blank" rel="noreferrer" className="px-4 py-2.5 rounded-full bg-[#25D366] text-white text-sm font-medium text-center">WhatsApp us</a>
                 </div>
               </div>
@@ -143,7 +143,7 @@ export default function AcademyPage() {
             <div className="card p-6 mt-4">
               <div className="font-semibold text-navy-900">Courses at Academy</div>
               <div className="mt-3 grid gap-2">
-                {["SI PC — SI + Constable →", "Army / Navy / Airforce →", "Groups 1-4 →", "SSC GD →", "UPSC →"].map((x) => <Link key={x} href="/courses" className="px-4 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-sm font-medium">{x}</Link>)}
+                {["SI PC — SI + Constable →", "Army / Navy / Airforce →", "Groups 1-4 →", "SSC GD →"].map((x) => <Link key={x} href="/courses" className="px-4 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-sm font-medium">{x}</Link>)}
               </div>
             </div>
           </div>

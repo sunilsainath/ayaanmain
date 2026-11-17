@@ -12,7 +12,7 @@ function CorrectForm() {
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({ name: "", fatherName: "", phone: "", address: "", reference: "", aadharCardNumber: "", branch: "", course: "", courseType: "", mode: "", batchId: "" });
   const [branchOptions, setBranchOptions] = useState<string[]>(["Warangal", "Hyderabad", "Hanamkonda", "Bollikunta (Residential)"]);
-  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army", "UPSC"]);
+  const [courseOptions, setCourseOptions] = useState<string[]>(["SI PC", "Groups", "SSC GD", "Army"]);
 
   useEffect(() => {
     if (!token) { setErr("Missing correction link token."); return; }
@@ -68,7 +68,7 @@ function CorrectForm() {
   }
 
   return (
-    <div className="bg-[#ebe1cb] py-8">
+    <div className="bg-[#fcfcfd] py-8">
       <div className="container-soft max-w-2xl mx-auto">
         <h1 className="font-display font-bold text-2xl text-navy-900 text-center">Correct Application</h1>
         {err ? (

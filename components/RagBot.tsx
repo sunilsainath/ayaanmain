@@ -77,7 +77,7 @@ export default function RagBot() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label="Open Ayaan Assistant"
-        className="fixed bottom-[140px] right-4 lg:bottom-6 lg:right-[96px] lg:left-auto z-50 w-14 h-14 rounded-full bg-navy-900 text-white grid place-items-center shadow-lg hover:scale-105 active:scale-95 transition border-2 border-white/20"
+        className="fixed bottom-[140px] right-4 lg:bottom-6 lg:right-[96px] lg:left-auto z-50 w-14 h-14 rounded-full bg-[#3e2723] text-white grid place-items-center shadow-lg hover:scale-105 active:scale-95 transition border-2 border-white/20"
       >
         <span className="text-xl">{open ? "✕" : "◈"}</span>
         {!open && <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white animate-pulse" />}
@@ -192,7 +192,7 @@ export default function RagBot() {
                 placeholder={t.placeholder}
                 className="flex-1 px-4 py-3 rounded-full border border-slate-200 bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-sky-500 text-sm"
               />
-              <button onClick={() => send()} disabled={!input.trim() || thinking} className="px-5 py-3 rounded-full bg-navy-900 text-white text-sm font-medium disabled:opacity-40 hover:bg-navy-800 active:scale-95 transition">
+              <button onClick={() => send()} disabled={!input.trim() || thinking} className="px-5 py-3 rounded-full bg-[#3e2723] text-white text-sm font-medium disabled:opacity-40 hover:bg-[#4a2f2a] active:scale-95 transition">
                 {t.send}
               </button>
             </div>

@@ -14,7 +14,7 @@ export default function ContactPage() {
   }, []);
 
   return (
-    <div className="bg-[#ebe1cb]">
+    <div className="bg-[#fcfcfd]">
       <PageHero
         eyebrow="Contact"
         title="Visit an Ayaan Institute near you"
@@ -22,7 +22,7 @@ export default function ContactPage() {
         subtitle="Get directions, branch details and timings • Open daily 9am – 8pm • +91 88866 67222"
         actions={
           <>
-            <Link href="/admission" className="btn-green">Register Online</Link>
+            <Link href="/admission" className="btn-violet">Register Online</Link>
             <a href="https://api.whatsapp.com/send?phone=918886667222" target="_blank" rel="noreferrer" className="px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold">WhatsApp us</a>
           </>
         }
@@ -56,7 +56,7 @@ export default function ContactPage() {
                   </div>
                   {b.phone && <a href={`tel:${b.phone.replace(/\s/g, "")}`} className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-navy-900">☎ {b.phone}</a>}
                   <div className="mt-3 flex flex-wrap gap-2">
-                    <a href={`https://www.google.com/maps/search/?api=1&query=${q}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full bg-navy-900 text-white text-xs font-medium hover:bg-navy-800">Get Directions →</a>
+                    <a href={`https://www.google.com/maps/search/?api=1&query=${q}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full bg-[#3e2723] text-white text-xs font-medium hover:bg-[#4a2f2a]">Get Directions →</a>
                     <a href={`https://api.whatsapp.com/send?phone=918886667222&text=${encodeURIComponent(`Hi, I want details about the ${b.name} institute`)}`} target="_blank" rel="noopener noreferrer" className="px-4 py-2 rounded-full border border-slate-200 text-xs font-medium hover:bg-slate-50">WhatsApp</a>
                   </div>
                 </div>
@@ -90,7 +90,7 @@ export default function ContactPage() {
             <input placeholder="Phone" className="px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm" />
             <input placeholder="Email" className="sm:col-span-2 px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm" />
             <textarea placeholder="Message — e.g., SI Telugu batch fees?" rows={4} className="sm:col-span-2 px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm" />
-            <button type="button" className="sm:col-span-2 px-6 py-3 rounded-full bg-navy-900 text-white text-sm font-semibold">Submit Enquiry →</button>
+            <button type="button" className="sm:col-span-2 px-6 py-3 rounded-full bg-[#3e2723] text-white text-sm font-semibold">Submit Enquiry →</button>
           </form>
         </div>
       </section>
