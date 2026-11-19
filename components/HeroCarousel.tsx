@@ -145,7 +145,7 @@ export default function HeroCarousel() {
   if (slides === null) {
     return (
       <div className="relative w-full overflow-hidden bg-slate-900">
-        <div className="relative h-[62vh] sm:h-[64vh] lg:h-[68vh] min-h-[440px] sm:min-h-[480px] max-h-[720px]">
+        <div className="relative aspect-video">
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 animate-pulse" />
         </div>
       </div>
@@ -165,7 +165,7 @@ export default function HeroCarousel() {
       onTouchEnd={() => setPaused(false)}
     >
       {/* slides */}
-      <div className="relative h-[62vh] sm:h-[64vh] lg:h-[68vh] min-h-[440px] sm:min-h-[480px] max-h-[720px]">
+      <div className="relative aspect-video">
         {list.map((s, idx) => (
           <div
             key={s.id}
