@@ -24,7 +24,7 @@ export const courseDetails: CourseDetail[] = [
     duration: "3-4 Months + Continuous Revision",
     mode: ["Residential", "Offline", "Online"],
     fee: "₹35,000 (Residential) • ₹25,000 Offline • ₹15,000 Online",
-    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop",
+    image: "/images/si-pc.png",
     eligibility: "SI — Graduation (any degree) from a recognised university. Constable (PC) — Intermediate (10+2) pass, any group.",
     ageLimit: "SI 21-25 years • Constable 18-22 years (relaxation as per notification)",
     prerequisites: [
@@ -52,7 +52,7 @@ export const courseDetails: CourseDetail[] = [
     duration: "4-6 Months (Mains incl.)",
     mode: ["Offline", "Online"],
     fee: "₹32,000 (Groups 1/2) • ₹22,000 (Groups 3/4)",
-    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=800&auto=format&fit=crop",
+    image: "/images/groups.png",
     eligibility: "Graduation for Gr 1/2; Intermediate for Gr 4",
     ageLimit: "18 – 44 years (TSPSC general)",
     prerequisites: [
@@ -77,7 +77,7 @@ export const courseDetails: CourseDetail[] = [
     duration: "3 Months",
     mode: ["Offline", "Online"],
     fee: "₹18,000 Offline • ₹12,000 Online",
-    image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?q=80&w=800&auto=format&fit=crop",
+    image: "/images/ssc-gd.png",
     eligibility: "10th Pass (SSC)",
     ageLimit: "18 – 23 years",
     prerequisites: [
@@ -104,7 +104,7 @@ export const courseDetails: CourseDetail[] = [
     duration: "3 Months + Physical Till Selection",
     mode: ["Residential", "Offline"],
     fee: "₹25,000 Residential • ₹18,000 Offline",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=800&auto=format&fit=crop",
+    image: "/images/army.png",
     eligibility: "10th/10+2 as per post (Army GD: 10th 45%, Navy SSR: 10+2 PCM 50%)",
     ageLimit: "17.5 – 21 years (Army GD), 17-20 (Navy/Airforce)",
     prerequisites: [

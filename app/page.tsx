@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AYAAN_APP_URL, AYAAN_PRO_FITNESS_APP_URL } from "@/lib/appConfig";
@@ -17,6 +17,12 @@ import AnimatedNumber from "@/components/AnimatedNumber";
 // (seeded into courseDetails) with the shared dummy fallback.
 const courseImg = (slug: string) =>
   (fallbackDetails as readonly { slug: string; image?: string }[]).find((c) => c.slug === slug)?.image || dummyForCourse(slug);
+
+const LEVEL_IMAGES: Record<1 | 2 | 3, string> = {
+  1: "/images/level1.png",
+  2: "/images/level2.png",
+  3: "/images/level3.png",
+};
 
 const coursesData = [
   { id: 1, slug: "si-pc", title: "SI PC", tag: "SI PC", meta: "Sub-Inspector + Constable • One Track", desc: "SI Sub-Inspector and Police Constable (PC) together — full written syllabus, daily tests and ground physical training.", points: ["Both SI & PC syllabus", "1600m, long jump, high jump", "Weekly grands + explanation", "Director-led ground training"], popular: true, image: courseImg("si-pc") },
@@ -265,7 +271,7 @@ export default function Home() {
               <div className="mt-6 flex gap-3"><Link href="/academy" className="btn-primary !py-2.5">See Facilities</Link><Link href="/contact" className="btn-ghost !py-2.5">Check Fees</Link></div>
             </div>
             <div className="lg:col-span-7 bg-slate-50 p-6 lg:p-8">
-              <div className="card p-2"><div className={`rounded-2xl h-[220px] grid place-items-center border text-sm transition ${level === 1 ? "bg-sky-50 border-sky-200 text-sky-800" : level === 2 ? "bg-amber-50 border-amber-200 text-amber-800" : "bg-emerald-50 border-emerald-200 text-emerald-800"}`}>{level === 1 ? "▶ Track View — 400m loop, daily sprints" : level === 2 ? "◆ Strength Zone — Gym & functional area" : "◍ Event Arena — Sand & Mud pits for jumps"}</div><div className="mt-3 grid grid-cols-3 gap-2 text-center"><div className={`p-3 rounded-xl border ${level === 1 ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}><div className="text-xs font-bold">Level 1</div><div className="text-xs opacity-80">Track</div></div><div className={`p-3 rounded-xl border ${level === 2 ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}><div className="text-xs font-bold">Level 2</div><div className="text-xs opacity-80">Strength</div></div><div className={`p-3 rounded-xl border ${level === 3 ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}><div className="text-xs font-bold">Level 3</div><div className="text-xs opacity-80">Events</div></div></div></div>
+              <div className="card p-2"><div className={`rounded-2xl h-[220px] border transition ${level === 1 ? "bg-sky-50 border-sky-200" : level === 2 ? "bg-amber-50 border-amber-200" : "bg-emerald-50 border-emerald-200"}`}><img src={LEVEL_IMAGES[level]} alt={`Level ${level}`} className="h-[220px] w-full rounded-lg object-cover" /></div><div className="mt-3 grid grid-cols-3 gap-2 text-center"><div className={`p-3 rounded-xl border ${level === 1 ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}><div className="text-xs font-bold">Level 1</div><div className="text-xs opacity-80">Track</div></div><div className={`p-3 rounded-xl border ${level === 2 ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}><div className="text-xs font-bold">Level 2</div><div className="text-xs opacity-80">Strength</div></div><div className={`p-3 rounded-xl border ${level === 3 ? "bg-navy-900 text-white border-navy-900" : "bg-white border-slate-200"}`}><div className="text-xs font-bold">Level 3</div><div className="text-xs opacity-80">Events</div></div></div></div>
               <div className="mt-4 grid sm:grid-cols-2 gap-4"><div className="card p-5 interactive-card"><div className="text-sm font-semibold text-navy-900">24×7 Study & Library</div><div className="text-sm text-slate-600 mt-1">Study hall + doubts always open. Dietary hostel: eggs, milk, ragi malt.</div></div><div className="card p-5 bg-navy-900 text-white border-navy-900"><div className="text-sm font-semibold">Separate Hostels</div><div className="text-sm text-white/70 mt-1">Boys & Girls blocks. Canteen, hygiene, discipline.</div><div className="mt-3 inline-flex px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs">Bollikunta • 25 Acres</div></div></div>
               <div className="mt-4 card p-5 border-sky-100 bg-sky-50/60">
                 <div className="text-sm font-semibold text-navy-900">Academic training — the other half of the system</div>
