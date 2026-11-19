@@ -172,7 +172,7 @@ export default function HeroCarousel() {
             className={`absolute inset-0 transition-opacity duration-700 ease-out ${idx === active ? "opacity-100 z-10" : "opacity-0 z-0"}`}
           >
             {/* image — slides are direct uploads, shown in admin order with no text overlay */}
-            <img src={s.image} alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <img src={s.image} alt="" className="absolute inset-0 w-full h-full object-contain" />
             {/* subtle gradient so the dots/arrows stay readable */}
             <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-slate-900/50 to-transparent" />
           </div>
